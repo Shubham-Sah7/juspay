@@ -8,7 +8,6 @@ import {
   Search,
   ShoppingBag as LucideShoppingBag,
   UtensilsCrossed,
-  Film,
   Coffee,
   Car,
   Fuel,

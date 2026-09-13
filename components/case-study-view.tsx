@@ -1,47 +1,13 @@
 "use client"
 
 import React, { useState } from "react"
-import { motion } from "framer-motion"
-import { 
-  ArrowRight, 
-  ArrowDown, 
-  Check, 
-  Sparkles, 
-  TrendingUp, 
-  Home, 
-  CreditCard, 
-  Layers, 
-  Shield, 
-  Zap, 
-  Eye, 
-  Target, 
-  MessageSquare, 
-  Mic, 
-  Database, 
-  Cpu, 
-  PieChart, 
-  CornerDownRight, 
-  ChevronRight,
-  ExternalLink,
-  Smartphone,
-  BarChart3,
-  Lightbulb,
-  Compass,
-  CheckCircle2
-} from "lucide-react"
 import { HomeScreen } from "./screens/home-screen"
 import { SpendingScreen } from "./screens/spending-screen"
 import { AIAssistantScreen } from "./screens/ai-assistant-screen"
 import { IntroScreen } from "./screens/intro-screen"
 import { ProfileScreen } from "./screens/profile-screen"
 import { AIDrilldownModal } from "./screens/ai-drilldown-modal"
-import { ActiveScreenType } from "./mobile-frame"
-import { JuspayLogo } from "./ui/juspay-logo"
 import { cn } from "@/lib/utils"
-
-interface CaseStudyViewProps {
-  onNavigateToMobile?: (screen: ActiveScreenType) => void
-}
 
 /* Annotation Card Helper */
 function AnnotationCard({
@@ -135,7 +101,7 @@ function SectionHeader({
   )
 }
 
-export function CaseStudyView({ onNavigateToMobile }: CaseStudyViewProps) {
+export function CaseStudyView() {
   const [modalOpen, setModalOpen] = useState(false)
   const [activeSection, setActiveSection] = useState<string>("01")
 
@@ -481,7 +447,7 @@ export function CaseStudyView({ onNavigateToMobile }: CaseStudyViewProps) {
               <span className="font-mono text-xs font-bold text-[#0055FF]">03</span>
               <h3 className="text-sm font-bold text-neutral-900">PROGRESSIVE DISCOVERY</h3>
               <p className="text-xs text-neutral-600 leading-relaxed">
-                Don't overwhelm users with everything at once. Unfold depth as intent is demonstrated.
+                Don&apos;t overwhelm users with everything at once. Unfold depth as intent is demonstrated.
               </p>
             </div>
             <div className="p-2.5 rounded-xl bg-blue-50 border border-blue-200/70 text-[11px] font-mono text-[#0055FF]">
@@ -918,7 +884,7 @@ export function CaseStudyView({ onNavigateToMobile }: CaseStudyViewProps) {
 
         <div className="space-y-6">
           <blockquote className="p-6 rounded-2xl bg-white border-l-4 border-indigo-600 border border-neutral-200/90 shadow-2xs text-lg font-medium text-neutral-800 italic">
-            “The chart isn't decoration. It acts as an interface for investigating the AI's reasoning.”
+            &ldquo;The chart isn&apos;t decoration. It acts as an interface for investigating the AI&apos;s reasoning.&rdquo;
           </blockquote>
 
           {/* Drilldown Evidence Flow */}
@@ -956,7 +922,7 @@ export function CaseStudyView({ onNavigateToMobile }: CaseStudyViewProps) {
             <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200/80 space-y-2 text-xs text-neutral-700">
               <h5 className="font-bold text-neutral-900 font-mono uppercase text-[11px]">Why this matters for hiring evaluators:</h5>
               <p>
-                Generic AI implementations simply output text summaries. Nudge treats the data visualization as a live document: users can tap bars to filter, tap months to compare deltas, and drill down to individual line items to verify the AI's math independently.
+                Generic AI implementations simply output text summaries. Nudge treats the data visualization as a live document: users can tap bars to filter, tap months to compare deltas, and drill down to individual line items to verify the AI&apos;s math independently.
               </p>
             </div>
           </div>
@@ -1215,7 +1181,7 @@ export function CaseStudyView({ onNavigateToMobile }: CaseStudyViewProps) {
             <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 space-y-1">
               <span className="text-[10px] text-emerald-800 font-bold">FLOW 03</span>
               <div className="font-bold text-neutral-900">AI Chat → Goal Action</div>
-              <p className="text-[11px] text-neutral-600 font-sans">Tap 'Try saving ₹2,400' to commit funds directly into the Tokyo Piggy Vault.</p>
+              <p className="text-[11px] text-neutral-600 font-sans">Tap &apos;Try saving ₹2,400&apos; to commit funds directly into the Tokyo Piggy Vault.</p>
             </div>
           </div>
 
@@ -1304,7 +1270,7 @@ export function CaseStudyView({ onNavigateToMobile }: CaseStudyViewProps) {
               <div className="p-3.5 rounded-xl bg-blue-50 border border-blue-200 space-y-1">
                 <span className="text-[10px] font-mono text-[#0055FF] font-bold">PHASE 3</span>
                 <h5 className="text-xs font-bold text-neutral-900">ASK</h5>
-                <p className="text-[11px] text-neutral-600">User taps 'Ask Nudge why' to inquire naturally.</p>
+                <p className="text-[11px] text-neutral-600">User taps &apos;Ask Nudge why&apos; to inquire naturally.</p>
               </div>
 
               <div className="p-3.5 rounded-xl bg-indigo-50 border border-indigo-200 space-y-1">
@@ -1419,7 +1385,7 @@ export function CaseStudyView({ onNavigateToMobile }: CaseStudyViewProps) {
               The Nudge Philosophy
             </span>
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight">
-              “Nudge Money doesn't just show users what happened to their money. It helps them understand why, explore the evidence, and decide what to do next.”
+              &ldquo;Nudge Money doesn&apos;t just show users what happened to their money. It helps them understand why, explore the evidence, and decide what to do next.&rdquo;
             </h2>
           </div>
 

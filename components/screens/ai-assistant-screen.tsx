@@ -1,7 +1,7 @@
 "use client"
 
-import React, { useState, useEffect, useRef } from "react"
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion"
+import React, { useState, useRef } from "react"
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
 import { 
   ChevronLeft, 
   MoreHorizontal, 
