@@ -813,14 +813,9 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
         </AnimatePresence>
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400">
-              Piggy Vault & Goals
-            </h3>
-            <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-white text-pink-700 border border-pink-200 shadow-2xs whitespace-nowrap">
-              2 Jars Active
-            </span>
-          </div>
+          <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400">
+            Piggy Vault & Goals
+          </h3>
           <button className="text-xs font-semibold text-[#0055FF] hover:underline transition flex items-center gap-1 group cursor-pointer">
             <span>Manage</span>
             <span className="group-hover:translate-x-0.5 transition-transform">→</span>
@@ -852,11 +847,6 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
             </motion.div>
 
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-1.5 mb-1">
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-white text-pink-700 border border-pink-200 shadow-2xs whitespace-nowrap">
-                  Smart Piggy Stash
-                </span>
-              </div>
               <div className="text-xl font-black text-neutral-900 tracking-tight leading-none">
                 ₹{(108000 + piggyCoinsAdded + emergencyCoinsAdded).toLocaleString("en-IN")}
               </div>
