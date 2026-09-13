@@ -28,6 +28,16 @@ export interface ScreenOption {
 
 export const SCREEN_OPTIONS: ScreenOption[] = [
   {
+    id: "intro",
+    badge: "00",
+    label: "Intro & Onboarding",
+    description: "Interactive Flow & 3D Cards",
+    icon: Layers,
+    colorClass: "text-violet-600 bg-violet-50 border-violet-200/60",
+    accentColor: "#8B5CF6",
+    tag: "Welcome"
+  },
+  {
     id: "home",
     badge: "01",
     label: "Home Overview",
@@ -66,16 +76,6 @@ export const SCREEN_OPTIONS: ScreenOption[] = [
     colorClass: "text-emerald-600 bg-emerald-50 border-emerald-200/60",
     accentColor: "#10B981",
     tag: "Security"
-  },
-  {
-    id: "intro",
-    badge: "00",
-    label: "Intro & 3D Cards",
-    description: "Interactive Onboarding Flow",
-    icon: Layers,
-    colorClass: "text-violet-600 bg-violet-50 border-violet-200/60",
-    accentColor: "#8B5CF6",
-    tag: "Welcome"
   }
 ]
 

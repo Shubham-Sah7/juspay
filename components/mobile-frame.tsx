@@ -104,7 +104,10 @@ export function MobileFrame({ children, activeScreen, onNavigateScreen }: Mobile
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 overflow-y-auto no-scrollbar relative bg-[#F8F9FA] text-neutral-900 pb-24">
+      <div className={cn(
+        "flex-1 overflow-y-auto no-scrollbar relative bg-[#F8F9FA] text-neutral-900",
+        activeScreen === "intro" ? "pb-0 flex flex-col h-full" : "pb-24"
+      )}>
         {children}
       </div>
 
