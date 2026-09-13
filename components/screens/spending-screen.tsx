@@ -11,6 +11,13 @@ import {
   Film,
   Coffee,
   Car,
+  Fuel,
+  Tv,
+  Leaf,
+  Sparkles,
+  Zap,
+  Clock,
+  TrendingUp,
   ArrowRight,
   ChevronRight,
   Layers,
@@ -327,12 +334,12 @@ export function SpendingScreen({ onOpenDrilldown }: SpendingScreenProps) {
   const currentPeriod = PERIOD_CONFIG[activeTab]
 
   const categoryFilters = [
-    { id: "all", label: "All" },
-    { id: "groceries", label: "🛒 Groceries" },
-    { id: "dining", label: "🥐 Dining" },
-    { id: "transport", label: "⛽ Fuel" },
-    { id: "entertainment", label: "🍿 Subs" },
-    { id: "cafe", label: "☕ Cafe" },
+    { id: "all", label: "All", icon: Sparkles },
+    { id: "groceries", label: "Groceries", icon: LucideShoppingBag },
+    { id: "dining", label: "Dining", icon: UtensilsCrossed },
+    { id: "transport", label: "Fuel", icon: Fuel },
+    { id: "entertainment", label: "Subs", icon: Tv },
+    { id: "cafe", label: "Cafe", icon: Coffee },
   ]
 
   const transactions = [
@@ -340,76 +347,91 @@ export function SpendingScreen({ onOpenDrilldown }: SpendingScreenProps) {
       id: "1",
       title: "Supermart Groceries",
       subtitle: "Swiggy Instamart • 12 items",
-      date: "Sep 14, 2025",
+      date: "Sep 14, 2026",
       time: "6:45 PM",
       amount: "- ₹3,420",
       payment: "Card •••• 1234",
       category: "Groceries",
       categoryKey: "groceries",
       theme: "lime",
-      bgBadge: "bg-[#D4F65B] text-neutral-950 border border-[#D4F65B]",
+      bgBadge: "bg-[#D4F65B] text-neutral-950 border border-lime-300 shadow-2xs",
       icon: LucideShoppingBag,
-      tags: ["🥦 Fresh Veggies", "+₹420 vs avg"]
+      tags: [
+        { label: "Fresh Veggies", icon: Leaf, color: "text-emerald-600" },
+        { label: "+₹420 vs avg", icon: TrendingUp, color: "text-rose-500" }
+      ]
     },
     {
       id: "2",
       title: "Fresh Bakery",
       subtitle: "Artisan Bakes & Cafe",
-      date: "Sep 13, 2025",
+      date: "Sep 13, 2026",
       time: "11:20 AM",
       amount: "- ₹650",
       payment: "Paid with Visa",
       category: "Dining",
       categoryKey: "dining",
       theme: "coral",
-      bgBadge: "bg-rose-100 text-rose-600 border border-rose-200",
+      bgBadge: "bg-rose-100 text-rose-600 border border-rose-200 shadow-2xs",
       icon: UtensilsCrossed,
-      tags: ["🥐 Sourdough", "☕ Espresso"]
+      tags: [
+        { label: "Sourdough", icon: UtensilsCrossed, color: "text-amber-600" },
+        { label: "Espresso", icon: Coffee, color: "text-neutral-600" }
+      ]
     },
     {
       id: "3",
       title: "Gas Station",
       subtitle: "Shell Petrol • Full tank",
-      date: "Sep 11, 2025",
+      date: "Sep 11, 2026",
       time: "8:15 AM",
       amount: "- ₹1,850",
       payment: "Card •••• 1234",
       category: "Transport",
       categoryKey: "transport",
       theme: "blue",
-      bgBadge: "bg-blue-100 text-[#0055FF] border border-blue-200",
-      icon: Car,
-      tags: ["🚗 Highway commute", "⚡ Auto-points"]
+      bgBadge: "bg-blue-100 text-[#0055FF] border border-blue-200 shadow-2xs",
+      icon: Fuel,
+      tags: [
+        { label: "Highway commute", icon: Car, color: "text-blue-600" },
+        { label: "Auto-points", icon: Zap, color: "text-amber-500" }
+      ]
     },
     {
       id: "4",
       title: "Netflix Premium",
       subtitle: "Monthly 4K Family Subscription",
-      date: "Sep 08, 2025",
+      date: "Sep 08, 2026",
       time: "12:01 AM",
       amount: "- ₹649",
       payment: "Auto-debit Visa",
       category: "Entertainment",
       categoryKey: "entertainment",
       theme: "lilac",
-      bgBadge: "bg-purple-100 text-purple-700 border border-purple-200",
-      icon: Film,
-      tags: ["📺 4K UHD Plan", "⚡ Recurring"]
+      bgBadge: "bg-purple-100 text-purple-700 border border-purple-200 shadow-2xs",
+      icon: Tv,
+      tags: [
+        { label: "4K UHD Plan", icon: Tv, color: "text-purple-600" },
+        { label: "Recurring", icon: Clock, color: "text-blue-600" }
+      ]
     },
     {
       id: "5",
       title: "Blue Tokai Coffee",
       subtitle: "Cold Brew + Cinnamon Roll",
-      date: "Sep 05, 2025",
+      date: "Sep 05, 2026",
       time: "4:30 PM",
       amount: "- ₹340",
       payment: "Juspay Pay",
       category: "Cafe",
       categoryKey: "cafe",
       theme: "pink",
-      bgBadge: "bg-pink-100 text-pink-700 border border-pink-200",
+      bgBadge: "bg-pink-100 text-pink-700 border border-pink-200 shadow-2xs",
       icon: Coffee,
-      tags: ["Daily brew", "₹18 round-up"]
+      tags: [
+        { label: "Daily brew", icon: Coffee, color: "text-pink-600" },
+        { label: "₹18 round-up", icon: Sparkles, color: "text-emerald-600" }
+      ]
     }
   ]
 
@@ -417,7 +439,7 @@ export function SpendingScreen({ onOpenDrilldown }: SpendingScreenProps) {
     const matchesSearch = 
       t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       t.payment.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+      t.tags.some(tag => tag.label.toLowerCase().includes(searchQuery.toLowerCase()))
     const matchesCategory = selectedCategory === "all" || t.categoryKey === selectedCategory
     return matchesSearch && matchesCategory
   })
@@ -797,18 +819,20 @@ export function SpendingScreen({ onOpenDrilldown }: SpendingScreenProps) {
           <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
             {categoryFilters.map((tab) => {
               const isActive = selectedCategory === tab.id
+              const TabIcon = tab.icon
               return (
                 <button
                   key={tab.id}
                   onClick={() => setSelectedCategory(tab.id)}
                   className={cn(
-                    "px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer shadow-2xs",
+                    "px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs",
                     isActive
-                      ? "bg-neutral-900 text-white"
-                      : "bg-white/80 text-neutral-600 border border-neutral-200/70 hover:bg-neutral-100"
+                      ? "bg-neutral-950 text-white shadow-xs"
+                      : "bg-white/85 text-neutral-600 border border-neutral-200/80 hover:bg-neutral-100 hover:text-neutral-900"
                   )}
                 >
-                  {tab.label}
+                  <TabIcon className={cn("w-3.5 h-3.5 stroke-[2.2]", isActive ? "text-white" : "text-neutral-500")} />
+                  <span>{tab.label}</span>
                 </button>
               )
             })}
@@ -821,8 +845,9 @@ export function SpendingScreen({ onOpenDrilldown }: SpendingScreenProps) {
             <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400">
               Latest Transactions
             </h3>
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-[#0055FF] border border-blue-100">
-              ⚡️ {filteredTransactions.length} Items
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-[#0055FF] border border-blue-200/80 flex items-center gap-1 shadow-2xs">
+              <Sparkles className="w-2.5 h-2.5 text-[#0055FF]" />
+              <span>{filteredTransactions.length} Items</span>
             </span>
           </div>
           <button 
@@ -844,7 +869,7 @@ export function SpendingScreen({ onOpenDrilldown }: SpendingScreenProps) {
                 whileHover={{ y: -2, scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
                 onClick={onOpenDrilldown}
-                className="p-4 rounded-3xl bg-white/85 backdrop-blur-xl border border-white/90 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-neutral-300/80 transition-all duration-200 cursor-pointer space-y-3 group"
+                className="p-4 rounded-3xl bg-white/90 backdrop-blur-xl border border-white shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-neutral-300/80 transition-all duration-200 cursor-pointer space-y-3 group"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -853,7 +878,7 @@ export function SpendingScreen({ onOpenDrilldown }: SpendingScreenProps) {
                       "w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 shadow-2xs font-bold transition-transform group-hover:scale-105",
                       tx.bgBadge
                     )}>
-                      <Icon className="w-5 h-5 stroke-[2]" />
+                      <Icon className="w-5 h-5 stroke-[2.2]" />
                     </div>
                     <div>
                       <span className="text-sm font-bold text-neutral-900 tracking-tight block group-hover:text-[#0055FF] transition-colors leading-tight">
@@ -870,7 +895,7 @@ export function SpendingScreen({ onOpenDrilldown }: SpendingScreenProps) {
                       <span className="text-base font-black text-neutral-950 block font-sans tracking-tight">
                         {tx.amount}
                       </span>
-                      <span className="text-[11px] font-semibold text-neutral-400 block mt-0.5">
+                      <span className="text-[11px] font-medium text-neutral-400 block mt-0.5">
                         {tx.payment}
                       </span>
                     </div>
@@ -881,16 +906,20 @@ export function SpendingScreen({ onOpenDrilldown }: SpendingScreenProps) {
                 </div>
 
                 {/* Pill Chips row matching Homepage */}
-                <div className="flex items-center flex-wrap gap-2 pt-1 border-t border-neutral-100/80">
-                  {tx.tags.map((tag, idx) => (
-                    <span 
-                      key={idx} 
-                      className="text-[11px] font-medium px-2.5 py-0.5 rounded-full border border-neutral-900/15 bg-neutral-900/5 text-neutral-700"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                  <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 text-[#0055FF] border border-blue-100/80 ml-auto">
+                <div className="flex items-center flex-wrap gap-2 pt-2 border-t border-neutral-100/90">
+                  {tx.tags.map((tag, idx) => {
+                    const TagIcon = tag.icon
+                    return (
+                      <span 
+                        key={idx} 
+                        className="text-[11px] font-medium px-2.5 py-0.5 rounded-full border border-neutral-900/10 bg-neutral-900/5 text-neutral-700 flex items-center gap-1.5 shadow-2xs"
+                      >
+                        {TagIcon && <TagIcon className={cn("w-3 h-3 stroke-[2.2]", tag.color)} />}
+                        <span>{tag.label}</span>
+                      </span>
+                    )
+                  })}
+                  <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 text-[#0055FF] border border-blue-200/70 ml-auto shadow-2xs">
                     {tx.category}
                   </span>
                 </div>
