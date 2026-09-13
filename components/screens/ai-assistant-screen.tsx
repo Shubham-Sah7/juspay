@@ -47,9 +47,9 @@ function InteractiveDonutChart({
   activeId: string | null
   onSelect: (id: string | null) => void
 }) {
-  const size = 140
-  const strokeWidth = 14
-  const radius = (size - strokeWidth) / 2 - 4
+  const size = 115
+  const strokeWidth = 11
+  const radius = (size - strokeWidth) / 2 - 3
   const circumference = 2 * Math.PI * radius
   const center = size / 2
 
