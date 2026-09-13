@@ -568,7 +568,6 @@ export function SpendingScreen({ onOpenDrilldown }: SpendingScreenProps) {
                     amount: cat.amount
                   }))
                 }
-                theme="light"
                 onSegmentClick={() => onOpenDrilldown()}
               />
             </div>

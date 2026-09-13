@@ -60,12 +60,10 @@ export function SegmentedRingChart({
   segments = DEFAULT_SEGMENTS,
   size = 230,
   strokeWidth = 22,
-  theme = "light",
   interactive = true,
   onSegmentClick
 }: SegmentedRingChartProps) {
   const [activeSegmentId, setActiveSegmentId] = useState<string | null>(null)
-  const [cardTheme, setCardTheme] = useState<"dark" | "light">(theme)
 
   const center = size / 2
   const radius = center - strokeWidth / 2 - 8
@@ -93,35 +91,20 @@ export function SegmentedRingChart({
 
   const activeSegment = segments.find(s => s.id === activeSegmentId)
 
-  const isDark = cardTheme === "dark"
-
   return (
     <div className={cn(
-      "relative rounded-[28px] p-5 flex flex-col items-center justify-center select-none transition-colors duration-300 shadow-xl border",
-      isDark 
-        ? "bg-[#0B0E14] text-white border-white/10 shadow-[0_16px_40px_rgba(0,0,0,0.5)]" 
-        : "bg-white text-neutral-900 border-neutral-200/80 shadow-[0_12px_35px_rgba(0,0,0,0.06)]"
+      "relative rounded-[28px] p-5 flex flex-col items-center justify-center select-none transition-colors duration-300 shadow-lg border",
+      "bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-[#EEF2FF] border-blue-200/80 shadow-[0_12px_32px_rgba(37,99,235,0.07)] text-neutral-900"
     )}>
-      {/* Top Controls: Subtle Theme Pill & Header */}
+      {/* Top Controls: Header & Month Pill */}
       <div className="w-full flex items-center justify-between pb-2 px-1">
-        <span className={cn(
-          "text-[10px] font-bold tracking-wider uppercase",
-          isDark ? "text-neutral-400" : "text-neutral-400"
-        )}>
+        <span className="text-[10px] font-bold tracking-wider uppercase text-neutral-500">
           Financial Distribution
         </span>
 
-        <button
-          onClick={() => setCardTheme(isDark ? "light" : "dark")}
-          className={cn(
-            "text-[10px] font-semibold px-2.5 py-0.5 rounded-full border transition cursor-pointer",
-            isDark 
-              ? "bg-white/10 text-neutral-300 border-white/15 hover:bg-white/20" 
-              : "bg-neutral-100 text-neutral-600 border-neutral-200 hover:bg-neutral-200"
-          )}
-        >
-          {isDark ? "Dark View" : "Light View"}
-        </button>
+        <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-white text-[#2563EB] border border-blue-200/90 shadow-2xs">
+          August 2025
+        </span>
       </div>
 
       {/* Center Circular Donut Ring */}
@@ -177,18 +160,12 @@ export function SegmentedRingChart({
                 transition={{ duration: 0.15 }}
                 className="space-y-0.5"
               >
-                <span className={cn(
-                  "text-xs font-medium block truncate max-w-[140px]",
-                  isDark ? "text-neutral-400" : "text-neutral-500"
-                )}>
+                <span className="text-xs font-medium block truncate max-w-[140px] text-neutral-600">
                   {activeSegment.label}
                 </span>
 
                 <div className="flex items-baseline justify-center">
-                  <span className={cn(
-                    "text-2xl md:text-3xl font-black tracking-tight font-sans",
-                    isDark ? "text-white" : "text-neutral-900"
-                  )}>
+                  <span className="text-2xl md:text-3xl font-black tracking-tight font-sans text-neutral-950">
                     {activeSegment.amount || `${activeSegment.percentage}%`}
                   </span>
                 </div>
@@ -213,26 +190,17 @@ export function SegmentedRingChart({
                 className="space-y-0.5"
               >
                 {/* Title */}
-                <span className={cn(
-                  "text-xs md:text-sm font-medium block",
-                  isDark ? "text-neutral-400" : "text-neutral-500"
-                )}>
+                <span className="text-xs md:text-sm font-medium block text-neutral-600">
                   {title}
                 </span>
 
                 {/* Amount + .00 Cents */}
                 <div className="flex items-baseline justify-center">
-                  <span className={cn(
-                    "text-2xl md:text-3xl font-black tracking-tight font-sans",
-                    isDark ? "text-white" : "text-neutral-900"
-                  )}>
+                  <span className="text-2xl md:text-3xl font-black tracking-tight font-sans text-neutral-950">
                     {amount}
                   </span>
                   {cents && (
-                    <span className={cn(
-                      "text-base md:text-lg font-bold ml-0.5",
-                      isDark ? "text-neutral-400" : "text-neutral-400"
-                    )}>
+                    <span className="text-base md:text-lg font-bold ml-0.5 text-neutral-500">
                       {cents}
                     </span>
                   )}
@@ -242,7 +210,7 @@ export function SegmentedRingChart({
                 <div className="flex items-center justify-center gap-1 mt-0.5">
                   <span className={cn(
                     "text-xs font-bold flex items-center gap-0.5",
-                    isPositive ? "text-[#34D399]" : "text-rose-500"
+                    isPositive ? "text-emerald-600" : "text-rose-500"
                   )}>
                     {trend}
                   </span>
@@ -264,8 +232,8 @@ export function SegmentedRingChart({
             className={cn(
               "px-2.5 py-1 rounded-full text-[11px] font-medium transition flex items-center gap-1.5 cursor-pointer border",
               activeSegmentId === seg.id 
-                ? (isDark ? "bg-white/20 border-white/30 text-white shadow-xs" : "bg-neutral-900 text-white border-neutral-900 shadow-xs")
-                : (isDark ? "bg-white/5 border-white/10 text-neutral-300 hover:bg-white/10" : "bg-neutral-50 border-neutral-200 text-neutral-600 hover:bg-neutral-100")
+                ? "bg-[#2563EB] text-white border-[#2563EB] shadow-xs" 
+                : "bg-white/90 border-blue-200/75 text-neutral-700 hover:bg-white shadow-2xs"
             )}
           >
             <span 
