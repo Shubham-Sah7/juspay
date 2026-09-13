@@ -37,13 +37,13 @@ interface CategoryItem {
 const CATEGORIES: CategoryItem[] = [
   { id: "food", name: "Food & Dining", pct: 35, amount: "₹18,400", color: "#F95738", detail: "14 delivery orders · Swiggy & Zomato" },
   { id: "rent", name: "Rent & Housing", pct: 29, amount: "₹15,000", color: "#2563EB", detail: "Fixed monthly rent · Paid on 1st" },
-  { id: "shopping", name: "Shopping & Tech", pct: 16, amount: "₹8,200", color: "#0284C7", detail: "Amazon & gadgets · 4 orders" },
-  { id: "travel", name: "Travel & Commute", pct: 12, amount: "₹6,450", color: "#8B5CF6", detail: "Uber & Metro transit · 18 rides" },
+  { id: "shopping", name: "Shopping & Tech", pct: 16, amount: "₹8,200", color: "#0284C7", detail: "Amazon & gadgets · 8 items" },
+  { id: "travel", name: "Travel & Commute", pct: 12, amount: "₹6,450", color: "#8B5CF6", detail: "Uber & Metro transit · 14 rides" },
   { id: "subscriptions", name: "Subscriptions", pct: 8, amount: "₹4,350", color: "#F59E0B", detail: "Spotify, Netflix, iCloud · 5 active" }
 ]
 
 // 3D Ribbed Audio Wave Orb for Voice Mode
-function RibbedAudioWaveOrb({ isListening = true, size = 140 }: { isListening?: boolean; size?: number }) {
+function RibbedAudioWaveOrb({ isListening = true, size = 100 }: { isListening?: boolean; size?: number }) {
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
   const springConfig = { stiffness: 260, damping: 20 }
@@ -119,7 +119,7 @@ function RibbedAudioWaveOrb({ isListening = true, size = 140 }: { isListening?: 
         <img 
           src="/images/blue-ribbed-orb.png" 
           alt="Juspay Ribbed Royal Blue Audio Wave Orb"
-          className="w-full h-full object-contain select-none pointer-events-none filter drop-shadow-[0_22px_36px_rgba(0,85,255,0.45)] drop-shadow-[0_10px_20px_rgba(124,58,237,0.3)]"
+          className="w-full h-full object-contain select-none pointer-events-none filter drop-shadow-[0_16px_28px_rgba(0,85,255,0.4)] drop-shadow-[0_8px_16px_rgba(124,58,237,0.25)]"
         />
         <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/10 to-white/20 pointer-events-none mix-blend-overlay" />
       </motion.div>
@@ -143,7 +143,7 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
   const [hasSavedPlan, setHasSavedPlan] = useState(false)
   const [voiceSeconds, setVoiceSeconds] = useState(4)
   const [spokenResponse, setSpokenResponse] = useState<string>(
-    "“Food spending jumped 24% this month, mostly from delivery. Cutting 2 orders a week saves ₹2,400 monthly.”"
+    "“Food delivery was up 24% in August. Cutting 2 orders weekly could save ₹2,400/month.”"
   )
   const [extraTurns, setExtraTurns] = useState<ExtraTurn[]>([])
 
@@ -654,7 +654,7 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
             className="my-auto flex flex-col items-center relative z-10 cursor-pointer py-1" 
             onClick={() => handleToggleListening()}
           >
-            <RibbedAudioWaveOrb isListening={isListening} size={140} />
+            <RibbedAudioWaveOrb isListening={isListening} size={100} />
           </div>
 
           {/* Spoken Response Card */}
@@ -667,7 +667,7 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
               {spokenResponse}
             </p>
             <span className="text-[10px] text-neutral-400 font-medium block">
-              {isListening ? "Ask follow-ups or tap a suggestion" : "Tap orb or start voice to speak"}
+              {isListening ? "Listening to your voice…" : "Tap orb or start voice to speak"}
             </span>
           </motion.div>
 
@@ -675,9 +675,9 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
           <div className="w-full relative z-10 mb-3 px-2">
             <div className="flex items-center justify-center gap-1.5 max-w-full">
               {[
-                { q: "Why food jumped?", a: "Food delivery is up 24% this month, mostly due to 14 orders on Swiggy and Zomato." },
-                { q: "How much on delivery?", a: "You spent ₹7,850 on delivery, which is 43% of your food spending." },
-                { q: "How to save?", a: "Cutting 2 delivery orders per week saves roughly ₹2,400 per month." }
+                { q: "Why food jumped?", a: "Food spending is up 24% (+₹3,600), mostly from 14 Swiggy and Zomato orders." },
+                { q: "Tokyo Trip progress", a: "You've saved ₹68,000 of ₹1,00,000 (68%). You're on track for your Nov 2026 target." },
+                { q: "How can I save?", a: "Cutting 2 delivery orders per week saves roughly ₹2,400 per month." }
               ].map((item) => (
                 <button
                   key={item.q}

@@ -195,7 +195,7 @@ const PERIOD_CONFIG: Record<PeriodTab, PeriodData> = {
     ],
   },
   month: {
-    subtitle: "August 2025",
+    subtitle: "August 2026",
     label: "Spent this August",
     total: "₹52,400",
     trend: "↑ 12% vs previous month",
@@ -203,9 +203,9 @@ const PERIOD_CONFIG: Record<PeriodTab, PeriodData> = {
     chartSegments: [
       { color: "#F95738", dashArray: "35 65", dashOffset: 0 },
       { color: "#2563EB", dashArray: "29 71", dashOffset: -35 },
-      { color: "#D4F65B", dashArray: "16 84", dashOffset: -64 },
-      { color: "#FBCFE8", dashArray: "12 88", dashOffset: -80 },
-      { color: "#DDD6FE", dashArray: "8 92", dashOffset: -92 },
+      { color: "#0284C7", dashArray: "16 84", dashOffset: -64 },
+      { color: "#8B5CF6", dashArray: "12 88", dashOffset: -80 },
+      { color: "#F59E0B", dashArray: "8 92", dashOffset: -92 },
     ],
     categories: [
       {
@@ -214,7 +214,7 @@ const PERIOD_CONFIG: Record<PeriodTab, PeriodData> = {
         amount: "₹18,400",
         percentage: 35,
         insight: "↑ 24%",
-        tags: ["24 orders", "₹18,400 spent", "Delivery is driving it"],
+        tags: ["14 orders", "₹18,400 spent", "Swiggy & Zomato delivery driving it"],
         colorTheme: "coral",
       },
       {
@@ -232,7 +232,7 @@ const PERIOD_CONFIG: Record<PeriodTab, PeriodData> = {
         amount: "₹8,200",
         percentage: 16,
         insight: "Saved ₹1.2K",
-        tags: ["8 items", "₹8,200 spent", "Saved ₹1.2K"],
+        tags: ["8 items", "₹8,200 spent", "Gadgets & accessories"],
         colorTheme: "lime",
       },
       {
@@ -241,7 +241,7 @@ const PERIOD_CONFIG: Record<PeriodTab, PeriodData> = {
         amount: "₹6,450",
         percentage: 12,
         insight: "Uber & Metro",
-        tags: ["14 rides", "₹6,450 spent", "Uber & Metro"],
+        tags: ["14 rides", "₹6,450 spent", "Daily transit"],
         colorTheme: "pink",
       },
       {
@@ -250,7 +250,7 @@ const PERIOD_CONFIG: Record<PeriodTab, PeriodData> = {
         amount: "₹4,350",
         percentage: 8,
         insight: "5 active",
-        tags: ["5 active", "₹4,350 spent", "Auto-debit"],
+        tags: ["5 active", "₹4,350 spent", "Auto-debit recurring"],
         colorTheme: "lilac",
       },
     ],
@@ -546,25 +546,25 @@ export function SpendingScreen({ onOpenDrilldown }: SpendingScreenProps) {
             transition={{ duration: 0.2 }}
             className="space-y-4"
           >
-            {/* SPENDING & SAVINGS SUMMARY RING (MATCHING USER REFERENCE IMAGE 1:1) */}
+            {/* SPENDING SUMMARY RING */}
             <div className="pt-1 pb-1">
               <SegmentedRingChart 
-                title={activeTab === "month" ? "Total Savings" : currentPeriod.label}
-                amount={activeTab === "month" ? "₹48,250" : currentPeriod.total}
-                cents=".00"
-                trend={activeTab === "month" ? "+2.5% ↑" : currentPeriod.trend}
-                isPositive={true}
+                title={activeTab === "month" ? "Total spent" : currentPeriod.label}
+                amount={activeTab === "month" ? "₹52,400" : currentPeriod.total}
+                trend={activeTab === "month" ? "↑ 12% vs last month" : currentPeriod.trend}
+                isPositive={false}
                 segments={
                   activeTab === "month" ? [
-                    { id: "savings", label: "Investments & Liquid", percentage: 38, color: "#A3E635", amount: "₹18,335" },
-                    { id: "fixed", label: "Fixed & Housing", percentage: 25, color: "#A5B4FC", amount: "₹12,062" },
-                    { id: "recurring", label: "Subscriptions", percentage: 15, color: "#FDE047", amount: "₹7,238" },
-                    { id: "expenses", label: "Discretionary & Food", percentage: 22, color: "#FB7185", amount: "₹10,615" }
-                  ] : currentPeriod.categories.slice(0, 4).map((cat, idx) => ({
+                    { id: "food", label: "Food & Dining", percentage: 35, color: "#F95738", amount: "₹18,400" },
+                    { id: "rent", label: "Rent & Housing", percentage: 29, color: "#2563EB", amount: "₹15,000" },
+                    { id: "shopping", label: "Shopping & Tech", percentage: 16, color: "#0284C7", amount: "₹8,200" },
+                    { id: "travel", label: "Travel & Commute", percentage: 12, color: "#8B5CF6", amount: "₹6,450" },
+                    { id: "subscriptions", label: "Subscriptions", percentage: 8, color: "#F59E0B", amount: "₹4,350" }
+                  ] : currentPeriod.categories.map((cat) => ({
                     id: cat.id,
                     label: cat.name,
-                    percentage: cat.percentage || 25,
-                    color: idx === 0 ? "#A3E635" : idx === 1 ? "#A5B4FC" : idx === 2 ? "#FDE047" : "#FB7185",
+                    percentage: cat.percentage,
+                    color: cat.colorTheme === "coral" ? "#F95738" : cat.colorTheme === "blue" ? "#2563EB" : cat.colorTheme === "lime" ? "#0284C7" : cat.colorTheme === "pink" ? "#8B5CF6" : "#F59E0B",
                     amount: cat.amount
                   }))
                 }
@@ -572,70 +572,98 @@ export function SpendingScreen({ onOpenDrilldown }: SpendingScreenProps) {
               />
             </div>
 
-            {/* CATEGORIES CARDS (IMAGE 1 REFERENCE STYLE) */}
-            <div className="space-y-3 pt-1">
-              <div className="flex items-center justify-between">
+            {/* EDITORIAL CATEGORY BREAKDOWN LIST */}
+            <div className="space-y-2 pt-1">
+              <div className="flex items-center justify-between px-1">
                 <h2 className="text-xs font-bold uppercase tracking-wider text-neutral-400">
-                  Spending Breakdown
+                  Category Breakdown
                 </h2>
-                <span className="text-xs text-neutral-400 font-medium">
+                <span className="text-xs text-neutral-400 font-medium font-mono">
                   {currentPeriod.categories.length} categories
                 </span>
               </div>
 
-              <div className="space-y-3">
+              <div className="bg-white rounded-2xl border border-neutral-200/90 divide-y divide-neutral-100 shadow-2xs overflow-hidden">
                 {currentPeriod.categories.map((cat) => {
-                  const theme = CARD_THEMES[cat.colorTheme]
+                  const isFood = cat.id === "food"
+                  const iconColor = cat.colorTheme === "coral" 
+                    ? "#F95738" 
+                    : cat.colorTheme === "blue" 
+                    ? "#2563EB" 
+                    : cat.colorTheme === "lime" 
+                    ? "#0284C7" 
+                    : cat.colorTheme === "pink" 
+                    ? "#8B5CF6" 
+                    : "#F59E0B"
+
                   return (
                     <motion.div 
                       key={cat.id}
-                      whileHover={{ y: -3, scale: 1.01 }}
-                      whileTap={{ scale: 0.98 }}
+                      whileHover={{ backgroundColor: "rgba(249, 250, 251, 0.85)" }}
+                      whileTap={{ scale: 0.99 }}
                       onClick={onOpenDrilldown}
-                      className={cn(
-                        "p-5 rounded-[24px] cursor-pointer transition-all duration-200 select-none group flex flex-col justify-between min-h-[112px]",
-                        theme.bg
-                      )}
+                      className="p-3.5 flex items-center justify-between gap-3 cursor-pointer transition select-none group"
                     >
-                      {/* Top Row: Category Title + Percentage */}
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <h3 className="text-xl font-bold tracking-tight leading-snug">
+                      <div className="flex items-center gap-3 min-w-0">
+                        {/* Compact Category Icon Pill */}
+                        <div 
+                          className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
+                          style={{ backgroundColor: `${iconColor}15` }}
+                        >
+                          <span 
+                            className="w-2.5 h-2.5 rounded-full" 
+                            style={{ backgroundColor: iconColor }}
+                          />
+                        </div>
+
+                        <div className="min-w-0">
+                          <h3 className="text-sm font-semibold tracking-tight text-neutral-900 truncate">
                             {cat.name}
                           </h3>
+                          <span className="text-xs text-neutral-500 font-normal block truncate">
+                            {cat.tags[2] || cat.tags[0] || cat.insight}
+                          </span>
                         </div>
-                        <span className="text-sm font-semibold opacity-85 pt-0.5 font-sans">
-                          {cat.percentage}%
-                        </span>
                       </div>
 
-                      {/* Bottom Row: Pill Badges + Circular Arrow Button */}
-                      <div className="flex items-center justify-between gap-2 mt-4">
-                        <div className="flex items-center flex-wrap gap-2">
-                          {cat.tags.map((tag, idx) => (
-                            <span 
-                              key={idx}
-                              className={cn(
-                                "text-xs font-medium px-3.5 py-1 rounded-full border backdrop-blur-xs transition",
-                                theme.pill
-                              )}
-                            >
-                              {tag}
-                            </span>
-                          ))}
+                      <div className="text-right shrink-0">
+                        <div className="text-sm font-bold font-sans text-neutral-950 flex items-center justify-end gap-1.5">
+                          <span>{cat.amount}</span>
+                          <span className="text-xs font-normal text-neutral-400 font-mono">· {cat.percentage}%</span>
                         </div>
-
-                        <div className={cn(
-                          "w-9 h-9 rounded-full flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 group-hover:translate-x-0.5 transition-all duration-200",
-                          theme.btn
-                        )}>
-                          <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+                        <div className="flex items-center justify-end gap-1 mt-0.5">
+                          <span className={cn(
+                            "text-[11px] font-medium",
+                            isFood ? "text-rose-600 font-semibold" : "text-neutral-500"
+                          )}>
+                            {isFood ? "↑24% vs last month" : cat.insight}
+                          </span>
+                          <ChevronRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-neutral-900 group-hover:translate-x-0.5 transition-all" />
                         </div>
                       </div>
                     </motion.div>
                   )
                 })}
               </div>
+
+              {/* Nudge Insight Bar linking to AI Drilldown */}
+              <motion.div 
+                whileHover={{ y: -1 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={onOpenDrilldown}
+                className="p-3 rounded-xl bg-blue-50/70 border border-blue-200/70 flex items-center justify-between text-xs text-neutral-800 cursor-pointer shadow-2xs hover:bg-blue-50 transition mt-2"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#0055FF] animate-pulse" />
+                  <span className="font-medium text-neutral-800">
+                    Food & Dining jumped 24% (+₹3,600).
+                  </span>
+                </div>
+                <span className="text-xs font-semibold text-[#0055FF] inline-flex items-center gap-1 shrink-0">
+                  <span>Ask Nudge why</span>
+                  <ArrowRight className="w-3 h-3 stroke-[2.2]" />
+                </span>
+              </motion.div>
             </div>
           </motion.div>
         ) : (
@@ -656,9 +684,8 @@ export function SpendingScreen({ onOpenDrilldown }: SpendingScreenProps) {
                   <h3 className="text-2xl font-bold tracking-tight text-white mt-1">Cash Flow & Buckets</h3>
                 </div>
 
-                {/* Playful Yellow Memo Sticky Note from reference */}
                 <div className="bg-[#FEF08A] -rotate-2 rounded-lg px-3 py-1.5 shadow-md border border-amber-300 text-neutral-950 text-[11px] font-bold">
-                  &ldquo;August 2025&rdquo;
+                  &ldquo;August 2026&rdquo;
                 </div>
               </div>
 

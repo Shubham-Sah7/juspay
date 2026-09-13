@@ -32,45 +32,45 @@ export function AIDrilldownScreen({ onProceedToAction }: AIDrilldownScreenProps)
       id: "delivery",
       name: "Delivery Apps",
       vendor: "Swiggy & Zomato",
-      orders: "18 orders",
-      amount: "₹13,200",
-      share: "71.7%",
+      orders: "14 orders",
+      amount: "₹7,850",
+      share: "42.7%",
       icon: Bike,
-      badge: "+8 extra orders 🛵",
+      badge: "+5 extra orders 🛵",
       badgeColor: "bg-neutral-100 text-neutral-700 border-neutral-200/60",
       merchants: [
-        { name: "Swiggy Gourmets", count: "11 orders", total: "₹8,400" },
-        { name: "Zomato Gold", count: "7 orders", total: "₹4,800" }
+        { name: "Swiggy Delivery", count: "8 orders", total: "₹4,620" },
+        { name: "Zomato Orders", count: "6 orders", total: "₹3,230" }
       ]
     },
     {
       id: "dining",
       name: "Dining Out & Cafes",
       vendor: "Restaurants & Coffee",
-      orders: "4 visits",
-      amount: "₹3,800",
-      share: "20.7%",
+      orders: "6 visits",
+      amount: "₹6,800",
+      share: "37.0%",
       icon: Store,
       badge: "Normal",
       badgeColor: "bg-amber-50 text-amber-700 border-amber-200/60",
       merchants: [
-        { name: "Blue Tokai Coffee", count: "3 visits", total: "₹1,200" },
-        { name: "Social Bistro", count: "1 visit", total: "₹2,600" }
+        { name: "Blue Tokai Coffee", count: "4 visits", total: "₹1,800" },
+        { name: "Social Bistro", count: "2 visits", total: "₹5,000" }
       ]
     },
     {
       id: "groceries",
       name: "Groceries & Kitchen",
       vendor: "Blinkit & Zepto",
-      orders: "5 quick orders",
-      amount: "₹1,400",
-      share: "7.6%",
+      orders: "6 quick orders",
+      amount: "₹3,750",
+      share: "20.3%",
       icon: ShoppingBag,
       badge: "Saved ₹600",
       badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200/60",
       merchants: [
-        { name: "Zepto 10m Delivery", count: "4 orders", total: "₹950" },
-        { name: "Blinkit Quick", count: "1 order", total: "₹450" }
+        { name: "Zepto 10m Delivery", count: "4 orders", total: "₹2,450" },
+        { name: "Blinkit Quick", count: "2 orders", total: "₹1,300" }
       ]
     }
   ]
@@ -166,10 +166,10 @@ export function AIDrilldownScreen({ onProceedToAction }: AIDrilldownScreenProps)
           </div>
           <div>
             <p className="text-xs font-medium text-white leading-normal">
-              You made <span className="text-rose-400 font-semibold">8 more food-delivery orders</span> this month.
+              You made <span className="text-rose-400 font-semibold">5 more delivery orders</span> this month (14 vs 9).
             </p>
             <p className="text-[11px] text-neutral-400 font-normal mt-0.5">
-              Average delivery order: <span className="font-mono font-medium text-white">₹733</span>. Most orders occurred after 9:00 PM.
+              Total delivery spend: <span className="font-mono font-medium text-white">₹7,850</span> (43% of food budget).
             </p>
           </div>
         </div>

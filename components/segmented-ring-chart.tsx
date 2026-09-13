@@ -27,10 +27,11 @@ interface SegmentedRingChartProps {
 }
 
 const DEFAULT_SEGMENTS: RingSegment[] = [
-  { id: "savings", label: "Investments & Liquid", percentage: 38, color: "#A3E635", amount: "₹18,335" },   // Lime Green
-  { id: "fixed", label: "Fixed & Housing", percentage: 25, color: "#A5B4FC", amount: "₹12,062" },       // Lavender / Periwinkle
-  { id: "recurring", label: "Subscriptions", percentage: 15, color: "#FDE047", amount: "₹7,238" },     // Sunny Yellow
-  { id: "expenses", label: "Discretionary & Food", percentage: 22, color: "#FB7185", amount: "₹10,615" } // Coral / Salmon
+  { id: "food", label: "Food & Dining", percentage: 35, color: "#F95738", amount: "₹18,400" },
+  { id: "rent", label: "Rent & Housing", percentage: 29, color: "#2563EB", amount: "₹15,000" },
+  { id: "shopping", label: "Shopping & Tech", percentage: 16, color: "#0284C7", amount: "₹8,200" },
+  { id: "travel", label: "Travel & Commute", percentage: 12, color: "#8B5CF6", amount: "₹6,450" },
+  { id: "subscriptions", label: "Subscriptions", percentage: 8, color: "#F59E0B", amount: "₹4,350" }
 ]
 
 function polarToCartesian(centerX: number, centerY: number, radius: number, angleInDegrees: number) {
@@ -52,11 +53,11 @@ function describeArc(x: number, y: number, radius: number, startAngle: number, e
 }
 
 export function SegmentedRingChart({
-  title = "Total Savings",
-  amount = "₹48,250",
-  cents = ".00",
-  trend = "+2.5% ↑",
-  isPositive = true,
+  title = "Total spent",
+  amount = "₹52,400",
+  cents,
+  trend = "↑ 12% vs last month",
+  isPositive = false,
   segments = DEFAULT_SEGMENTS,
   size = 230,
   strokeWidth = 22,
@@ -67,7 +68,7 @@ export function SegmentedRingChart({
 
   const center = size / 2
   const radius = center - strokeWidth / 2 - 8
-  const gapDegrees = 12 // Gap between rounded pill ends in degrees
+  const gapDegrees = 10 // Gap between rounded pill ends in degrees
 
   // Calculate arc angles
   const totalGapDegrees = segments.length * gapDegrees
@@ -99,11 +100,11 @@ export function SegmentedRingChart({
       {/* Top Controls: Header & Month Pill */}
       <div className="w-full flex items-center justify-between pb-2 px-1">
         <span className="text-[10px] font-bold tracking-wider uppercase text-neutral-500">
-          Financial Distribution
+          Spending Distribution
         </span>
 
         <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-white text-[#2563EB] border border-blue-200/90 shadow-2xs">
-          August 2025
+          August 2026
         </span>
       </div>
 

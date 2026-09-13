@@ -334,10 +334,10 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
         </div>
       </motion.div>
 
-      {/* Editorial Headline Statement matching reference Finans image */}
-      <motion.div variants={itemVariants} className="pt-1">
-        <h2 className="text-3xl font-normal tracking-tight text-neutral-900 leading-[1.15]">
-          Good finances,<br />better life.
+      {/* Editorial Headline Statement */}
+      <motion.div variants={itemVariants} className="pt-0.5">
+        <h2 className="text-xl font-normal tracking-tight text-neutral-600 leading-snug">
+          Good finances, <span className="text-neutral-900 font-semibold">better life.</span>
         </h2>
       </motion.div>
 
@@ -517,59 +517,54 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
         </motion.button>
       </motion.div>
 
-      {/* Gen-Z Spendings Card & Sticky Note Memo (from user reference screenshot) */}
-      <motion.div variants={itemVariants} className="space-y-3 pt-1">
-        {/* Pink Spendings Card */}
-        <motion.div
-          whileHover={{ y: -3, scale: 1.01 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={onNavigateToInsights}
-          className="p-5 rounded-[24px] bg-[#FFAAE7] text-neutral-950 shadow-[0_10px_28px_rgba(255,170,231,0.4)] border border-white/50 cursor-pointer select-none transition-all group"
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-base font-bold tracking-tight text-neutral-900">
-              Spendings
+      {/* Spendings & Monthly Health Section */}
+      <motion.div variants={itemVariants} className="p-4.5 rounded-2xl bg-white border border-neutral-200/90 shadow-2xs space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-neutral-400">
+              August Spendings
             </span>
-          </div>
-
-          <div className="mt-3">
-            <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-black tracking-tight font-sans text-neutral-950">
-                ₹2,342<span className="text-xl font-bold opacity-80">.57</span>
-              </span>
-            </div>
-            <span className="text-xs text-neutral-700 font-medium block mt-0.5">
-              spent this month
+            <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              On track
             </span>
-          </div>
-        </motion.div>
-
-        {/* Yellow Paper Sticky Note Memo with Dog-Eared Fold */}
-        <motion.div 
-          whileHover={{ scale: 1.01, rotate: 0 }}
-          whileTap={{ scale: 0.99 }}
-          onClick={onNavigateToInsights}
-          className="relative bg-[#FEF08A] rounded-[20px] p-4 shadow-[0_6px_22px_rgba(250,204,21,0.3)] border border-amber-300/70 flex items-center justify-between cursor-pointer group select-none overflow-hidden transition-all duration-200"
-        >
-          {/* Dog-eared bottom-left fold */}
-          <div className="absolute bottom-0 left-0 w-4 h-4 bg-amber-400/90 pointer-events-none rounded-tr-sm shadow-xs" />
-          
-          <div className="flex-1 pr-3 pl-2">
-            <p className="text-xs text-neutral-800 font-medium leading-tight">
-              Spendings report for <span className="font-bold italic text-neutral-950 font-serif">March 2024</span> is here.
-            </p>
           </div>
 
           <button 
-            onClick={(e) => {
-              e.stopPropagation()
-              onNavigateToInsights()
-            }}
-            className="px-4 py-2 rounded-xl bg-neutral-950 text-white text-xs font-semibold shadow-xs hover:bg-neutral-800 transition active:scale-95 shrink-0 cursor-pointer"
+            onClick={onNavigateToInsights}
+            className="text-xs font-semibold text-[#0055FF] hover:underline flex items-center gap-0.5 cursor-pointer"
           >
-            Check it out
+            <span>Breakdown</span>
+            <ChevronRight className="w-3.5 h-3.5" />
           </button>
-        </motion.div>
+        </div>
+
+        <div>
+          <div className="text-3xl font-bold font-sans text-neutral-950 tracking-tight">
+            ₹52,400
+          </div>
+          <p className="text-xs text-neutral-600 font-normal mt-1 leading-relaxed">
+            Food &amp; Dining is your biggest category (<strong className="text-neutral-900 font-semibold">₹18,400</strong>, ↑24%), driven by 14 Swiggy &amp; Zomato delivery orders.
+          </p>
+        </div>
+
+        {/* Integrated Monthly Report & AI Action */}
+        <div className="pt-2.5 border-t border-neutral-100 flex items-center justify-between gap-2 text-xs">
+          <button
+            onClick={onNavigateToInsights}
+            className="text-neutral-700 hover:text-neutral-950 font-medium flex items-center gap-1 transition cursor-pointer"
+          >
+            <span>August 2026 report ready</span>
+            <span className="text-neutral-400">· View summary →</span>
+          </button>
+
+          <button
+            onClick={onOpenDrilldown}
+            className="text-xs font-semibold text-[#0055FF] hover:underline shrink-0 cursor-pointer"
+          >
+            Ask Nudge why →
+          </button>
+        </div>
       </motion.div>
 
       {/* "Last Transfer" Avatar List */}
@@ -606,197 +601,63 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
         </div>
       </motion.div>
 
-      {/* Gen-Z Overlapping Card Stack / Folder Tabs UI */}
-      <motion.div variants={itemVariants} className="space-y-3 pt-1">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1.5">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400">
-              Spendings & Buckets
-            </h3>
-            <span className="w-1.5 h-1.5 rounded-full bg-[#0055FF] animate-pulse" />
-          </div>
-          <button onClick={onNavigateToInsights} className="text-xs font-semibold text-[#0055FF] hover:underline cursor-pointer flex items-center gap-0.5">
+      {/* Top Spending Categories Snapshot */}
+      <motion.div variants={itemVariants} className="space-y-2 pt-1">
+        <div className="flex items-center justify-between px-0.5">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400">
+            Top Categories
+          </h3>
+          <button 
+            onClick={onNavigateToInsights} 
+            className="text-xs font-semibold text-[#0055FF] hover:underline cursor-pointer flex items-center gap-0.5"
+          >
             <span>View all</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </button>
         </div>
 
-        {/* Stacked Vertical Gen-Z Cards with Folder Tabs & Pill Tags */}
-        <div className="relative pt-1 space-y-[-14px]">
-          {/* Card 1: Food & Dining (Vibrant Coral from Image 1 & 3) */}
-          <motion.div 
-            whileHover={{ y: -6, zIndex: 30 }}
-            whileTap={{ scale: 0.99 }}
-            onClick={onOpenDrilldown}
-            className="relative z-10 p-5 rounded-[24px] bg-[#F95738] text-white shadow-[0_10px_28px_rgba(249,87,56,0.38)] border border-white/25 cursor-pointer transition-all duration-200"
-          >
-            <div className="flex items-start justify-between">
-              <div>
-                <h4 className="text-xl font-bold tracking-tight">Food & Dining</h4>
-                <div className="flex items-center gap-2 mt-3">
-                  <span className="text-xs font-medium bg-white/15 backdrop-blur-xs px-3 py-1 rounded-full border border-white/30">
-                    24 orders
-                  </span>
-                  <span className="text-xs font-medium bg-white/15 backdrop-blur-xs px-3 py-1 rounded-full border border-white/30">
-                    Delivery driving it
+        <div className="bg-white rounded-2xl border border-neutral-200/90 divide-y divide-neutral-100 shadow-2xs overflow-hidden">
+          {[
+            { id: "food", name: "Food & Dining", amount: "₹18,400", pct: 35, note: "↑24% vs last month", noteColor: "text-rose-600 font-semibold", dot: "#F95738", sub: "14 delivery orders · Swiggy & Zomato" },
+            { id: "rent", name: "Rent & Housing", amount: "₹15,000", pct: 29, note: "Fixed expense", noteColor: "text-neutral-500", dot: "#2563EB", sub: "Paid on 1st" },
+            { id: "shopping", name: "Shopping & Tech", amount: "₹8,200", pct: 16, note: "Saved ₹1.2K", noteColor: "text-emerald-600 font-medium", dot: "#0284C7", sub: "8 items" },
+            { id: "travel", name: "Travel & Commute", amount: "₹6,450", pct: 12, note: "Uber & Metro", noteColor: "text-neutral-500", dot: "#8B5CF6", sub: "14 rides" }
+          ].map((cat) => (
+            <div
+              key={cat.id}
+              onClick={cat.id === "food" ? onOpenDrilldown : onNavigateToInsights}
+              className="p-3.5 flex items-center justify-between gap-3 hover:bg-neutral-50/80 transition cursor-pointer group select-none"
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <span 
+                  className="w-2.5 h-2.5 rounded-full shrink-0" 
+                  style={{ backgroundColor: cat.dot }} 
+                />
+                <div className="min-w-0">
+                  <div className="text-sm font-semibold text-neutral-900 truncate">
+                    {cat.name}
+                  </div>
+                  <span className="text-xs text-neutral-500 block truncate">
+                    {cat.sub}
                   </span>
                 </div>
               </div>
 
-              <div className="flex flex-col items-end gap-2.5">
-                <span className="text-sm font-semibold text-white/90">35%</span>
-                <span className="text-xl font-black tracking-tight font-sans">₹18,400</span>
-                <div className="w-8.5 h-8.5 rounded-full bg-neutral-950/80 text-white flex items-center justify-center border border-white/20 shadow-xs mt-1">
-                  <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+              <div className="text-right shrink-0">
+                <div className="text-sm font-bold font-sans text-neutral-950 flex items-center justify-end gap-1.5">
+                  <span>{cat.amount}</span>
+                  <span className="text-xs font-normal text-neutral-400 font-mono">· {cat.pct}%</span>
+                </div>
+                <div className={cn("text-[11px] mt-0.5", cat.noteColor)}>
+                  {cat.note}
                 </div>
               </div>
             </div>
-          </motion.div>
-
-          {/* Card 2: Shopping & Tech (Chartreuse / Gen-Z Lime from Image 1) */}
-          <motion.div 
-            whileHover={{ y: -6, zIndex: 30 }}
-            whileTap={{ scale: 0.99 }}
-            onClick={onNavigateToInsights}
-            className="relative z-20 p-5 rounded-[24px] bg-[#D4F65B] text-neutral-950 shadow-[0_10px_28px_rgba(212,246,91,0.35)] border border-white/40 cursor-pointer transition-all duration-200"
-          >
-            <div className="flex items-start justify-between">
-              <div>
-                <h4 className="text-xl font-bold tracking-tight">Shopping & Tech</h4>
-                <div className="flex items-center gap-2 mt-3">
-                  <span className="text-xs font-medium bg-neutral-950/5 px-3 py-1 rounded-full border border-neutral-950/20">
-                    8 items
-                  </span>
-                  <span className="text-xs font-medium bg-neutral-950/5 px-3 py-1 rounded-full border border-neutral-950/20">
-                    Saved ₹1.2K
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex flex-col items-end gap-2.5">
-                <span className="text-sm font-semibold text-neutral-800">16%</span>
-                <span className="text-xl font-black tracking-tight font-sans text-neutral-950">₹8,200</span>
-                <div className="w-8.5 h-8.5 rounded-full bg-neutral-950 text-white flex items-center justify-center shadow-xs mt-1">
-                  <ArrowRight className="w-4 h-4 stroke-[2.5]" />
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Card 3: Rent & Housing (Royal Juspay Blue from Image 1) */}
-          <motion.div 
-            whileHover={{ y: -6, zIndex: 30 }}
-            whileTap={{ scale: 0.99 }}
-            onClick={onNavigateToInsights}
-            className="relative z-30 p-5 rounded-[24px] bg-[#2563EB] text-white shadow-[0_10px_28px_rgba(37,99,235,0.38)] border border-white/25 cursor-pointer transition-all duration-200"
-          >
-            <div className="flex items-start justify-between">
-              <div>
-                <h4 className="text-xl font-bold tracking-tight">Rent & Housing</h4>
-                <div className="flex items-center gap-2 mt-3">
-                  <span className="text-xs font-medium bg-white/15 backdrop-blur-xs px-3 py-1 rounded-full border border-white/30">
-                    Fixed expense
-                  </span>
-                  <span className="text-xs font-medium bg-white/15 backdrop-blur-xs px-3 py-1 rounded-full border border-white/30">
-                    Paid on 1st
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex flex-col items-end gap-2.5">
-                <span className="text-sm font-semibold text-white/90">29%</span>
-                <span className="text-xl font-black tracking-tight font-sans">₹15,000</span>
-                <div className="w-8.5 h-8.5 rounded-full bg-neutral-950/80 text-white flex items-center justify-center border border-white/20 shadow-xs mt-1">
-                  <ArrowRight className="w-4 h-4 stroke-[2.5]" />
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Card 4: Savings & Goals (Sky Blue with Equalizer from Image 2) */}
-          <motion.div 
-            whileHover={{ y: -6, zIndex: 30 }}
-            whileTap={{ scale: 0.99 }}
-            onClick={onNavigateToInsights}
-            className="relative z-40 p-5 rounded-[24px] bg-[#38BDF8] text-neutral-950 shadow-[0_12px_32px_rgba(56,189,248,0.4)] border border-white/35 cursor-pointer transition-all duration-200 space-y-3"
-          >
-            <div className="flex items-start justify-between">
-              <div>
-                <h4 className="text-xl font-bold tracking-tight">Savings & Wealth</h4>
-                <span className="text-xs text-neutral-800 block mt-1">₹1,08,000 reserve • +₹12,450 this month</span>
-              </div>
-
-              <div className="flex flex-col items-end gap-1">
-                <span className="text-sm font-semibold text-neutral-800">73%</span>
-                <div className="w-8.5 h-8.5 rounded-full bg-neutral-950 text-white flex items-center justify-center shadow-xs mt-1">
-                  <ArrowRight className="w-4 h-4 stroke-[2.5]" />
-                </div>
-              </div>
-            </div>
-
-            {/* Gen-Z Barcode Equalizer Progress Indicator (from reference image) */}
-            <div className="pt-1">
-              <div className="flex items-center gap-[2.5px] h-3.5">
-                {Array.from({ length: 36 }).map((_, i) => {
-                  const filled = i < 26 // 73%
-                  return (
-                    <div 
-                      key={i} 
-                      className={cn(
-                        "flex-1 h-full rounded-full transition-all duration-300",
-                        filled ? "bg-neutral-950" : "bg-neutral-950/20"
-                      )}
-                    />
-                  )
-                })}
-              </div>
-            </div>
-          </motion.div>
+          ))}
         </div>
       </motion.div>
 
-      {/* Editorial Insight Card Styled Exactly Like Image 1 / Image 3 */}
-      <motion.div 
-        variants={itemVariants}
-        whileHover={{ y: -3, scale: 1.01 }}
-        whileTap={{ scale: 0.98 }}
-        onClick={onOpenDrilldown}
-        className="p-5 rounded-[24px] bg-[#DDD6FE] text-neutral-900 border border-purple-300/50 shadow-[0_8px_24px_rgba(221,214,254,0.4)] cursor-pointer group select-none transition-all"
-      >
-        <div className="flex items-start justify-between">
-          <div>
-            <div className="flex items-center gap-2">
-              <h4 className="text-xl font-bold tracking-tight">Food</h4>
-              <span className="text-xs font-bold text-rose-600 bg-rose-100/80 px-2.5 py-0.5 rounded-full border border-rose-200">
-                ↑ 24%
-              </span>
-            </div>
-            <p className="text-xs text-neutral-600 font-medium mt-1">Delivery is driving it.</p>
-          </div>
-
-          <div className="w-9 h-9 rounded-full bg-neutral-900 text-white flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 group-hover:translate-x-0.5 transition-all">
-            <ArrowRight className="w-4 h-4 stroke-[2.5]" />
-          </div>
-        </div>
-
-        <div className="flex items-center flex-wrap gap-2 mt-3.5">
-          <span className="text-xs font-medium px-3.5 py-1 rounded-full border border-neutral-900/20 bg-neutral-900/5 text-neutral-900">
-            18 delivery orders
-          </span>
-          <span className="text-xs font-medium px-3.5 py-1 rounded-full border border-neutral-900/20 bg-neutral-900/5 text-neutral-900">
-            +₹3,600 vs July
-          </span>
-          <button 
-            onClick={onOpenDrilldown}
-            className="text-xs font-medium px-3.5 py-1 rounded-full border border-neutral-900/20 bg-neutral-900/5 text-neutral-900 whitespace-nowrap inline-flex items-center gap-1 hover:bg-neutral-900/10 transition cursor-pointer"
-          >
-            <span>Ask Nudge why</span>
-            <span>→</span>
-          </button>
-        </div>
-      </motion.div>
-
-      {/* Goals & Piggy Bank Section: Colorful Gen-Z Piggy Bank Vault */}
+      {/* Goals & Piggy Bank Section: Calm, Trustworthy & Scannable */}
       <motion.div variants={itemVariants} className="space-y-3 pt-2 relative">
         {/* Floating Clink Toast */}
         <AnimatePresence>
@@ -812,198 +673,120 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
           )}
         </AnimatePresence>
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between px-0.5">
           <div className="flex items-center gap-2">
             <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400">
               Piggy Vault & Goals
             </h3>
-            <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-white text-pink-700 border border-pink-200 shadow-2xs whitespace-nowrap">
-              2 Jars Active
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-[#0055FF] border border-blue-200/60 whitespace-nowrap">
+              2 Active
             </span>
           </div>
-          <button className="text-xs font-semibold text-[#0055FF] hover:underline transition flex items-center gap-1 group cursor-pointer">
-            <span>Manage</span>
-            <span className="group-hover:translate-x-0.5 transition-transform">→</span>
-          </button>
+
+          <span className="text-xs font-medium text-neutral-500">
+            ₹{(108000 + piggyCoinsAdded + emergencyCoinsAdded).toLocaleString("en-IN")} total saved
+          </span>
         </div>
 
-        {/* Piggy Bank Feature Card with 3D Piggy Mascot */}
-        <motion.div 
-          whileHover={{ y: -2 }}
-          className="p-4 rounded-3xl bg-gradient-to-br from-[#FFF2F7] via-[#FFE4EE] to-[#FFD6E7] border border-pink-200/90 shadow-[0_8px_24px_rgba(244,114,182,0.18)] relative overflow-hidden"
-        >
-          {/* Subtle warm glow background */}
-          <div className="absolute -right-6 -bottom-6 w-32 h-32 bg-pink-300/30 rounded-full blur-2xl pointer-events-none" />
-
-          <div className="flex items-center gap-3.5 relative z-10">
-            {/* 3D Piggy Bank Avatar - small & compact */}
-            <motion.div 
-              animate={isPiggyBouncing ? { scale: [1, 1.15, 0.95, 1], rotate: [0, -6, 6, 0] } : {}}
-              transition={{ duration: 0.45 }}
-              className="w-9 h-9 rounded-xl overflow-hidden shadow-xs border border-white/90 shrink-0 bg-pink-100 relative group cursor-pointer"
-              onClick={() => handleFeedPiggy("all")}
-              title="Tap to feed piggy!"
-            >
-              <img 
-                src="/images/3d-piggy-bank.jpg" 
-                alt="3D Piggy Bank" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-            </motion.div>
-
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-1.5 mb-1">
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-white text-pink-700 border border-pink-200 shadow-2xs whitespace-nowrap">
-                  Smart Piggy Stash
-                </span>
-              </div>
-              <div className="text-xl font-black text-neutral-900 tracking-tight leading-none">
-                ₹{(108000 + piggyCoinsAdded + emergencyCoinsAdded).toLocaleString("en-IN")}
-              </div>
-              <p className="text-xs text-neutral-600 mt-1 font-medium">
-                Auto-saving spare round-ups on UPI spends
-              </p>
-            </div>
-
-            {/* Quick Feed Piggy button - no coin icon */}
-            <button
-              onClick={() => handleFeedPiggy("tokyo")}
-              className="shrink-0 px-3.5 py-2 rounded-xl bg-gradient-to-r from-pink-600 to-rose-500 hover:from-pink-700 hover:to-rose-600 text-white text-xs font-bold shadow-md shadow-pink-500/25 active:scale-95 transition-all flex items-center justify-center cursor-pointer"
-            >
-              <span>+₹500</span>
-            </button>
-          </div>
-        </motion.div>
-
-        {/* Goal Cards List */}
-        <div className="space-y-3 pt-1">
-          {/* Goal 1: Tokyo Trip (Vibrant Electric Cobalt Blue Card) */}
+        {/* Goals List: Clean, Scannable, Senior-Designed */}
+        <div className="space-y-2.5">
+          {/* Goal 1: Tokyo Trip */}
           {(() => {
             const tokyoAmount = 68000 + piggyCoinsAdded
             const tokyoPct = Math.min(100, Math.round((tokyoAmount / 100000) * 100))
             const tokyoLeft = Math.max(0, 100000 - tokyoAmount)
 
             return (
-              <motion.div 
-                whileHover={{ y: -2 }}
-                className="p-4.5 rounded-3xl bg-[#2563EB] text-white shadow-[0_10px_28px_rgba(37,99,235,0.25)] space-y-3.5 relative overflow-hidden group"
-              >
-                {/* Decorative glow */}
-                <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none" />
-
-                <div className="flex items-start justify-between relative z-10">
+              <div className="p-4 rounded-2xl bg-white border border-neutral-200/90 shadow-2xs space-y-2.5">
+                <div className="flex items-start justify-between">
                   <div>
-                    <h4 className="text-xl font-bold tracking-tight text-white">
+                    <h4 className="text-sm font-semibold text-neutral-900 tracking-tight">
                       Tokyo Trip
                     </h4>
-                    <span className="text-xs text-blue-100 font-medium block mt-0.5">
-                      <strong className="text-white font-bold">₹{tokyoAmount.toLocaleString("en-IN")}</strong> of ₹1,00,000
+                    <span className="text-xs text-neutral-500 font-medium block mt-0.5">
+                      <strong className="text-neutral-900 font-bold font-sans">₹{tokyoAmount.toLocaleString("en-IN")}</strong> of ₹1,00,000 · ₹{tokyoLeft.toLocaleString("en-IN")} remaining
                     </span>
                   </div>
 
-                  <span className="text-xs font-black px-3 py-1 rounded-full bg-white text-[#2563EB] shadow-xs">
-                    {tokyoPct}%
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold font-mono px-2 py-0.5 rounded-md bg-blue-50 text-[#0055FF] border border-blue-200/60">
+                      {tokyoPct}%
+                    </span>
+                    <button 
+                      onClick={() => handleFeedPiggy("tokyo")}
+                      className="px-2.5 py-1 rounded-lg bg-neutral-100 hover:bg-neutral-200/80 text-neutral-700 text-xs font-semibold transition active:scale-95 cursor-pointer"
+                      title="Add ₹500"
+                    >
+                      +₹500
+                    </button>
+                  </div>
                 </div>
 
-                {/* Tactile Progress Track */}
-                <div className="w-full h-3 bg-blue-950/40 rounded-full p-0.5 relative border border-white/20 overflow-hidden">
+                {/* Progress Bar */}
+                <div className="w-full h-2 bg-neutral-100 rounded-full overflow-hidden">
                   <motion.div 
                     initial={{ width: 0 }}
                     animate={{ width: `${tokyoPct}%` }}
                     transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                    className="h-full bg-gradient-to-r from-sky-300 via-white to-sky-100 rounded-full shadow-[0_0_12px_rgba(255,255,255,0.7)]"
+                    className="h-full bg-[#0055FF] rounded-full"
                   />
                 </div>
 
-                {/* Pill Chips & Quick Add Action */}
-                <div className="flex items-center justify-between pt-0.5 relative z-10">
-                  <div className="flex items-center flex-wrap gap-2">
-                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-white/25 bg-white/15 text-white">
-                      Nov 2026
-                    </span>
-                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-white/25 bg-white/15 text-white">
-                      ₹{tokyoLeft.toLocaleString("en-IN")} left
-                    </span>
-                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-white/25 bg-white/15 text-white">
-                      Piggy Target
-                    </span>
-                  </div>
-
-                  <button 
-                    onClick={() => handleFeedPiggy("tokyo")}
-                    className="w-8 h-8 rounded-full bg-white text-[#2563EB] flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-md shrink-0 cursor-pointer ml-2"
-                    title="Add ₹500 to Tokyo Piggy"
-                  >
-                    <Plus className="w-4 h-4 stroke-[3]" />
-                  </button>
+                <div className="flex items-center justify-between text-[11px] text-neutral-400 font-medium pt-0.5">
+                  <span>Target: Nov 2026</span>
+                  <span className="text-[#0055FF]">68% completed</span>
                 </div>
-              </motion.div>
+              </div>
             )
           })()}
 
-          {/* Goal 2: Emergency Fund (Vibrant Electric Lime Card) */}
+          {/* Goal 2: Rainy Day */}
           {(() => {
             const emergencyAmount = 40000 + emergencyCoinsAdded
             const emergencyPct = Math.min(100, Math.round((emergencyAmount / 100000) * 100))
             const emergencyLeft = Math.max(0, 100000 - emergencyAmount)
 
             return (
-              <motion.div 
-                whileHover={{ y: -2 }}
-                className="p-4.5 rounded-3xl bg-[#D4F65B] text-neutral-950 shadow-[0_10px_28px_rgba(212,246,91,0.25)] space-y-3.5 relative overflow-hidden group"
-              >
-                {/* Decorative subtle pattern */}
-                <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-black/5 rounded-full blur-2xl pointer-events-none" />
-
-                <div className="flex items-start justify-between relative z-10">
+              <div className="p-4 rounded-2xl bg-white border border-neutral-200/90 shadow-2xs space-y-2.5">
+                <div className="flex items-start justify-between">
                   <div>
-                    <h4 className="text-xl font-bold tracking-tight text-neutral-950">
+                    <h4 className="text-sm font-semibold text-neutral-900 tracking-tight">
                       Rainy Day Piggy
                     </h4>
-                    <span className="text-xs text-neutral-800 font-medium block mt-0.5">
-                      <strong className="text-neutral-950 font-bold">₹{emergencyAmount.toLocaleString("en-IN")}</strong> of ₹1,00,000
+                    <span className="text-xs text-neutral-500 font-medium block mt-0.5">
+                      <strong className="text-neutral-900 font-bold font-sans">₹{emergencyAmount.toLocaleString("en-IN")}</strong> of ₹1,00,000 · ₹{emergencyLeft.toLocaleString("en-IN")} remaining
                     </span>
                   </div>
 
-                  <span className="text-xs font-black px-3 py-1 rounded-full bg-neutral-950 text-[#D4F65B] shadow-xs">
-                    {emergencyPct}%
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold font-mono px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+                      {emergencyPct}%
+                    </span>
+                    <button 
+                      onClick={() => handleFeedPiggy("emergency")}
+                      className="px-2.5 py-1 rounded-lg bg-neutral-100 hover:bg-neutral-200/80 text-neutral-700 text-xs font-semibold transition active:scale-95 cursor-pointer"
+                      title="Add ₹500"
+                    >
+                      +₹500
+                    </button>
+                  </div>
                 </div>
 
-                {/* Tactile Progress Track */}
-                <div className="w-full h-3 bg-neutral-900/15 rounded-full p-0.5 relative border border-neutral-900/10 overflow-hidden">
+                {/* Progress Bar */}
+                <div className="w-full h-2 bg-neutral-100 rounded-full overflow-hidden">
                   <motion.div 
                     initial={{ width: 0 }}
                     animate={{ width: `${emergencyPct}%` }}
                     transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                    className="h-full bg-neutral-950 rounded-full shadow-xs"
+                    className="h-full bg-emerald-600 rounded-full"
                   />
                 </div>
 
-                {/* Pill Chips & Quick Add Action */}
-                <div className="flex items-center justify-between pt-0.5 relative z-10">
-                  <div className="flex items-center flex-wrap gap-2">
-                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-neutral-900/20 bg-neutral-900/5 text-neutral-950">
-                      4 Mo. Runway
-                    </span>
-                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-neutral-900/20 bg-neutral-900/5 text-neutral-950">
-                      ₹{emergencyLeft.toLocaleString("en-IN")} left
-                    </span>
-                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-neutral-900/20 bg-neutral-900/5 text-neutral-950">
-                      7.4% APY
-                    </span>
-                  </div>
-
-                  <button 
-                    onClick={() => handleFeedPiggy("emergency")}
-                    className="w-8 h-8 rounded-full bg-neutral-950 text-[#D4F65B] flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-md shrink-0 cursor-pointer ml-2"
-                    title="Add ₹500 to Emergency Piggy"
-                  >
-                    <Plus className="w-4 h-4 stroke-[3]" />
-                  </button>
+                <div className="flex items-center justify-between text-[11px] text-neutral-400 font-medium pt-0.5">
+                  <span>Emergency Fund</span>
+                  <span className="text-emerald-700">40% completed</span>
                 </div>
-              </motion.div>
+              </div>
             )
           })()}
         </div>

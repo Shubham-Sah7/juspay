@@ -79,13 +79,13 @@ export function AIDrilldownModal({ isOpen, onClose }: AIDrilldownModalProps) {
               {/* Sub-pills from Image 1 */}
               <div className="flex items-center flex-wrap gap-2 mt-3.5">
                 <span className="text-xs font-medium px-3.5 py-1 rounded-full border border-white/35 bg-white/10 text-white">
-                  18 delivery orders
+                  14 delivery orders
                 </span>
                 <span className="text-xs font-medium px-3.5 py-1 rounded-full border border-white/35 bg-white/10 text-white">
-                  ₹733 avg order
+                  ₹7,850 delivery spend
                 </span>
                 <span className="text-xs font-medium px-3.5 py-1 rounded-full border border-white/35 bg-white/10 text-white">
-                  Swiggy & Zomato
+                  Swiggy &amp; Zomato
                 </span>
               </div>
             </div>
@@ -95,16 +95,16 @@ export function AIDrilldownModal({ isOpen, onClose }: AIDrilldownModalProps) {
               <div className="p-3.5 rounded-2xl bg-neutral-50 border border-neutral-200/60 flex flex-col justify-between">
                 <span className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wider">Delivery Orders</span>
                 <div className="my-1">
-                  <span className="text-lg font-bold font-sans text-neutral-900">18 orders</span>
-                  <span className="text-[10px] font-semibold text-rose-600 block mt-0.5">+8 vs July 🛵</span>
+                  <span className="text-lg font-bold font-sans text-neutral-900">14 orders</span>
+                  <span className="text-[10px] font-semibold text-rose-600 block mt-0.5">+5 vs July (14 vs 9) 🛵</span>
                 </div>
               </div>
 
               <div className="p-3.5 rounded-2xl bg-neutral-50 border border-neutral-200/60 flex flex-col justify-between">
-                <span className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wider">Average Order</span>
+                <span className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wider">Delivery Total</span>
                 <div className="my-1">
-                  <span className="text-lg font-bold font-sans text-neutral-900">₹733</span>
-                  <span className="text-[10px] font-normal text-neutral-400 block mt-0.5">per delivery order</span>
+                  <span className="text-lg font-bold font-sans text-neutral-900">₹7,850</span>
+                  <span className="text-[10px] font-normal text-neutral-400 block mt-0.5">43% of food spend</span>
                 </div>
               </div>
             </div>
@@ -146,7 +146,7 @@ export function AIDrilldownModal({ isOpen, onClose }: AIDrilldownModalProps) {
                     <Bike className="w-4 h-4 text-rose-500 stroke-[1.75]" />
                     <span className="font-medium text-neutral-800">Delivery</span>
                   </div>
-                  <span className="font-mono font-semibold text-neutral-900">71.7%</span>
+                  <span className="font-mono font-semibold text-neutral-900">42.7% (₹7,850)</span>
                 </div>
 
                 <div className="p-2.5 rounded-lg bg-neutral-50 border border-neutral-200/60 flex items-center justify-between">
@@ -154,7 +154,7 @@ export function AIDrilldownModal({ isOpen, onClose }: AIDrilldownModalProps) {
                     <Store className="w-4 h-4 text-amber-500 stroke-[1.75]" />
                     <span className="font-medium text-neutral-800">Dining</span>
                   </div>
-                  <span className="font-mono font-semibold text-neutral-900">20.7%</span>
+                  <span className="font-mono font-semibold text-neutral-900">37.0% (₹6,800)</span>
                 </div>
 
                 <div className="p-2.5 rounded-lg bg-neutral-50 border border-neutral-200/60 flex items-center justify-between">
@@ -162,7 +162,7 @@ export function AIDrilldownModal({ isOpen, onClose }: AIDrilldownModalProps) {
                     <ShoppingBag className="w-4 h-4 text-emerald-500 stroke-[1.75]" />
                     <span className="font-medium text-neutral-800">Groceries</span>
                   </div>
-                  <span className="font-mono font-semibold text-neutral-900">7.6%</span>
+                  <span className="font-mono font-semibold text-neutral-900">20.3% (₹3,750)</span>
                 </div>
               </div>
             </div>
