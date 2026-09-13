@@ -10,6 +10,7 @@ import { IntroScreen } from "@/components/screens/intro-screen"
 import { AIDrilldownModal } from "@/components/screens/ai-drilldown-modal"
 import { DesignDeckView } from "@/components/design-deck-view"
 import { JuspayLogo } from "@/components/ui/juspay-logo"
+import { ScreenDropdown } from "@/components/ui/screen-dropdown"
 import { 
   Smartphone, 
   Grid, 
@@ -72,8 +73,22 @@ export default function Page() {
             <span className="text-xs font-medium text-neutral-500 hidden sm:inline">Gen-Z AI Personal Finance</span>
           </div>
 
-          {/* Minimal Controls */}
-          <div className="flex items-center gap-2">
+          {/* Controls: Responsive Screen Dropdown for small screens */}
+          <div className="flex sm:hidden items-center gap-2">
+            <ScreenDropdown
+              currentScreen={activeScreen}
+              onSelectScreen={(screen) => {
+                setViewMode("mobile")
+                setIsDrilldownOpen(false)
+                setActiveScreen(screen)
+              }}
+              align="right"
+              buttonClassName="py-1 px-2.5 text-[11px]"
+            />
+          </div>
+
+          {/* Controls: Desktop Controls */}
+          <div className="hidden sm:flex items-center gap-2">
             <Button
               size="sm"
               variant="outline"
@@ -134,17 +149,18 @@ export default function Page() {
       <main className="flex-1 flex flex-col items-center justify-center p-4 sm:p-6 relative">
         {viewMode === "mobile" ? (
           <div className="w-full flex flex-col items-center justify-center space-y-4">
-            {/* Context Badge */}
-            <div className="flex items-center gap-2 bg-white px-4 py-1.5 rounded-full border border-neutral-200 text-xs font-medium text-neutral-700 shadow-2xs">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>
-                {isDrilldownOpen && "Drill Down Modal: Food Spending (+24%)"}
-                {!isDrilldownOpen && activeScreen === "intro" && "Intro / Onboarding Screen (3D Folders)"}
-                {!isDrilldownOpen && activeScreen === "home" && "Screen 1: Home / Financial Overview"}
-                {!isDrilldownOpen && activeScreen === "insights" && "Screen 2: Spending Analytics & Categories"}
-                {!isDrilldownOpen && activeScreen === "ai" && "Screen 3: Nudge AI Assistant ('Where is my money going?')"}
-                {!isDrilldownOpen && activeScreen === "profile" && "Screen 4: Card & Wallet Details"}
-              </span>
+            {/* Context Screen Dropdown for Mobile Frame */}
+            <div className="flex items-center justify-center relative z-40">
+              <ScreenDropdown
+                currentScreen={activeScreen}
+                onSelectScreen={(screen) => {
+                  setIsDrilldownOpen(false)
+                  setActiveScreen(screen)
+                }}
+                labelPrefix="Active Screen:"
+                showPulseDot={true}
+                align="center"
+              />
             </div>
 
             {/* Mobile Device Frame */}
