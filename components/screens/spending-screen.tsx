@@ -919,7 +919,14 @@ export function SpendingScreen({ onOpenDrilldown }: SpendingScreenProps) {
                       </span>
                     )
                   })}
-                  <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 text-[#0055FF] border border-blue-200/70 ml-auto shadow-2xs">
+                  <span className={cn(
+                    "text-[11px] font-semibold px-2.5 py-0.5 rounded-full ml-auto shadow-2xs",
+                    tx.categoryKey === "dining" ? "bg-rose-50 text-rose-600 border border-rose-200/70" :
+                    tx.categoryKey === "entertainment" ? "bg-purple-50 text-purple-700 border border-purple-200/70" :
+                    tx.categoryKey === "cafe" ? "bg-pink-50 text-pink-700 border border-pink-200/70" :
+                    tx.categoryKey === "groceries" ? "bg-emerald-50 text-emerald-700 border border-emerald-200/70" :
+                    "bg-blue-50 text-[#0055FF] border border-blue-200/70"
+                  )}>
                     {tx.category}
                   </span>
                 </div>

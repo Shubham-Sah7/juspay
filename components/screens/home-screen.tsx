@@ -877,7 +877,7 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
 
         {/* Goal Cards List */}
         <div className="space-y-3 pt-1">
-          {/* Goal 1: Tokyo Trip (Vibrant Electric Cobalt Blue Card) */}
+          {/* Goal 1: Tokyo Trip (Vibrant Electric Sky Blue Card - styled like Rainy Day Piggy) */}
           {(() => {
             const tokyoAmount = 68000 + piggyCoinsAdded
             const tokyoPct = Math.min(100, Math.round((tokyoAmount / 100000) * 100))
@@ -886,53 +886,53 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
             return (
               <motion.div 
                 whileHover={{ y: -2 }}
-                className="p-4.5 rounded-3xl bg-[#2563EB] text-white shadow-[0_10px_28px_rgba(37,99,235,0.25)] space-y-3.5 relative overflow-hidden group"
+                className="p-4.5 rounded-3xl bg-[#38BDF8] text-neutral-950 shadow-[0_10px_28px_rgba(56,189,248,0.28)] space-y-3.5 relative overflow-hidden group"
               >
-                {/* Decorative glow */}
-                <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none" />
+                {/* Decorative subtle pattern */}
+                <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-black/5 rounded-full blur-2xl pointer-events-none" />
 
                 <div className="flex items-start justify-between relative z-10">
                   <div>
-                    <h4 className="text-xl font-bold tracking-tight text-white">
+                    <h4 className="text-xl font-bold tracking-tight text-neutral-950">
                       Tokyo Trip
                     </h4>
-                    <span className="text-xs text-blue-100 font-medium block mt-0.5">
-                      <strong className="text-white font-bold">₹{tokyoAmount.toLocaleString("en-IN")}</strong> of ₹1,00,000
+                    <span className="text-xs text-neutral-800 font-medium block mt-0.5">
+                      <strong className="text-neutral-950 font-bold">₹{tokyoAmount.toLocaleString("en-IN")}</strong> of ₹1,00,000
                     </span>
                   </div>
 
-                  <span className="text-xs font-black px-3 py-1 rounded-full bg-white text-[#2563EB] shadow-xs">
+                  <span className="text-xs font-black px-3 py-1 rounded-full bg-neutral-950 text-[#38BDF8] shadow-xs">
                     {tokyoPct}%
                   </span>
                 </div>
 
                 {/* Tactile Progress Track */}
-                <div className="w-full h-3 bg-blue-950/40 rounded-full p-0.5 relative border border-white/20 overflow-hidden">
+                <div className="w-full h-3 bg-neutral-900/15 rounded-full p-0.5 relative border border-neutral-900/10 overflow-hidden">
                   <motion.div 
                     initial={{ width: 0 }}
                     animate={{ width: `${tokyoPct}%` }}
                     transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                    className="h-full bg-gradient-to-r from-sky-300 via-white to-sky-100 rounded-full shadow-[0_0_12px_rgba(255,255,255,0.7)]"
+                    className="h-full bg-neutral-950 rounded-full shadow-xs"
                   />
                 </div>
 
                 {/* Pill Chips & Quick Add Action */}
                 <div className="flex items-center justify-between pt-0.5 relative z-10">
                   <div className="flex items-center flex-wrap gap-2">
-                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-white/25 bg-white/15 text-white">
+                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-neutral-900/20 bg-neutral-900/5 text-neutral-950">
                       Nov 2026
                     </span>
-                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-white/25 bg-white/15 text-white">
+                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-neutral-900/20 bg-neutral-900/5 text-neutral-950">
                       ₹{tokyoLeft.toLocaleString("en-IN")} left
                     </span>
-                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-white/25 bg-white/15 text-white">
+                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-neutral-900/20 bg-neutral-900/5 text-neutral-950">
                       Piggy Target
                     </span>
                   </div>
 
                   <button 
                     onClick={() => handleFeedPiggy("tokyo")}
-                    className="w-8 h-8 rounded-full bg-white text-[#2563EB] flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-md shrink-0 cursor-pointer ml-2"
+                    className="w-8 h-8 rounded-full bg-neutral-950 text-[#38BDF8] flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-md shrink-0 cursor-pointer ml-2"
                     title="Add ₹500 to Tokyo Piggy"
                   >
                     <Plus className="w-4 h-4 stroke-[3]" />
