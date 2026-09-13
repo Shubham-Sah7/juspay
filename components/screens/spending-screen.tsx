@@ -409,7 +409,7 @@ export function SpendingScreen({ onOpenDrilldown }: SpendingScreenProps) {
       theme: "pink",
       bgBadge: "bg-pink-100 text-pink-700 border border-pink-200",
       icon: Coffee,
-      tags: ["☕ Daily brew", "🪙 ₹18 round-up"]
+      tags: ["Daily brew", "₹18 round-up"]
     }
   ]
 

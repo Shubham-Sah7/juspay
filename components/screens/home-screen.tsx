@@ -50,7 +50,7 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
       : target === "emergency" 
       ? "Rainy Day Piggy" 
       : "Tokyo Trip Piggy"
-    setToastMessage(`🪙 Clink! +₹500 dropped into ${label}! ✨`)
+    setToastMessage(`+₹500 dropped into ${label}!`)
     setTimeout(() => {
       setToastMessage(null)
     }, 2200)
