@@ -10,7 +10,10 @@ import {
   Mic, 
   MicOff, 
   ArrowRight,
-  MessageSquare
+  MessageSquare,
+  Sparkles,
+  CheckCircle2,
+  TrendingUp
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { JuspayLogoMark } from "@/components/ui/juspay-logo"
@@ -22,135 +25,25 @@ interface AIAssistantScreenProps {
 
 type AIMode = "chat" | "voice"
 
-interface CategoryBreakdown {
+interface CategoryItem {
   id: string
-  label: string
+  name: string
   pct: number
   amount: string
   color: string
+  detail: string
 }
 
-const DEFAULT_BREAKDOWN: CategoryBreakdown[] = [
-  { id: "food", label: "Food", pct: 35, amount: "₹18,400", color: "#F95738" },
-  { id: "rent", label: "Rent", pct: 29, amount: "₹15,000", color: "#2563EB" },
-  { id: "shopping", label: "Shopping", pct: 16, amount: "₹8,200", color: "#A3E635" },
-  { id: "other", label: "Other", pct: 20, amount: "₹10,800", color: "#FBBF24" }
+const CATEGORIES: CategoryItem[] = [
+  { id: "food", name: "Food & Dining", pct: 35, amount: "₹18,400", color: "#F95738", detail: "14 delivery orders · Swiggy & Zomato" },
+  { id: "rent", name: "Rent & Housing", pct: 29, amount: "₹15,000", color: "#2563EB", detail: "Fixed monthly rent · Paid on 1st" },
+  { id: "shopping", name: "Shopping & Tech", pct: 16, amount: "₹8,200", color: "#0284C7", detail: "Amazon & gadgets · 4 orders" },
+  { id: "travel", name: "Travel & Commute", pct: 12, amount: "₹6,450", color: "#8B5CF6", detail: "Uber & Metro transit · 18 rides" },
+  { id: "subscriptions", name: "Subscriptions", pct: 8, amount: "₹4,350", color: "#F59E0B", detail: "Spotify, Netflix, iCloud · 5 active" }
 ]
 
-// Interactive Donut Chart for inside the AI card
-function InteractiveDonutChart({
-  breakdown,
-  activeId,
-  onSelect
-}: {
-  breakdown: CategoryBreakdown[]
-  activeId: string | null
-  onSelect: (id: string | null) => void
-}) {
-  const size = 115
-  const strokeWidth = 11
-  const radius = (size - strokeWidth) / 2 - 3
-  const circumference = 2 * Math.PI * radius
-  const center = size / 2
-
-  const activeCategory = breakdown.find(b => b.id === activeId)
-
-  const segmentsWithOffset = breakdown.map((item, index) => {
-    const prevSum = breakdown.slice(0, index).reduce((acc, curr) => acc + curr.pct, 0)
-    const strokeDasharray = `${(item.pct / 100) * circumference} ${circumference}`
-    const strokeDashoffset = -((prevSum / 100) * circumference)
-    return {
-      ...item,
-      strokeDasharray,
-      strokeDashoffset
-    }
-  })
-
-  return (
-    <div className="flex flex-col items-center my-2">
-      <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
-        <svg 
-          width={size} 
-          height={size} 
-          viewBox={`0 0 ${size} ${size}`} 
-          className="transform -rotate-90 overflow-visible"
-        >
-          {segmentsWithOffset.map((item) => {
-            const isSelected = activeId === item.id
-
-            return (
-              <circle
-                key={item.id}
-                cx={center}
-                cy={center}
-                r={radius}
-                fill="none"
-                stroke={item.color}
-                strokeWidth={isSelected ? strokeWidth + 4 : strokeWidth}
-                strokeDasharray={item.strokeDasharray}
-                strokeDashoffset={item.strokeDashoffset}
-                strokeLinecap="round"
-                className="cursor-pointer transition-all duration-200"
-                onMouseEnter={() => onSelect(item.id)}
-                onMouseLeave={() => onSelect(null)}
-                onClick={() => onSelect(activeId === item.id ? null : item.id)}
-                style={{
-                  filter: isSelected ? `drop-shadow(0 0 6px ${item.color}80)` : undefined,
-                  opacity: activeId && !isSelected ? 0.45 : 1
-                }}
-              />
-            )
-          })}
-        </svg>
-
-        {/* Center label & value */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none px-2">
-          <AnimatePresence mode="wait">
-            {activeCategory ? (
-              <motion.div
-                key={activeCategory.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.15 }}
-              >
-                <span className="text-[10px] font-semibold text-neutral-500 block uppercase tracking-wider">
-                  {activeCategory.label}
-                </span>
-                <span className="text-base font-black text-neutral-900 tracking-tight font-sans">
-                  {activeCategory.amount}
-                </span>
-                <span className="text-[10px] font-bold text-neutral-500 block font-mono">
-                  {activeCategory.pct}%
-                </span>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="total"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.15 }}
-              >
-                <span className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wider block">
-                  Total
-                </span>
-                <span className="text-base font-black text-neutral-900 tracking-tight font-sans">
-                  ₹52,400
-                </span>
-                <span className="text-[9px] font-medium text-emerald-600 block">
-                  August
-                </span>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function RibbedAudioWaveOrb({ isListening = true, size = 150 }: { isListening?: boolean; size?: number }) {
+// 3D Ribbed Audio Wave Orb for Voice Mode
+function RibbedAudioWaveOrb({ isListening = true, size = 140 }: { isListening?: boolean; size?: number }) {
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
   const springConfig = { stiffness: 260, damping: 20 }
@@ -234,24 +127,25 @@ function RibbedAudioWaveOrb({ isListening = true, size = 150 }: { isListening?: 
   )
 }
 
-interface ExtraChatTurn {
+interface ExtraTurn {
   id: string
   userText: string
   aiText: string
-  actionPills?: string[]
+  actionButtons?: { label: string; action: () => void }[]
 }
 
 export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreenProps) {
   const [mode, setMode] = useState<AIMode>("chat")
   const [userQuery, setUserQuery] = useState("")
-  const [activeChartCat, setActiveChartCat] = useState<string | null>(null)
+  const [activeCategory, setActiveCategory] = useState<string | null>("food")
   const [isListening, setIsListening] = useState(true)
   const [isTyping, setIsTyping] = useState(false)
+  const [hasSavedPlan, setHasSavedPlan] = useState(false)
   const [voiceSeconds, setVoiceSeconds] = useState(4)
   const [spokenResponse, setSpokenResponse] = useState<string>(
-    "“Food delivery was up 31% in August. Cut 2 orders weekly to save ₹2,400 monthly.”"
+    "“Food spending jumped 24% this month, mostly from delivery. Cutting 2 orders a week saves ₹2,400 monthly.”"
   )
-  const [extraTurns, setExtraTurns] = useState<ExtraChatTurn[]>([])
+  const [extraTurns, setExtraTurns] = useState<ExtraTurn[]>([])
 
   const chatBottomRef = useRef<HTMLDivElement>(null)
 
@@ -267,44 +161,17 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
     chatBottomRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
-  const handleChipClick = (chip: string) => {
-    if (chip === "Last 3 months") {
-      setExtraTurns(prev => [
-        ...prev,
-        {
-          id: `turn_${Date.now()}`,
-          userText: "Last 3 months",
-          aiText: "Food spending trend: June ₹12,500 → July ₹14,800 → August ₹18,400 (+47% across 3 months). Order count grew from 10 to 24 orders.",
-          actionPills: ["Delivery", "Ways to save"]
-        }
-      ])
-    } else if (chip === "Delivery") {
-      setExtraTurns(prev => [
-        ...prev,
-        {
-          id: `turn_${Date.now()}`,
-          userText: "Delivery",
-          aiText: "Swiggy was ₹7,850 (14 orders), and Zomato was ₹5,400 (10 orders). Delivery accounts for 72% of your entire food budget.",
-          actionPills: ["Ways to save", "Set delivery cap"]
-        }
-      ])
-    } else if (chip === "Ways to save") {
-      setExtraTurns(prev => [
-        ...prev,
-        {
-          id: `turn_${Date.now()}`,
-          userText: "Ways to save",
-          aiText: "💡 Top 2 strategies: 1) Cook dinner on 2 weekend nights (saves ~₹1,800/mo). 2) Cap delivery at 3 orders/week (saves ~₹3,200/mo).",
-          actionPills: ["Cap alert at 2/wk", "See food breakdown →"]
-        }
-      ])
-    } else if (chip === "See food breakdown →") {
-      onOpenDrilldown()
-      return
-    } else {
-      handleSend(chip)
-      return
+  const handleTrySaving = () => {
+    setHasSavedPlan(true)
+    const newTurn: ExtraTurn = {
+      id: `turn_${Date.now()}`,
+      userText: "Try saving ₹2,400",
+      aiText: "Savings plan activated! I've set an alert cap for 2 delivery orders per week. When you stay under, your saved ₹2,400 will auto-route to your Tokyo Trip Fund.",
+      actionButtons: [
+        { label: "View Tokyo Trip Piggy", action: () => onBack?.() }
+      ]
     }
+    setExtraTurns(prev => [...prev, newTurn])
     setTimeout(scrollToBottom, 100)
   }
 
@@ -318,18 +185,25 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
     setTimeout(() => {
       setIsTyping(false)
       const qLower = query.toLowerCase()
-      let aiText = "You have saved ₹12,450 this month towards your Tokyo trip goal (68% complete). Keep it up!"
-      let pills: string[] = ["Check Tokyo goal", "Ways to save"]
+      let aiText = "You've saved ₹12,450 this month towards your Tokyo Trip goal (68% completed). Keep this pace to reach ₹1,00,000 by November."
+      let buttons: { label: string; action: () => void }[] | undefined = [
+        { label: "See delivery spending", action: onOpenDrilldown }
+      ]
 
-      if (qLower.includes("food") || qLower.includes("zomato") || qLower.includes("swiggy")) {
-        aiText = "Food & Dining jumped +31% mainly via online delivery apps. Cutting 2 orders/week will save you ₹2,400 every month."
-        pills = ["Last 3 months", "Delivery", "Ways to save"]
-      } else if (qLower.includes("rent") || qLower.includes("housing")) {
-        aiText = "Rent is fixed at ₹15,000 paid on the 1st of every month. It accounts for 29% of your total budget."
-        pills = ["Utilities", "Ways to save"]
-      } else if (qLower.includes("save") || qLower.includes("budget")) {
-        aiText = "Your potential savings this month is ₹4,200 by trimming 3 delivery orders and 1 unused subscription."
-        pills = ["Ways to save", "Tokyo Trip"]
+      if (qLower.includes("food") || qLower.includes("swiggy") || qLower.includes("zomato")) {
+        aiText = "Food delivery made up 14 of your 24 total food transactions this month, totaling ₹7,850. Capping deliveries at 2/week is the fastest way to trim ₹2,400."
+        buttons = [
+          { label: "See delivery spending", action: onOpenDrilldown },
+          { label: "Try saving ₹2,400", action: handleTrySaving }
+        ]
+      } else if (qLower.includes("save") || qLower.includes("budget") || qLower.includes("cut")) {
+        aiText = "Based on your spending patterns, your top 2 savings opportunities are: 1) Cutting 2 delivery orders/week (₹2,400/mo), and 2) Pausing 1 unused gym subscription (₹950/mo)."
+        buttons = [
+          { label: "Try saving ₹2,400", action: handleTrySaving }
+        ]
+      } else if (qLower.includes("rent") || qLower.includes("fixed")) {
+        aiText = "Rent & Housing was ₹15,000 (29% of total), paid on August 1st. Utilities added ₹2,500."
+        buttons = undefined
       }
 
       setExtraTurns(prev => [
@@ -338,7 +212,7 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
           id: `turn_${Date.now()}`,
           userText: query,
           aiText,
-          actionPills: pills
+          actionButtons: buttons
         }
       ])
       setTimeout(scrollToBottom, 100)
@@ -354,9 +228,9 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
   }
 
   return (
-    <div className="p-4 flex flex-col justify-between h-full select-none bg-[#F9FAFB] relative overflow-hidden font-sans">
-      {/* Top Header: Back Arrow, Juspay AI, Three Dots */}
-      <div className="space-y-3 pb-2.5">
+    <div className="p-4 flex flex-col justify-between h-full select-none bg-[#FAFAFA] relative overflow-hidden font-sans">
+      {/* 1. TOP HEADER: Back Arrow, Juspay AI, Three Dots & Chat/Voice Switcher */}
+      <div className="space-y-2.5 pb-2">
         <div className="flex items-center justify-between">
           <button 
             onClick={onBack}
@@ -368,7 +242,7 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
 
           <div className="flex items-center gap-1.5 text-neutral-950">
             <JuspayLogoMark size={18} />
-            <h1 className="text-base font-bold tracking-tight">Juspay AI</h1>
+            <h1 className="text-sm font-bold tracking-tight">Juspay AI</h1>
           </div>
 
           <button className="p-1.5 -mr-1 rounded-full hover:bg-neutral-200/60 text-neutral-700 transition cursor-pointer">
@@ -376,12 +250,12 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
           </button>
         </div>
 
-        {/* Segmented Control: Chat vs Voice */}
-        <div className="grid grid-cols-2 gap-1 p-1 rounded-xl bg-neutral-200/70 text-xs font-semibold max-w-[210px] mx-auto">
+        {/* Minimal Chat / Voice Toggle */}
+        <div className="grid grid-cols-2 gap-1 p-0.5 rounded-xl bg-neutral-200/70 text-xs font-semibold max-w-[190px] mx-auto">
           <button
             onClick={() => setMode("chat")}
             className={cn(
-              "py-1.5 rounded-lg transition text-center flex items-center justify-center gap-1.5 cursor-pointer",
+              "py-1 rounded-lg transition text-center flex items-center justify-center gap-1.5 cursor-pointer text-xs",
               mode === "chat" 
                 ? "bg-white text-neutral-950 font-bold shadow-xs" 
                 : "text-neutral-500 hover:text-neutral-900"
@@ -393,7 +267,7 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
           <button
             onClick={() => setMode("voice")}
             className={cn(
-              "py-1.5 rounded-lg transition text-center flex items-center justify-center gap-1.5 cursor-pointer",
+              "py-1 rounded-lg transition text-center flex items-center justify-center gap-1.5 cursor-pointer text-xs",
               mode === "voice" 
                 ? "bg-white text-neutral-950 font-bold shadow-xs" 
                 : "text-neutral-500 hover:text-neutral-900"
@@ -405,181 +279,281 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
         </div>
       </div>
 
-      {/* Subtle Horizontal Divider matching wireframe */}
+      {/* Subtle Divider */}
       <div className="border-b border-neutral-200/80 -mx-4 mb-2" />
 
-      {/* Mode 1: CHAT INTERFACE */}
+      {/* Mode 1: CONVERSATIONAL AI THREAD */}
       {mode === "chat" ? (
         <>
-          {/* Chat Message Thread */}
-          <div className="flex-1 overflow-y-auto no-scrollbar space-y-5 py-1 px-1 relative">
-            {/* Conversation Item 1: User */}
-            <div className="space-y-1">
-              <span className="text-xs font-bold text-neutral-400 block tracking-tight">You</span>
-              <div className="p-3.5 rounded-2xl rounded-tl-xs bg-neutral-100 border border-neutral-200/60 text-neutral-900 text-sm font-medium leading-snug w-fit max-w-[90%]">
+          <div className="flex-1 overflow-y-auto no-scrollbar space-y-4 py-1 px-1 relative">
+            
+            {/* ================================================================= */}
+            {/* TURN 1: USER → AI (Where is my money going this month?)           */}
+            {/* ================================================================= */}
+            
+            {/* USER 1 */}
+            <div className="flex flex-col items-end space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mr-1">You</span>
+              <div className="px-4 py-2.5 rounded-2xl rounded-tr-xs bg-[#0055FF] text-white text-sm font-medium leading-snug shadow-xs max-w-[85%]">
                 Where is my money going this month?
               </div>
             </div>
 
-            {/* Conversation Item 2: Juspay AI */}
-            <div className="space-y-2.5">
+            {/* AI 1 */}
+            <div className="space-y-2 max-w-[95%]">
               <div className="flex items-center gap-1.5">
-                <JuspayLogoMark size={14} />
+                <div className="w-4 h-4 rounded-full bg-blue-100 flex items-center justify-center">
+                  <JuspayLogoMark size={10} />
+                </div>
                 <span className="text-xs font-bold text-neutral-900 tracking-tight">Juspay AI</span>
               </div>
 
-              {/* Text Paragraph 1 */}
-              <div className="text-sm text-neutral-800 space-y-1 leading-relaxed">
-                <p>
-                  You spent <strong className="font-bold text-neutral-950">₹52,400</strong> in August.
-                </p>
-                <p className="text-neutral-600">
-                  Most of it went to Food &amp; Dining, Rent, and Shopping.
-                </p>
+              {/* Conversational Text */}
+              <div className="text-sm text-neutral-800 leading-relaxed font-normal">
+                You spent <strong className="font-bold text-neutral-950">₹52,400</strong> in August. Food &amp; Dining is your biggest category at <strong className="font-bold text-neutral-950">₹18,400</strong>, and it’s also the one growing fastest.
               </div>
 
-              {/* Embedded Interactive Chart Card */}
-              <motion.div 
-                whileHover={{ y: -1 }}
-                className="w-full rounded-2xl bg-white border border-neutral-200/90 p-4 shadow-sm space-y-2"
-              >
-                {/* Total Top Amount */}
-                <div className="text-center pt-1">
-                  <div className="text-2xl font-black tracking-tight text-neutral-950 font-sans">
-                    ₹52,400
-                  </div>
-                  <span className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wider block mt-0.5">
-                    Total August Spending
-                  </span>
-                </div>
-
-                {/* Interactive Chart */}
-                <InteractiveDonutChart 
-                  breakdown={DEFAULT_BREAKDOWN} 
-                  activeId={activeChartCat} 
-                  onSelect={setActiveChartCat} 
-                />
-
-                {/* Breakdown Rows */}
-                <div className="divide-y divide-neutral-100 text-xs pt-1">
-                  {DEFAULT_BREAKDOWN.slice(0, 3).map((item) => (
-                    <div 
-                      key={item.id}
-                      onMouseEnter={() => setActiveChartCat(item.id)}
-                      onMouseLeave={() => setActiveChartCat(null)}
-                      onClick={() => setActiveChartCat(activeChartCat === item.id ? null : item.id)}
-                      className={cn(
-                        "py-2 px-1 flex items-center justify-between rounded-lg transition cursor-pointer",
-                        activeChartCat === item.id ? "bg-neutral-50" : "hover:bg-neutral-50/70"
-                      )}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span 
-                          className="w-2.5 h-2.5 rounded-full shrink-0"
-                          style={{ backgroundColor: item.color }} 
-                        />
-                        <span className="font-semibold text-neutral-800">{item.label}</span>
-                      </div>
-
-                      <div className="flex items-center gap-4">
-                        <span className="font-mono text-neutral-400 text-[11px] font-medium w-8 text-right">
-                          {item.pct}%
-                        </span>
-                        <span className="font-sans font-bold text-neutral-950 w-16 text-right">
-                          {item.amount}
-                        </span>
-                      </div>
-                    </div>
+              {/* COMPACT INTERACTIVE SPENDING VISUALIZATION INSIDE RESPONSE */}
+              <div className="rounded-xl bg-white border border-neutral-200/90 p-3 shadow-2xs space-y-2.5">
+                {/* Multi-segment horizontal stacked track */}
+                <div className="w-full h-2 rounded-full overflow-hidden flex bg-neutral-100">
+                  {CATEGORIES.map((cat) => (
+                    <div
+                      key={cat.id}
+                      style={{ 
+                        width: `${cat.pct}%`, 
+                        backgroundColor: cat.color,
+                        opacity: activeCategory && activeCategory !== cat.id ? 0.4 : 1
+                      }}
+                      className="h-full transition-all cursor-pointer first:rounded-l-full last:rounded-r-full"
+                      onMouseEnter={() => setActiveCategory(cat.id)}
+                      onClick={() => setActiveCategory(activeCategory === cat.id ? null : cat.id)}
+                      title={`${cat.name}: ${cat.pct}% (${cat.amount})`}
+                    />
                   ))}
                 </div>
-              </motion.div>
 
-              {/* Text Paragraph 2 */}
-              <div className="text-sm text-neutral-800 space-y-1 leading-relaxed pt-1">
-                <p className="font-medium">
-                  <strong className="text-neutral-950 font-bold">Food &amp; Dining</strong> is the one to watch.
-                </p>
-                <p className="text-neutral-600">
-                  You spent <strong className="text-neutral-900 font-semibold">₹3,600 more</strong> than last month, mostly on delivery.
-                </p>
-              </div>
+                {/* 5-Category Clean Scannable List */}
+                <div className="divide-y divide-neutral-100 text-xs">
+                  {CATEGORIES.map((cat) => {
+                    const isSelected = activeCategory === cat.id
+                    return (
+                      <div
+                        key={cat.id}
+                        onMouseEnter={() => setActiveCategory(cat.id)}
+                        onClick={() => setActiveCategory(isSelected ? null : cat.id)}
+                        className={cn(
+                          "py-1.5 px-1.5 flex items-center justify-between rounded-lg transition cursor-pointer",
+                          isSelected ? "bg-neutral-50" : "hover:bg-neutral-50/70"
+                        )}
+                      >
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span 
+                            className="w-2 h-2 rounded-full shrink-0" 
+                            style={{ backgroundColor: cat.color }} 
+                          />
+                          <span className={cn(
+                            "font-medium truncate",
+                            isSelected ? "text-neutral-950 font-semibold" : "text-neutral-700"
+                          )}>
+                            {cat.name}
+                          </span>
+                        </div>
 
-              {/* Action Button: [ See food breakdown → ] */}
-              <div className="pt-1">
-                <button
-                  onClick={onOpenDrilldown}
-                  className="px-4 py-2.5 rounded-xl bg-neutral-950 hover:bg-neutral-800 text-white text-xs font-bold shadow-xs hover:shadow transition flex items-center gap-2 cursor-pointer group"
-                >
-                  <span>See food breakdown</span>
-                  <ArrowRight className="w-3.5 h-3.5 stroke-[2.5] group-hover:translate-x-0.5 transition-transform" />
-                </button>
+                        <div className="flex items-center gap-3 shrink-0 ml-2 font-mono">
+                          <span className="text-neutral-400 text-[11px] font-medium w-7 text-right">
+                            {cat.pct}%
+                          </span>
+                          <span className="text-neutral-950 font-bold font-sans w-16 text-right">
+                            {cat.amount}
+                          </span>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+
+                {/* Micro Detail Strip for selected category */}
+                {activeCategory && (
+                  <div className="pt-0.5 border-t border-neutral-100 flex items-center justify-between text-[11px] text-neutral-500 font-medium px-1">
+                    <span>{CATEGORIES.find(c => c.id === activeCategory)?.detail}</span>
+                    <span className="text-[#0055FF] font-semibold">Active</span>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Conversation Item 3: User */}
-            <div className="space-y-1 pt-2">
-              <span className="text-xs font-bold text-neutral-400 block tracking-tight">You</span>
-              <div className="p-3.5 rounded-2xl rounded-tl-xs bg-neutral-100 border border-neutral-200/60 text-neutral-900 text-sm font-medium leading-snug w-fit max-w-[90%]">
+            {/* ================================================================= */}
+            {/* TURN 2: USER → AI (Why did food jump?)                            */}
+            {/* ================================================================= */}
+            
+            {/* USER 2 */}
+            <div className="flex flex-col items-end space-y-1 pt-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mr-1">You</span>
+              <div className="px-4 py-2.5 rounded-2xl rounded-tr-xs bg-[#0055FF] text-white text-sm font-medium leading-snug shadow-xs max-w-[85%]">
                 Why did food jump?
               </div>
             </div>
 
-            {/* Conversation Item 4: Juspay AI */}
-            <div className="space-y-2.5">
+            {/* AI 2 */}
+            <div className="space-y-2 max-w-[95%]">
               <div className="flex items-center gap-1.5">
-                <JuspayLogoMark size={14} />
+                <div className="w-4 h-4 rounded-full bg-blue-100 flex items-center justify-center">
+                  <JuspayLogoMark size={10} />
+                </div>
                 <span className="text-xs font-bold text-neutral-900 tracking-tight">Juspay AI</span>
               </div>
 
-              <p className="text-sm text-neutral-800 leading-relaxed">
-                Mostly delivery. Your <strong className="font-bold text-neutral-950">Swiggy + Zomato</strong> spending increased <strong className="text-rose-600 font-bold">31%</strong>.
-              </p>
+              {/* Conversational Text */}
+              <div className="text-sm text-neutral-800 leading-relaxed font-normal">
+                Food spending is up <strong className="text-rose-600 font-bold">24% (+₹3,600)</strong>, mostly from Swiggy and Zomato. You made <strong className="text-neutral-950 font-bold">14 delivery orders</strong> this month, compared with 9 last month.
+              </div>
 
-              {/* Action Suggestion Pills */}
-              <div className="flex items-center flex-wrap gap-2 pt-1">
-                {["Last 3 months", "Delivery", "Ways to save"].map((pill) => (
-                  <button
-                    key={pill}
-                    onClick={() => handleChipClick(pill)}
-                    className="px-3.5 py-1.5 rounded-full bg-white border border-neutral-200/90 hover:border-[#0055FF] text-xs font-semibold text-neutral-700 hover:text-[#0055FF] shadow-2xs hover:shadow-xs transition-all cursor-pointer active:scale-95"
-                  >
-                    {pill}
-                  </button>
-                ))}
+              {/* COMPACT VISUAL COMPARISON (JULY VS AUGUST) */}
+              <div className="rounded-xl bg-white border border-neutral-200/90 p-3 shadow-2xs space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+                    Food Spending Comparison
+                  </span>
+                  <span className="text-[10px] font-bold text-rose-600 bg-rose-50 border border-rose-200/80 px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
+                    <TrendingUp className="w-2.5 h-2.5" /> +24% Jump
+                  </span>
+                </div>
+
+                {/* Comparative Horizontal Bars */}
+                <div className="space-y-2 pt-0.5 text-xs">
+                  {/* July Bar */}
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between text-[11px] font-medium text-neutral-600">
+                      <span>July</span>
+                      <span className="font-bold text-neutral-800 font-sans">₹14.8K</span>
+                    </div>
+                    <div className="w-full h-2 rounded-full bg-neutral-100 overflow-hidden">
+                      <div className="h-full bg-neutral-300 rounded-full" style={{ width: "80%" }} />
+                    </div>
+                  </div>
+
+                  {/* August Bar */}
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between text-[11px] font-medium text-neutral-900">
+                      <span className="font-bold">August</span>
+                      <span className="font-bold text-rose-600 font-sans">₹18.4K</span>
+                    </div>
+                    <div className="w-full h-2 rounded-full bg-neutral-100 overflow-hidden">
+                      <div className="h-full bg-[#F95738] rounded-full" style={{ width: "100%" }} />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-1 text-[11px] text-neutral-500 font-medium">
+                  +5 extra delivery orders contributed to 82% of this jump.
+                </div>
               </div>
             </div>
 
-            {/* Dynamically Added Turns */}
+            {/* ================================================================= */}
+            {/* TURN 3: USER → AI (How much did I spend on delivery?)              */}
+            {/* ================================================================= */}
+            
+            {/* USER 3 */}
+            <div className="flex flex-col items-end space-y-1 pt-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mr-1">You</span>
+              <div className="px-4 py-2.5 rounded-2xl rounded-tr-xs bg-[#0055FF] text-white text-sm font-medium leading-snug shadow-xs max-w-[85%]">
+                How much did I spend on delivery?
+              </div>
+            </div>
+
+            {/* AI 3 */}
+            <div className="space-y-2.5 max-w-[95%]">
+              <div className="flex items-center gap-1.5">
+                <div className="w-4 h-4 rounded-full bg-blue-100 flex items-center justify-center">
+                  <JuspayLogoMark size={10} />
+                </div>
+                <span className="text-xs font-bold text-neutral-900 tracking-tight">Juspay AI</span>
+              </div>
+
+              {/* Conversational Text */}
+              <div className="text-sm text-neutral-800 leading-relaxed font-normal">
+                <strong className="text-neutral-950 font-bold text-base font-sans">₹7,850</strong> — about 43% of your food spending.
+              </div>
+
+              {/* Simple Actionable Insight Callout */}
+              <div className="p-3 rounded-xl bg-blue-50/70 border border-blue-200/80 text-xs text-neutral-800 space-y-1 leading-relaxed">
+                <div className="flex items-center gap-1.5 text-blue-700 font-bold">
+                  <Sparkles className="w-3.5 h-3.5 shrink-0" />
+                  <span>Actionable Nudge</span>
+                </div>
+                <p className="font-medium text-neutral-800">
+                  Cutting 2 delivery orders per week could save roughly <strong className="font-bold text-neutral-950">₹2,400/month</strong>.
+                </p>
+              </div>
+
+              {/* Subtle Action Buttons */}
+              <div className="flex items-center flex-wrap gap-2 pt-0.5">
+                <button
+                  onClick={onOpenDrilldown}
+                  className="px-3.5 py-2 rounded-xl bg-white border border-neutral-300 hover:border-[#0055FF] text-xs font-semibold text-neutral-800 hover:text-[#0055FF] shadow-2xs transition flex items-center gap-1.5 cursor-pointer active:scale-95"
+                >
+                  <span>See delivery spending</span>
+                  <ArrowRight className="w-3 h-3 stroke-[2.2]" />
+                </button>
+
+                <button
+                  onClick={handleTrySaving}
+                  disabled={hasSavedPlan}
+                  className={cn(
+                    "px-3.5 py-2 rounded-xl text-xs font-semibold shadow-xs transition flex items-center gap-1.5 cursor-pointer active:scale-95",
+                    hasSavedPlan
+                      ? "bg-emerald-600 text-white cursor-default"
+                      : "bg-[#0055FF] hover:bg-[#0048E6] text-white"
+                  )}
+                >
+                  {hasSavedPlan ? (
+                    <>
+                      <CheckCircle2 className="w-3.5 h-3.5 stroke-[2.2]" />
+                      <span>Saving ₹2,400/mo active</span>
+                    </>
+                  ) : (
+                    <span>Try saving ₹2,400</span>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Dynamically Added Turns (User Questions / Next Steps) */}
             {extraTurns.map((turn) => (
-              <div key={turn.id} className="space-y-4 pt-1">
+              <div key={turn.id} className="space-y-3 pt-2">
                 {/* User Turn */}
-                <div className="space-y-1">
-                  <span className="text-xs font-bold text-neutral-400 block tracking-tight">You</span>
-                  <div className="p-3 rounded-2xl rounded-tl-xs bg-neutral-100 border border-neutral-200/60 text-neutral-900 text-sm font-medium leading-snug w-fit max-w-[90%]">
+                <div className="flex flex-col items-end space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mr-1">You</span>
+                  <div className="px-4 py-2.5 rounded-2xl rounded-tr-xs bg-[#0055FF] text-white text-sm font-medium leading-snug shadow-xs max-w-[85%]">
                     {turn.userText}
                   </div>
                 </div>
 
                 {/* AI Turn */}
-                <div className="space-y-2">
+                <div className="space-y-2 max-w-[95%]">
                   <div className="flex items-center gap-1.5">
-                    <JuspayLogoMark size={14} />
+                    <div className="w-4 h-4 rounded-full bg-blue-100 flex items-center justify-center">
+                      <JuspayLogoMark size={10} />
+                    </div>
                     <span className="text-xs font-bold text-neutral-900 tracking-tight">Juspay AI</span>
                   </div>
 
-                  <p className="text-sm text-neutral-800 leading-relaxed">
+                  <p className="text-sm text-neutral-800 leading-relaxed font-normal">
                     {turn.aiText}
                   </p>
 
-                  {turn.actionPills && turn.actionPills.length > 0 && (
+                  {turn.actionButtons && turn.actionButtons.length > 0 && (
                     <div className="flex items-center flex-wrap gap-2 pt-1">
-                      {turn.actionPills.map((pill) => (
+                      {turn.actionButtons.map((btn, idx) => (
                         <button
-                          key={pill}
-                          onClick={() => handleChipClick(pill)}
-                          className="px-3 py-1.5 rounded-full bg-white border border-neutral-200/90 hover:border-[#0055FF] text-xs font-semibold text-neutral-700 hover:text-[#0055FF] shadow-2xs transition-all cursor-pointer active:scale-95"
+                          key={idx}
+                          onClick={btn.action}
+                          className="px-3.5 py-2 rounded-xl bg-white border border-neutral-300 hover:border-[#0055FF] text-xs font-semibold text-neutral-800 hover:text-[#0055FF] shadow-2xs transition flex items-center gap-1.5 cursor-pointer active:scale-95"
                         >
-                          {pill}
+                          <span>{btn.label}</span>
+                          <ArrowRight className="w-3 h-3 stroke-[2.2]" />
                         </button>
                       ))}
                     </div>
@@ -588,30 +562,30 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
               </div>
             ))}
 
-            {/* AI Typing Animation */}
+            {/* AI Typing Indicator */}
             {isTyping && (
-              <div className="flex items-center gap-2 p-3 rounded-2xl bg-white border border-neutral-200/80 w-24">
-                <div className="w-2 h-2 rounded-full bg-[#0055FF] animate-bounce" />
-                <div className="w-2 h-2 rounded-full bg-[#0055FF] animate-bounce [animation-delay:0.2s]" />
-                <div className="w-2 h-2 rounded-full bg-[#0055FF] animate-bounce [animation-delay:0.4s]" />
+              <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-neutral-200/80 w-20 shadow-2xs">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#0055FF] animate-bounce" />
+                <div className="w-1.5 h-1.5 rounded-full bg-[#0055FF] animate-bounce [animation-delay:0.2s]" />
+                <div className="w-1.5 h-1.5 rounded-full bg-[#0055FF] animate-bounce [animation-delay:0.4s]" />
               </div>
             )}
 
             <div ref={chatBottomRef} />
           </div>
 
-          {/* Bottom Divider & Input Bar */}
-          <div className="border-t border-neutral-200/80 -mx-4 px-4 pt-2.5 pb-1">
+          {/* 3. PERSISTENT BOTTOM COMPOSER */}
+          <div className="border-t border-neutral-200/80 -mx-4 px-4 pt-2.5 pb-1 bg-white">
             <form 
               onSubmit={(e) => { e.preventDefault(); handleSend(); }} 
-              className="flex items-center gap-2 p-1 pl-1.5 rounded-full bg-white border border-neutral-200/90 shadow-2xs focus-within:ring-2 focus-within:ring-[#0055FF]/20 focus-within:border-[#0055FF] transition"
+              className="flex items-center gap-2 p-1 pl-1.5 rounded-full bg-neutral-100/90 border border-neutral-200/90 focus-within:bg-white focus-within:ring-2 focus-within:ring-[#0055FF]/20 focus-within:border-[#0055FF] transition"
             >
               {/* Plus Button */}
               <button 
                 type="button"
-                onClick={() => setUserQuery("How can I save ₹2,000 this week?")}
-                className="w-8 h-8 rounded-full bg-neutral-100 hover:bg-[#0055FF]/10 text-neutral-600 hover:text-[#0055FF] flex items-center justify-center shrink-0 transition cursor-pointer"
-                title="Add prompt"
+                onClick={() => setUserQuery("How can I save ₹3,000 next month?")}
+                className="w-7 h-7 rounded-full bg-white hover:bg-[#0055FF]/10 text-neutral-600 hover:text-[#0055FF] flex items-center justify-center shrink-0 transition cursor-pointer shadow-2xs"
+                title="Suggested prompts"
               >
                 <Plus className="w-4 h-4 stroke-[2.2]" />
               </button>
@@ -624,13 +598,13 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
                 className="flex-1 bg-transparent text-xs font-medium text-neutral-900 placeholder:text-neutral-400 outline-none px-1"
               />
 
-              {/* Right Button: Mic when empty, Send when typed */}
+              {/* Right Action: Mic or Send */}
               {userQuery.trim() ? (
                 <motion.button 
                   type="submit"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-8 h-8 rounded-full bg-[#0055FF] hover:bg-[#0048E6] text-white flex items-center justify-center shadow-sm shrink-0 cursor-pointer transition"
+                  className="w-7 h-7 rounded-full bg-[#0055FF] hover:bg-[#0048E6] text-white flex items-center justify-center shadow-xs shrink-0 cursor-pointer transition"
                   title="Send message"
                 >
                   <Send className="w-3.5 h-3.5 stroke-[2]" />
@@ -639,7 +613,7 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
                 <button
                   type="button"
                   onClick={() => setMode("voice")}
-                  className="w-8 h-8 rounded-full hover:bg-neutral-100 text-neutral-600 hover:text-[#0055FF] flex items-center justify-center shrink-0 transition cursor-pointer"
+                  className="w-7 h-7 rounded-full hover:bg-neutral-200/70 text-neutral-600 hover:text-[#0055FF] flex items-center justify-center shrink-0 transition cursor-pointer"
                   title="Voice Mode"
                 >
                   <Mic className="w-4 h-4 stroke-[2]" />
@@ -649,14 +623,13 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
           </div>
         </>
       ) : (
-        /* Mode 2: VOICE INTERFACE WITH 3D ORB */
+        /* Mode 2: TASTEFUL VOICE INTERFACE */
         <motion.div 
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           className="flex-1 flex flex-col items-center justify-between py-2 px-1 text-center select-none relative"
         >
-          {/* Ambient aurora glow background */}
-          <div className="absolute inset-x-0 bottom-8 h-60 bg-gradient-to-t from-[#0055FF]/12 via-[#0099FF]/4 to-transparent pointer-events-none rounded-3xl blur-2xl" />
+          <div className="absolute inset-x-0 bottom-8 h-60 bg-gradient-to-t from-[#0055FF]/10 via-[#0099FF]/3 to-transparent pointer-events-none rounded-3xl blur-2xl" />
 
           {/* Status Pill */}
           <div className="pt-0.5 relative z-10">
@@ -702,9 +675,9 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
           <div className="w-full relative z-10 mb-3 px-2">
             <div className="flex items-center justify-center gap-1.5 max-w-full">
               {[
-                { q: "Why food jumped?", a: "Food delivery is up 31% this month, mostly due to 24 orders on Swiggy and Zomato." },
-                { q: "Tokyo Trip progress", a: "You have saved ₹68,000 of ₹1,00,000, which is 68% of your goal." },
-                { q: "Ways to save?", a: "Yes, reducing delivery by two orders per week will save ₹2,400 monthly." }
+                { q: "Why food jumped?", a: "Food delivery is up 24% this month, mostly due to 14 orders on Swiggy and Zomato." },
+                { q: "How much on delivery?", a: "You spent ₹7,850 on delivery, which is 43% of your food spending." },
+                { q: "How to save?", a: "Cutting 2 delivery orders per week saves roughly ₹2,400 per month." }
               ].map((item) => (
                 <button
                   key={item.q}
