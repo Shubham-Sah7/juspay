@@ -531,7 +531,6 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
             <span className="text-base font-bold tracking-tight text-neutral-900">
               Spendings
             </span>
-            <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping" />
           </div>
 
           <div className="mt-3">
