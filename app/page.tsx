@@ -166,6 +166,7 @@ export default function Page() {
               {activeScreen === "ai" && (
                 <AIAssistantScreen 
                   onOpenDrilldown={() => setIsDrilldownOpen(true)} 
+                  onBack={() => setActiveScreen("home")}
                 />
               )}
               {activeScreen === "profile" && (
