@@ -26,6 +26,7 @@ import { JuspayLogoMark } from "@/components/ui/juspay-logo"
 interface AIAssistantScreenProps {
   onOpenDrilldown: () => void
   onBack?: () => void
+  initialMode?: "chat" | "voice"
 }
 
 type AIMode = "chat" | "voice"
@@ -192,8 +193,8 @@ interface ExtraTurn {
   actionButtons?: { label: string; action: () => void }[]
 }
 
-export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreenProps) {
-  const [mode, setMode] = useState<AIMode>("chat")
+export function AIAssistantScreen({ onOpenDrilldown, onBack, initialMode = "chat" }: AIAssistantScreenProps) {
+  const [mode, setMode] = useState<AIMode>(initialMode)
   const [userQuery, setUserQuery] = useState("")
   const [activeCategory, setActiveCategory] = useState<string | null>("food")
   const [isListening, setIsListening] = useState(true)

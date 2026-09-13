@@ -11,16 +11,18 @@ import { AIDrilldownModal } from "@/components/screens/ai-drilldown-modal"
 import { DesignDeckView } from "@/components/design-deck-view"
 import { JuspayLogo } from "@/components/ui/juspay-logo"
 import { ScreenDropdown } from "@/components/ui/screen-dropdown"
+import { CaseStudyView } from "@/components/case-study-view"
 import { 
   Smartphone, 
   Grid, 
   Play,
-  Sparkles
+  Sparkles,
+  BookOpen
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-type ViewMode = "mobile" | "deck"
+type ViewMode = "mobile" | "deck" | "casestudy"
 
 export default function Page() {
   const [activeScreen, setActiveScreen] = useState<ActiveScreenType>("home")
@@ -74,7 +76,20 @@ export default function Page() {
           </div>
 
           {/* Controls: Responsive Screen Dropdown for small screens */}
-          <div className="flex sm:hidden items-center gap-2">
+          <div className="flex sm:hidden items-center gap-1.5">
+            <button
+              onClick={() => setViewMode(viewMode === "casestudy" ? "deck" : "casestudy")}
+              className={cn(
+                "px-2.5 py-1 rounded-full text-xs font-medium border transition cursor-pointer flex items-center gap-1",
+                viewMode === "casestudy" 
+                  ? "bg-[#0055FF] text-white border-[#0055FF]" 
+                  : "bg-white text-neutral-700 border-neutral-200"
+              )}
+              title="Toggle Case Study"
+            >
+              <BookOpen className="w-3.5 h-3.5" />
+              <span className="text-[11px] font-mono">Case Study</span>
+            </button>
             <ScreenDropdown
               currentScreen={activeScreen}
               onSelectScreen={(screen) => {
@@ -83,7 +98,7 @@ export default function Page() {
                 setActiveScreen(screen)
               }}
               align="right"
-              buttonClassName="py-1 px-2.5 text-[11px]"
+              buttonClassName="py-1 px-2 text-[11px]"
             />
           </div>
 
@@ -124,7 +139,7 @@ export default function Page() {
                 onClick={() => setViewMode("deck")}
                 className={cn(
                   "px-3 py-1 rounded-full text-xs font-medium transition flex items-center gap-1.5 cursor-pointer",
-                  viewMode === "deck" ? "bg-white text-neutral-900 shadow-2xs" : "text-neutral-500 hover:text-neutral-800"
+                  viewMode === "deck" ? "bg-white text-neutral-900 shadow-2xs font-semibold" : "text-neutral-500 hover:text-neutral-800"
                 )}
               >
                 <Grid className="w-3.5 h-3.5" />
@@ -134,11 +149,21 @@ export default function Page() {
                 onClick={() => setViewMode("mobile")}
                 className={cn(
                   "px-3 py-1 rounded-full text-xs font-medium transition flex items-center gap-1.5 cursor-pointer",
-                  viewMode === "mobile" ? "bg-white text-neutral-900 shadow-2xs" : "text-neutral-500 hover:text-neutral-800"
+                  viewMode === "mobile" ? "bg-white text-neutral-900 shadow-2xs font-semibold" : "text-neutral-500 hover:text-neutral-800"
                 )}
               >
                 <Smartphone className="w-3.5 h-3.5" />
                 <span>Mobile Frame</span>
+              </button>
+              <button
+                onClick={() => setViewMode("casestudy")}
+                className={cn(
+                  "px-3 py-1 rounded-full text-xs font-medium transition flex items-center gap-1.5 cursor-pointer",
+                  viewMode === "casestudy" ? "bg-[#0055FF] text-white shadow-2xs font-semibold" : "text-neutral-600 hover:text-neutral-900"
+                )}
+              >
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>Case Study</span>
               </button>
             </div>
           </div>
@@ -147,7 +172,14 @@ export default function Page() {
 
       {/* Main Showcase Body */}
       <main className="flex-1 flex flex-col items-center justify-center p-4 sm:p-6 relative">
-        {viewMode === "mobile" ? (
+        {viewMode === "casestudy" ? (
+          <CaseStudyView 
+            onNavigateToMobile={(screen) => {
+              setActiveScreen(screen)
+              setViewMode("mobile")
+            }} 
+          />
+        ) : viewMode === "mobile" ? (
           <div className="w-full flex flex-col items-center justify-center space-y-4">
             {/* Context Screen Dropdown for Mobile Frame */}
             <div className="flex items-center justify-center relative z-40">
