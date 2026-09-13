@@ -1,15 +1,26 @@
-import { Geist, Geist_Mono } from "next/font/google"
+import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'})
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+})
 
-const fontMono = Geist_Mono({
+const fontMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
+  display: "swap",
 })
+
+export const metadata = {
+  title: "Nudge | Gen Z AI Personal Finance",
+  description: "Smart, visual, playful financial assistant designed for Gen Z.",
+}
 
 export default function RootLayout({
   children,
@@ -20,11 +31,12 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", geist.variable)}
+      className={cn("antialiased", fontMono.variable, jakarta.variable, "font-sans")}
     >
-      <body>
+      <body className="bg-[#0A0E17] text-neutral-900 min-h-screen selection:bg-neutral-900 selection:text-white">
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   )
 }
+
