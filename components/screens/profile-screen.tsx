@@ -23,6 +23,13 @@ import { cn } from "@/lib/utils"
 import { JuspayLogoMark } from "@/components/ui/juspay-logo"
 
 
+const INCOME_WEEKS = [
+  { week: "W1", label: "Week 1 (Aug 1–7)", amount: "₹8,450", x: 42, y: 52, sources: "Consulting" },
+  { week: "W2", label: "Week 2 (Aug 8–14)", amount: "₹11,280", x: 122, y: 36, sources: "Client Work" },
+  { week: "W3", label: "Week 3 (Aug 15–21)", amount: "₹9,702", x: 204, y: 46, sources: "Dividends" },
+  { week: "W4", label: "Week 4 (Aug 22–31)", amount: "₹13,000", x: 304, y: 12, sources: "Bonus & Salary" },
+]
+
 interface ProfileScreenProps {
   onOpenDrilldown: () => void
 }
@@ -33,6 +40,7 @@ export function ProfileScreen({ onOpenDrilldown }: ProfileScreenProps) {
   const [activeTransferUser, setActiveTransferUser] = useState<{ name: string; img: string } | null>(null)
   const [transferAmount, setTransferAmount] = useState("")
   const [transferSuccess, setTransferSuccess] = useState(false)
+  const [selectedIncomeWeek, setSelectedIncomeWeek] = useState<number>(3)
 
   const handleSendTransfer = (e: React.FormEvent) => {
     e.preventDefault()
@@ -135,8 +143,8 @@ export function ProfileScreen({ onOpenDrilldown }: ProfileScreenProps) {
                 ₹1,48,250
               </div>
 
-              <div className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs font-semibold backdrop-blur-xs">
-                <TrendingUp className="w-3.5 h-3.5" /> +2.10% this week
+              <div className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-emerald-300 text-xs font-semibold">
+                <TrendingUp className="w-3.5 h-3.5 text-emerald-400" /> +2.10% this week
               </div>
             </div>
           ) : (
@@ -227,16 +235,19 @@ export function ProfileScreen({ onOpenDrilldown }: ProfileScreenProps) {
         </div>
       </motion.div>
 
-      {/* "Your Income" Graph Card */}
+      {/* "Your Income" Analytics Card */}
       <motion.div 
         variants={itemVariants}
         whileHover={{ y: -2 }}
-        className="p-4.5 rounded-2xl bg-white/80 backdrop-blur-xl border border-white/80 shadow-[0_6px_25px_rgba(0,0,0,0.04)] space-y-2 relative overflow-hidden"
+        className="p-4.5 rounded-2xl bg-white/90 backdrop-blur-xl border border-white/80 shadow-[0_6px_25px_rgba(0,0,0,0.04)] space-y-3 relative overflow-hidden"
       >
         <div className="flex items-center justify-between">
           <div>
-            <span className="text-[11px] font-semibold text-neutral-400 block">Your Income</span>
-            <span className="text-xs font-bold text-neutral-900">This Month</span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider">Your Income</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            </div>
+            <span className="text-xs font-bold text-neutral-900">This Month · August 2025</span>
           </div>
 
           <div className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100 shadow-2xs">
@@ -244,27 +255,122 @@ export function ProfileScreen({ onOpenDrilldown }: ProfileScreenProps) {
           </div>
         </div>
 
-        <div className="flex items-baseline justify-between pt-1">
-          <span className="text-2xl font-bold font-sans text-neutral-900">₹42,432<span className="text-base text-neutral-400">.43</span></span>
-          <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+        {/* Big Stats Row */}
+        <div className="flex items-baseline justify-between pt-0.5">
+          <div>
+            <span className="text-2xl font-bold font-sans text-neutral-900 tracking-tight">
+              ₹42,432<span className="text-base text-neutral-400">.43</span>
+            </span>
+            <span className="text-[11px] text-neutral-500 block mt-0.5 font-medium">
+              {INCOME_WEEKS[selectedIncomeWeek].label}: <strong className="text-emerald-600">{INCOME_WEEKS[selectedIncomeWeek].amount}</strong> ({INCOME_WEEKS[selectedIncomeWeek].sources})
+            </span>
+          </div>
+
+          <span className="text-xs font-semibold text-emerald-700 bg-emerald-100/70 px-2.5 py-0.5 rounded-full border border-emerald-300/60 shadow-2xs flex items-center gap-1 shrink-0">
+            <TrendingUp className="w-3 h-3" />
             +2.10%
           </span>
         </div>
 
-        {/* Smooth Green Sparkline */}
-        <div className="h-12 w-full pt-1">
-          <svg className="w-full h-full" viewBox="0 0 100 40" fill="none">
+        {/* State-of-the-art Interactive Area Sparkline Graph */}
+        <div className="relative w-full h-24 pt-2 select-none">
+          <svg className="w-full h-full overflow-visible" viewBox="0 0 320 80" fill="none">
+            <defs>
+              <linearGradient id="incomeAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#10B981" stopOpacity="0.25" />
+                <stop offset="60%" stopColor="#10B981" stopOpacity="0.06" />
+                <stop offset="100%" stopColor="#10B981" stopOpacity="0" />
+              </linearGradient>
+              <filter id="incomeLineGlow" x="-10%" y="-20%" width="120%" height="150%">
+                <feDropShadow dx="0" dy="3" stdDeviation="3" floodColor="#10B981" floodOpacity="0.3" />
+              </filter>
+            </defs>
+
+            {/* Subtle Grid Guidelines */}
+            <line x1="0" y1="24" x2="320" y2="24" stroke="#F1F5F9" strokeDasharray="3 3" strokeWidth="1" />
+            <line x1="0" y1="52" x2="320" y2="52" stroke="#F1F5F9" strokeDasharray="3 3" strokeWidth="1" />
+
+            {/* Gradient Area Fill */}
+            <motion.path 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              d="M 0,66 C 18,64 26,52 42,52 C 72,52 92,36 122,36 C 152,36 174,46 204,46 C 240,46 270,14 304,12 L 304,80 L 0,80 Z"
+              fill="url(#incomeAreaGrad)"
+            />
+
+            {/* Smooth Vibrant Spline Curve with Glow */}
             <motion.path 
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
               transition={{ duration: 1.2, ease: "easeInOut" }}
-              d="M0,35 Q20,30 35,20 T70,25 T100,5" 
+              d="M 0,66 C 18,64 26,52 42,52 C 72,52 92,36 122,36 C 152,36 174,46 204,46 C 240,46 270,14 304,12"
               fill="none" 
               stroke="#10B981" 
-              strokeWidth="2.5" 
+              strokeWidth="2.75" 
               strokeLinecap="round" 
+              filter="url(#incomeLineGlow)"
             />
+
+            {/* Dotted cursor drop line on selected point */}
+            <line 
+              x1={INCOME_WEEKS[selectedIncomeWeek].x} 
+              y1={INCOME_WEEKS[selectedIncomeWeek].y} 
+              x2={INCOME_WEEKS[selectedIncomeWeek].x} 
+              y2="80" 
+              stroke="#10B981" 
+              strokeDasharray="2 2" 
+              strokeWidth="1.2" 
+              opacity="0.5"
+            />
+
+            {/* All Data Point Nodes */}
+            {INCOME_WEEKS.map((pt, idx) => (
+              <g 
+                key={pt.week} 
+                className="cursor-pointer" 
+                onClick={() => setSelectedIncomeWeek(idx)}
+              >
+                {selectedIncomeWeek === idx && (
+                  <circle 
+                    cx={pt.x} 
+                    cy={pt.y} 
+                    r="8" 
+                    fill="#10B981" 
+                    opacity="0.25" 
+                    className="animate-ping" 
+                  />
+                )}
+                <circle 
+                  cx={pt.x} 
+                  cy={pt.y} 
+                  r={selectedIncomeWeek === idx ? 5 : 3.5} 
+                  fill={selectedIncomeWeek === idx ? "#10B981" : "#A7F3D0"} 
+                  stroke="white" 
+                  strokeWidth={selectedIncomeWeek === idx ? "2.5" : "1.5"} 
+                />
+              </g>
+            ))}
           </svg>
+        </div>
+
+        {/* 4-Week Interactive Selector Pills */}
+        <div className="grid grid-cols-4 gap-1.5 pt-1 border-t border-neutral-100">
+          {INCOME_WEEKS.map((w, idx) => (
+            <button
+              key={w.week}
+              onClick={() => setSelectedIncomeWeek(idx)}
+              className={cn(
+                "py-1.5 px-1 rounded-xl text-center transition-all cursor-pointer",
+                selectedIncomeWeek === idx
+                  ? "bg-neutral-900 text-white shadow-xs scale-102"
+                  : "bg-neutral-50 hover:bg-neutral-100 text-neutral-500 border border-neutral-200/60"
+              )}
+            >
+              <span className="text-[10px] font-bold block leading-none">{w.week}</span>
+              <span className="text-[10px] opacity-85 block mt-1 font-medium">{w.amount}</span>
+            </button>
+          ))}
         </div>
       </motion.div>
 
