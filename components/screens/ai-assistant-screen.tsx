@@ -13,7 +13,12 @@ import {
   MessageSquare,
   Sparkles,
   CheckCircle2,
-  TrendingUp
+  TrendingUp,
+  UtensilsCrossed,
+  Home,
+  ShoppingBag,
+  Car,
+  Tv
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { JuspayLogoMark } from "@/components/ui/juspay-logo"
@@ -32,14 +37,67 @@ interface CategoryItem {
   amount: string
   color: string
   detail: string
+  icon: React.ComponentType<{ className?: string }>
+  iconBg: string
+  iconColor: string
 }
 
 const CATEGORIES: CategoryItem[] = [
-  { id: "food", name: "Food & Dining", pct: 35, amount: "₹18,400", color: "#F95738", detail: "14 delivery orders · Swiggy & Zomato" },
-  { id: "rent", name: "Rent & Housing", pct: 29, amount: "₹15,000", color: "#2563EB", detail: "Fixed monthly rent · Paid on 1st" },
-  { id: "shopping", name: "Shopping & Tech", pct: 16, amount: "₹8,200", color: "#0284C7", detail: "Amazon & gadgets · 8 items" },
-  { id: "travel", name: "Travel & Commute", pct: 12, amount: "₹6,450", color: "#8B5CF6", detail: "Uber & Metro transit · 14 rides" },
-  { id: "subscriptions", name: "Subscriptions", pct: 8, amount: "₹4,350", color: "#F59E0B", detail: "Spotify, Netflix, iCloud · 5 active" }
+  { 
+    id: "food", 
+    name: "Food & Dining", 
+    pct: 35, 
+    amount: "₹18,400", 
+    color: "#F95738", 
+    detail: "14 delivery orders · Swiggy & Zomato",
+    icon: UtensilsCrossed,
+    iconBg: "bg-rose-50 border-rose-200/80",
+    iconColor: "text-[#F95738]"
+  },
+  { 
+    id: "rent", 
+    name: "Rent & Housing", 
+    pct: 29, 
+    amount: "₹15,000", 
+    color: "#2563EB", 
+    detail: "Fixed monthly rent · Paid on 1st",
+    icon: Home,
+    iconBg: "bg-blue-50 border-blue-200/80",
+    iconColor: "text-[#2563EB]"
+  },
+  { 
+    id: "shopping", 
+    name: "Shopping & Tech", 
+    pct: 16, 
+    amount: "₹8,200", 
+    color: "#0284C7", 
+    detail: "Amazon & gadgets · 8 items",
+    icon: ShoppingBag,
+    iconBg: "bg-sky-50 border-sky-200/80",
+    iconColor: "text-[#0284C7]"
+  },
+  { 
+    id: "travel", 
+    name: "Travel & Commute", 
+    pct: 12, 
+    amount: "₹6,450", 
+    color: "#8B5CF6", 
+    detail: "Uber & Metro transit · 14 rides",
+    icon: Car,
+    iconBg: "bg-purple-50 border-purple-200/80",
+    iconColor: "text-[#8B5CF6]"
+  },
+  { 
+    id: "subscriptions", 
+    name: "Subscriptions", 
+    pct: 8, 
+    amount: "₹4,350", 
+    color: "#F59E0B", 
+    detail: "Spotify, Netflix, iCloud · 5 active",
+    icon: Tv,
+    iconBg: "bg-amber-50 border-amber-200/80",
+    iconColor: "text-[#F59E0B]"
+  }
 ]
 
 // 3D Ribbed Audio Wave Orb for Voice Mode
@@ -300,12 +358,17 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
             </div>
 
             {/* AI 1 */}
-            <div className="space-y-2 max-w-[95%]">
-              <div className="flex items-center gap-1.5">
-                <div className="w-4 h-4 rounded-full bg-blue-100 flex items-center justify-center">
-                  <JuspayLogoMark size={10} />
+            <div className="space-y-2.5 max-w-[95%]">
+              <div className="flex items-center gap-2">
+                <div className="w-5.5 h-5.5 rounded-full bg-gradient-to-tr from-[#0055FF] to-[#38BDF8] flex items-center justify-center text-white shadow-xs ring-2 ring-blue-100/90 shrink-0">
+                  <JuspayLogoMark size={12} className="text-white" />
                 </div>
-                <span className="text-xs font-bold text-neutral-900 tracking-tight">Juspay AI</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-bold text-neutral-950 tracking-tight">Juspay AI</span>
+                  <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-blue-50 text-[#0055FF] border border-blue-200/70">
+                    Insight
+                  </span>
+                </div>
               </div>
 
               {/* Conversational Text */}
@@ -314,18 +377,18 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
               </div>
 
               {/* COMPACT INTERACTIVE SPENDING VISUALIZATION INSIDE RESPONSE */}
-              <div className="rounded-xl bg-white border border-neutral-200/90 p-3 shadow-2xs space-y-2.5">
+              <div className="rounded-2xl bg-white border border-neutral-200/90 p-3.5 shadow-2xs space-y-3">
                 {/* Multi-segment horizontal stacked track */}
-                <div className="w-full h-2 rounded-full overflow-hidden flex bg-neutral-100">
+                <div className="w-full h-2.5 rounded-full overflow-hidden flex bg-neutral-100 p-0.5 gap-0.5">
                   {CATEGORIES.map((cat) => (
                     <div
                       key={cat.id}
                       style={{ 
                         width: `${cat.pct}%`, 
                         backgroundColor: cat.color,
-                        opacity: activeCategory && activeCategory !== cat.id ? 0.4 : 1
+                        opacity: activeCategory && activeCategory !== cat.id ? 0.35 : 1
                       }}
-                      className="h-full transition-all cursor-pointer first:rounded-l-full last:rounded-r-full"
+                      className="h-full rounded-full transition-all cursor-pointer hover:scale-y-110"
                       onMouseEnter={() => setActiveCategory(cat.id)}
                       onClick={() => setActiveCategory(activeCategory === cat.id ? null : cat.id)}
                       title={`${cat.name}: ${cat.pct}% (${cat.amount})`}
@@ -333,38 +396,41 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
                   ))}
                 </div>
 
-                {/* 5-Category Clean Scannable List */}
+                {/* 5-Category Clean Scannable List with Vector Icons */}
                 <div className="divide-y divide-neutral-100 text-xs">
                   {CATEGORIES.map((cat) => {
                     const isSelected = activeCategory === cat.id
+                    const CatIcon = cat.icon
                     return (
                       <div
                         key={cat.id}
                         onMouseEnter={() => setActiveCategory(cat.id)}
                         onClick={() => setActiveCategory(isSelected ? null : cat.id)}
                         className={cn(
-                          "py-1.5 px-1.5 flex items-center justify-between rounded-lg transition cursor-pointer",
-                          isSelected ? "bg-neutral-50" : "hover:bg-neutral-50/70"
+                          "py-2 px-2 flex items-center justify-between rounded-xl transition cursor-pointer group",
+                          isSelected ? "bg-blue-50/70 ring-1 ring-blue-200/80" : "hover:bg-neutral-50"
                         )}
                       >
-                        <div className="flex items-center gap-2 min-w-0">
-                          <span 
-                            className="w-2 h-2 rounded-full shrink-0" 
-                            style={{ backgroundColor: cat.color }} 
-                          />
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <div className={cn(
+                            "w-6 h-6 rounded-lg flex items-center justify-center border shrink-0 transition-transform group-hover:scale-105 shadow-2xs",
+                            cat.iconBg
+                          )}>
+                            <CatIcon className={cn("w-3.5 h-3.5 stroke-[2.2]", cat.iconColor)} />
+                          </div>
                           <span className={cn(
                             "font-medium truncate",
-                            isSelected ? "text-neutral-950 font-semibold" : "text-neutral-700"
+                            isSelected ? "text-neutral-950 font-bold" : "text-neutral-800"
                           )}>
                             {cat.name}
                           </span>
                         </div>
 
-                        <div className="flex items-center gap-3 shrink-0 ml-2 font-mono">
-                          <span className="text-neutral-400 text-[11px] font-medium w-7 text-right">
+                        <div className="flex items-center gap-3 shrink-0 ml-2">
+                          <span className="text-neutral-400 text-[11px] font-semibold font-mono w-8 text-right">
                             {cat.pct}%
                           </span>
-                          <span className="text-neutral-950 font-bold font-sans w-16 text-right">
+                          <span className="text-neutral-950 font-black font-sans text-xs w-16 text-right">
                             {cat.amount}
                           </span>
                         </div>
@@ -375,9 +441,11 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
 
                 {/* Micro Detail Strip for selected category */}
                 {activeCategory && (
-                  <div className="pt-0.5 border-t border-neutral-100 flex items-center justify-between text-[11px] text-neutral-500 font-medium px-1">
-                    <span>{CATEGORIES.find(c => c.id === activeCategory)?.detail}</span>
-                    <span className="text-[#0055FF] font-semibold">Active</span>
+                  <div className="pt-2 border-t border-neutral-100 flex items-center justify-between text-[11px] text-neutral-600 font-medium px-1">
+                    <span className="truncate mr-2">{CATEGORIES.find(c => c.id === activeCategory)?.detail}</span>
+                    <span className="text-[#0055FF] font-bold shrink-0 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200/70 shadow-2xs">
+                      Active
+                    </span>
                   </div>
                 )}
               </div>
@@ -396,12 +464,17 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
             </div>
 
             {/* AI 2 */}
-            <div className="space-y-2 max-w-[95%]">
-              <div className="flex items-center gap-1.5">
-                <div className="w-4 h-4 rounded-full bg-blue-100 flex items-center justify-center">
-                  <JuspayLogoMark size={10} />
+            <div className="space-y-2.5 max-w-[95%]">
+              <div className="flex items-center gap-2">
+                <div className="w-5.5 h-5.5 rounded-full bg-gradient-to-tr from-[#0055FF] to-[#38BDF8] flex items-center justify-center text-white shadow-xs ring-2 ring-blue-100/90 shrink-0">
+                  <JuspayLogoMark size={12} className="text-white" />
                 </div>
-                <span className="text-xs font-bold text-neutral-900 tracking-tight">Juspay AI</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-bold text-neutral-950 tracking-tight">Juspay AI</span>
+                  <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-rose-50 text-rose-600 border border-rose-200/70">
+                    Alert
+                  </span>
+                </div>
               </div>
 
               {/* Conversational Text */}
@@ -410,25 +483,30 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
               </div>
 
               {/* COMPACT VISUAL COMPARISON (JULY VS AUGUST) */}
-              <div className="rounded-xl bg-white border border-neutral-200/90 p-3 shadow-2xs space-y-2">
+              <div className="rounded-2xl bg-white border border-neutral-200/90 p-3.5 shadow-2xs space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
-                    Food Spending Comparison
-                  </span>
-                  <span className="text-[10px] font-bold text-rose-600 bg-rose-50 border border-rose-200/80 px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
-                    <TrendingUp className="w-2.5 h-2.5" /> +24% Jump
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-5 h-5 rounded-md bg-rose-50 border border-rose-200/80 flex items-center justify-center text-[#F95738] shrink-0 shadow-2xs">
+                      <UtensilsCrossed className="w-3 h-3 stroke-[2.2]" />
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">
+                      Food Spending Comparison
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-bold text-rose-600 bg-rose-50 border border-rose-200/80 px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs">
+                    <TrendingUp className="w-2.5 h-2.5 stroke-[2.5]" /> +24% Jump
                   </span>
                 </div>
 
                 {/* Comparative Horizontal Bars */}
-                <div className="space-y-2 pt-0.5 text-xs">
+                <div className="space-y-2.5 pt-0.5 text-xs">
                   {/* July Bar */}
                   <div className="space-y-1">
                     <div className="flex items-center justify-between text-[11px] font-medium text-neutral-600">
                       <span>July</span>
-                      <span className="font-bold text-neutral-800 font-sans">₹14.8K</span>
+                      <span className="font-bold text-neutral-800 font-sans">₹14,800</span>
                     </div>
-                    <div className="w-full h-2 rounded-full bg-neutral-100 overflow-hidden">
+                    <div className="w-full h-2.5 rounded-full bg-neutral-100 overflow-hidden p-0.5">
                       <div className="h-full bg-neutral-300 rounded-full" style={{ width: "80%" }} />
                     </div>
                   </div>
@@ -437,16 +515,17 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
                   <div className="space-y-1">
                     <div className="flex items-center justify-between text-[11px] font-medium text-neutral-900">
                       <span className="font-bold">August</span>
-                      <span className="font-bold text-rose-600 font-sans">₹18.4K</span>
+                      <span className="font-bold text-rose-600 font-sans">₹18,400</span>
                     </div>
-                    <div className="w-full h-2 rounded-full bg-neutral-100 overflow-hidden">
-                      <div className="h-full bg-[#F95738] rounded-full" style={{ width: "100%" }} />
+                    <div className="w-full h-2.5 rounded-full bg-rose-50 overflow-hidden p-0.5 border border-rose-200/60">
+                      <div className="h-full bg-gradient-to-r from-rose-500 to-[#F95738] rounded-full shadow-xs" style={{ width: "100%" }} />
                     </div>
                   </div>
                 </div>
 
-                <div className="pt-1 text-[11px] text-neutral-500 font-medium">
-                  +5 extra delivery orders contributed to 82% of this jump.
+                <div className="pt-1.5 text-[11px] text-neutral-500 font-medium flex items-center gap-1.5 border-t border-neutral-100">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                  <span>+5 extra delivery orders contributed to 82% of this jump.</span>
                 </div>
               </div>
             </div>
@@ -465,11 +544,16 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
 
             {/* AI 3 */}
             <div className="space-y-2.5 max-w-[95%]">
-              <div className="flex items-center gap-1.5">
-                <div className="w-4 h-4 rounded-full bg-blue-100 flex items-center justify-center">
-                  <JuspayLogoMark size={10} />
+              <div className="flex items-center gap-2">
+                <div className="w-5.5 h-5.5 rounded-full bg-gradient-to-tr from-[#0055FF] to-[#38BDF8] flex items-center justify-center text-white shadow-xs ring-2 ring-blue-100/90 shrink-0">
+                  <JuspayLogoMark size={12} className="text-white" />
                 </div>
-                <span className="text-xs font-bold text-neutral-900 tracking-tight">Juspay AI</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-bold text-neutral-950 tracking-tight">Juspay AI</span>
+                  <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-blue-50 text-[#0055FF] border border-blue-200/70">
+                    Breakdown
+                  </span>
+                </div>
               </div>
 
               {/* Conversational Text */}
@@ -478,8 +562,8 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
               </div>
 
               {/* Simple Actionable Insight Callout */}
-              <div className="p-3 rounded-xl bg-blue-50/70 border border-blue-200/80 text-xs text-neutral-800 space-y-1 leading-relaxed">
-                <div className="flex items-center gap-1.5 text-blue-700 font-bold">
+              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-blue-50/90 via-indigo-50/40 to-white border border-blue-200/80 text-xs text-neutral-800 space-y-1.5 leading-relaxed shadow-2xs">
+                <div className="flex items-center gap-1.5 text-[#0055FF] font-bold">
                   <Sparkles className="w-3.5 h-3.5 shrink-0" />
                   <span>Actionable Nudge</span>
                 </div>
@@ -532,12 +616,17 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
                 </div>
 
                 {/* AI Turn */}
-                <div className="space-y-2 max-w-[95%]">
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-4 h-4 rounded-full bg-blue-100 flex items-center justify-center">
-                      <JuspayLogoMark size={10} />
+                <div className="space-y-2.5 max-w-[95%]">
+                  <div className="flex items-center gap-2">
+                    <div className="w-5.5 h-5.5 rounded-full bg-gradient-to-tr from-[#0055FF] to-[#38BDF8] flex items-center justify-center text-white shadow-xs ring-2 ring-blue-100/90 shrink-0">
+                      <JuspayLogoMark size={12} className="text-white" />
                     </div>
-                    <span className="text-xs font-bold text-neutral-900 tracking-tight">Juspay AI</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-bold text-neutral-950 tracking-tight">Juspay AI</span>
+                      <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-blue-50 text-[#0055FF] border border-blue-200/70">
+                        Response
+                      </span>
+                    </div>
                   </div>
 
                   <p className="text-sm text-neutral-800 leading-relaxed font-normal">
