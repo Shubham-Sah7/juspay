@@ -27,10 +27,10 @@ interface SegmentedRingChartProps {
 }
 
 const DEFAULT_SEGMENTS: RingSegment[] = [
-  { id: "savings", label: "Investments & Liquid", percentage: 38, color: "#A3E635", amount: "$18,335" },   // Lime Green
-  { id: "fixed", label: "Fixed & Housing", percentage: 25, color: "#A5B4FC", amount: "$12,062" },       // Lavender / Periwinkle
-  { id: "recurring", label: "Subscriptions", percentage: 15, color: "#FDE047", amount: "$7,238" },     // Sunny Yellow
-  { id: "expenses", label: "Discretionary & Food", percentage: 22, color: "#FB7185", amount: "$10,615" } // Coral / Salmon
+  { id: "savings", label: "Investments & Liquid", percentage: 38, color: "#A3E635", amount: "₹18,335" },   // Lime Green
+  { id: "fixed", label: "Fixed & Housing", percentage: 25, color: "#A5B4FC", amount: "₹12,062" },       // Lavender / Periwinkle
+  { id: "recurring", label: "Subscriptions", percentage: 15, color: "#FDE047", amount: "₹7,238" },     // Sunny Yellow
+  { id: "expenses", label: "Discretionary & Food", percentage: 22, color: "#FB7185", amount: "₹10,615" } // Coral / Salmon
 ]
 
 function polarToCartesian(centerX: number, centerY: number, radius: number, angleInDegrees: number) {
@@ -53,14 +53,14 @@ function describeArc(x: number, y: number, radius: number, startAngle: number, e
 
 export function SegmentedRingChart({
   title = "Total Savings",
-  amount = "$48,250",
+  amount = "₹48,250",
   cents = ".00",
   trend = "+2.5% ↑",
   isPositive = true,
   segments = DEFAULT_SEGMENTS,
   size = 230,
   strokeWidth = 22,
-  theme = "dark",
+  theme = "light",
   interactive = true,
   onSegmentClick
 }: SegmentedRingChartProps) {

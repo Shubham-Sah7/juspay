@@ -99,7 +99,7 @@ export function IntroScreen({ onContinue }: IntroScreenProps) {
               </div>
               <div className="pt-2">
                 <span className="text-xs font-semibold text-white/90 block">Health & Wellness</span>
-                <span className="text-xl font-bold font-sans mt-1 block">$420.00</span>
+                <span className="text-xl font-bold font-sans mt-1 block">₹420.00</span>
                 <span className="text-[10px] text-white/75 mt-0.5 block">spent this month</span>
               </div>
             </motion.div>
@@ -118,7 +118,7 @@ export function IntroScreen({ onContinue }: IntroScreenProps) {
               </div>
               <div className="pt-2">
                 <span className="text-xs font-semibold text-white/95 block">Shopping</span>
-                <span className="text-2xl font-black font-sans mt-1 block">$850.20</span>
+                <span className="text-2xl font-black font-sans mt-1 block">₹850.20</span>
                 <span className="text-[10px] text-white/80 mt-0.5 block">spent this month</span>
               </div>
             </motion.div>
@@ -137,7 +137,7 @@ export function IntroScreen({ onContinue }: IntroScreenProps) {
               </div>
               <div>
                 <span className="text-sm font-bold text-white/95 block leading-tight">Groceries</span>
-                <span className="text-3xl font-black font-sans tracking-tight mt-1.5 block">$1489.57</span>
+                <span className="text-3xl font-black font-sans tracking-tight mt-1.5 block">₹1,489.57</span>
                 <span className="text-xs text-white/85 mt-0.5 block">spent this month</span>
               </div>
 

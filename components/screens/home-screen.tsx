@@ -22,7 +22,6 @@ import {
   CreditCard
 } from "lucide-react"
 import { JuspayLogoMark } from "@/components/ui/juspay-logo"
-import { AirplaneTilt, Target } from "@phosphor-icons/react"
 import { cn } from "@/lib/utils"
 
 interface HomeScreenProps {
@@ -319,7 +318,7 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
           </div>
           <div>
             <span className="text-[10px] font-bold text-neutral-400 block uppercase tracking-wider">Welcome back</span>
-            <h1 className="text-sm font-black text-neutral-900 tracking-tight">Alex Nasrulloh</h1>
+            <h1 className="text-sm font-black text-neutral-900 tracking-tight">Alex</h1>
           </div>
         </div>
 
@@ -441,7 +440,7 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
           <div className="flex items-end justify-between pt-1 relative z-10">
             <div ref={cardholderRef}>
               <span className="text-[9px] font-medium text-white/60 block uppercase tracking-[0.14em]">Cardholder</span>
-              <span className="text-xs font-semibold text-white tracking-wide block mt-0.5">Alex Nasrulloh</span>
+              <span className="text-xs font-semibold text-white tracking-wide block mt-0.5">Alex</span>
             </div>
 
             {/* Floating "+ Add Card" Dark Frosted Capsule Pill */}
@@ -536,7 +535,7 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
           <div className="mt-3">
             <div className="flex items-baseline gap-1">
               <span className="text-3xl font-black tracking-tight font-sans text-neutral-950">
-                $2,342<span className="text-xl font-bold opacity-80">.57</span>
+                ₹2,342<span className="text-xl font-bold opacity-80">.57</span>
               </span>
             </div>
             <span className="text-xs text-neutral-700 font-medium block mt-0.5">
@@ -837,11 +836,11 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
           <div className="absolute -right-6 -bottom-6 w-32 h-32 bg-pink-300/30 rounded-full blur-2xl pointer-events-none" />
 
           <div className="flex items-center gap-3.5 relative z-10">
-            {/* 3D Piggy Bank Avatar with bounce */}
+            {/* 3D Piggy Bank Avatar - small & compact */}
             <motion.div 
               animate={isPiggyBouncing ? { scale: [1, 1.15, 0.95, 1], rotate: [0, -6, 6, 0] } : {}}
               transition={{ duration: 0.45 }}
-              className="w-18 h-18 rounded-2xl overflow-hidden shadow-md border-2 border-white/90 shrink-0 bg-pink-100 relative group cursor-pointer"
+              className="w-9 h-9 rounded-xl overflow-hidden shadow-xs border border-white/90 shrink-0 bg-pink-100 relative group cursor-pointer"
               onClick={() => handleFeedPiggy("all")}
               title="Tap to feed piggy!"
             >
@@ -850,9 +849,6 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
                 alt="3D Piggy Bank" 
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
-              <div className="absolute top-1 right-1 w-5 h-5 rounded-full bg-amber-400 text-neutral-950 flex items-center justify-center text-[10px] font-black shadow-xs">
-                🪙
-              </div>
             </motion.div>
 
             <div className="flex-1 min-w-0">
@@ -869,12 +865,11 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
               </p>
             </div>
 
-            {/* Quick Feed Piggy button */}
+            {/* Quick Feed Piggy button - no coin icon */}
             <button
               onClick={() => handleFeedPiggy("tokyo")}
-              className="shrink-0 px-3 py-2 rounded-xl bg-gradient-to-r from-pink-600 to-rose-500 hover:from-pink-700 hover:to-rose-600 text-white text-xs font-bold shadow-md shadow-pink-500/25 active:scale-95 transition-all flex items-center gap-1 cursor-pointer"
+              className="shrink-0 px-3.5 py-2 rounded-xl bg-gradient-to-r from-pink-600 to-rose-500 hover:from-pink-700 hover:to-rose-600 text-white text-xs font-bold shadow-md shadow-pink-500/25 active:scale-95 transition-all flex items-center justify-center cursor-pointer"
             >
-              <span>🪙</span>
               <span>+₹500</span>
             </button>
           </div>
@@ -896,22 +891,14 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
                 {/* Decorative glow */}
                 <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none" />
 
-                <div className="flex items-center justify-between relative z-10">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-2xl bg-white/15 backdrop-blur-md text-white flex items-center justify-center border border-white/25 shadow-xs shrink-0">
-                      <AirplaneTilt size={20} weight="bold" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-base font-black tracking-tight text-white">
-                          Tokyo Trip
-                        </span>
-                        <span className="text-sm">🇯🇵</span>
-                      </div>
-                      <span className="text-xs text-blue-100 font-medium">
-                        <strong className="text-white font-bold">₹{tokyoAmount.toLocaleString("en-IN")}</strong> of ₹1,00,000
-                      </span>
-                    </div>
+                <div className="flex items-start justify-between relative z-10">
+                  <div>
+                    <h4 className="text-xl font-bold tracking-tight text-white">
+                      Tokyo Trip
+                    </h4>
+                    <span className="text-xs text-blue-100 font-medium block mt-0.5">
+                      <strong className="text-white font-bold">₹{tokyoAmount.toLocaleString("en-IN")}</strong> of ₹1,00,000
+                    </span>
                   </div>
 
                   <span className="text-xs font-black px-3 py-1 rounded-full bg-white text-[#2563EB] shadow-xs">
@@ -919,30 +906,26 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
                   </span>
                 </div>
 
-                {/* Tactile Progress Track with Coin Indicator */}
-                <div className="w-full h-3.5 bg-blue-950/40 rounded-full p-0.5 relative border border-white/20">
+                {/* Tactile Progress Track */}
+                <div className="w-full h-3 bg-blue-950/40 rounded-full p-0.5 relative border border-white/20 overflow-hidden">
                   <motion.div 
                     initial={{ width: 0 }}
                     animate={{ width: `${tokyoPct}%` }}
                     transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                    className="h-full bg-gradient-to-r from-sky-300 via-white to-sky-100 rounded-full shadow-[0_0_12px_rgba(255,255,255,0.7)] relative"
-                  >
-                    <span className="absolute -right-2 -top-1 text-xs select-none filter drop-shadow">
-                      🪙
-                    </span>
-                  </motion.div>
+                    className="h-full bg-gradient-to-r from-sky-300 via-white to-sky-100 rounded-full shadow-[0_0_12px_rgba(255,255,255,0.7)]"
+                  />
                 </div>
 
                 {/* Pill Chips & Quick Add Action */}
                 <div className="flex items-center justify-between pt-0.5 relative z-10">
                   <div className="flex items-center flex-wrap gap-2">
-                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-white/20 bg-white/10 text-white">
-                      ✈️ Nov 2026
+                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-white/25 bg-white/15 text-white">
+                      Nov 2026
                     </span>
-                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-white/20 bg-white/10 text-white">
+                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-white/25 bg-white/15 text-white">
                       ₹{tokyoLeft.toLocaleString("en-IN")} left
                     </span>
-                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-white/20 bg-white/15 text-white">
+                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-white/25 bg-white/15 text-white">
                       Piggy Target
                     </span>
                   </div>
@@ -973,22 +956,14 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
                 {/* Decorative subtle pattern */}
                 <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-black/5 rounded-full blur-2xl pointer-events-none" />
 
-                <div className="flex items-center justify-between relative z-10">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-2xl bg-neutral-950 text-[#D4F65B] flex items-center justify-center shadow-xs shrink-0">
-                      <Target size={20} weight="bold" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-base font-black tracking-tight text-neutral-950">
-                          Rainy Day Piggy
-                        </span>
-                        <span className="text-sm">🛡️</span>
-                      </div>
-                      <span className="text-xs text-neutral-800 font-medium">
-                        <strong className="text-neutral-950 font-bold">₹{emergencyAmount.toLocaleString("en-IN")}</strong> of ₹1,00,000
-                      </span>
-                    </div>
+                <div className="flex items-start justify-between relative z-10">
+                  <div>
+                    <h4 className="text-xl font-bold tracking-tight text-neutral-950">
+                      Rainy Day Piggy
+                    </h4>
+                    <span className="text-xs text-neutral-800 font-medium block mt-0.5">
+                      <strong className="text-neutral-950 font-bold">₹{emergencyAmount.toLocaleString("en-IN")}</strong> of ₹1,00,000
+                    </span>
                   </div>
 
                   <span className="text-xs font-black px-3 py-1 rounded-full bg-neutral-950 text-[#D4F65B] shadow-xs">
@@ -996,31 +971,27 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
                   </span>
                 </div>
 
-                {/* Tactile Progress Track with Coin Indicator */}
-                <div className="w-full h-3.5 bg-neutral-900/15 rounded-full p-0.5 relative border border-neutral-900/10">
+                {/* Tactile Progress Track */}
+                <div className="w-full h-3 bg-neutral-900/15 rounded-full p-0.5 relative border border-neutral-900/10 overflow-hidden">
                   <motion.div 
                     initial={{ width: 0 }}
                     animate={{ width: `${emergencyPct}%` }}
                     transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                    className="h-full bg-neutral-950 rounded-full shadow-xs relative"
-                  >
-                    <span className="absolute -right-2 -top-1 text-xs select-none filter drop-shadow">
-                      🪙
-                    </span>
-                  </motion.div>
+                    className="h-full bg-neutral-950 rounded-full shadow-xs"
+                  />
                 </div>
 
                 {/* Pill Chips & Quick Add Action */}
                 <div className="flex items-center justify-between pt-0.5 relative z-10">
                   <div className="flex items-center flex-wrap gap-2">
                     <span className="text-xs font-medium px-3 py-1 rounded-full border border-neutral-900/20 bg-neutral-900/5 text-neutral-950">
-                      🛡️ 4 Mo. Runway
+                      4 Mo. Runway
                     </span>
                     <span className="text-xs font-medium px-3 py-1 rounded-full border border-neutral-900/20 bg-neutral-900/5 text-neutral-950">
                       ₹{emergencyLeft.toLocaleString("en-IN")} left
                     </span>
-                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-neutral-900/20 bg-neutral-900/5 text-neutral-900">
-                      ⚡️ 7.4% APY
+                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-neutral-900/20 bg-neutral-900/5 text-neutral-950">
+                      7.4% APY
                     </span>
                   </div>
 

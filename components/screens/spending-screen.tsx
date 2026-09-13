@@ -550,16 +550,16 @@ export function SpendingScreen({ onOpenDrilldown }: SpendingScreenProps) {
             <div className="pt-1 pb-1">
               <SegmentedRingChart 
                 title={activeTab === "month" ? "Total Savings" : currentPeriod.label}
-                amount={activeTab === "month" ? "$48,250" : currentPeriod.total}
+                amount={activeTab === "month" ? "₹48,250" : currentPeriod.total}
                 cents=".00"
                 trend={activeTab === "month" ? "+2.5% ↑" : currentPeriod.trend}
                 isPositive={true}
                 segments={
                   activeTab === "month" ? [
-                    { id: "savings", label: "Investments & Liquid", percentage: 38, color: "#A3E635", amount: "$18,335" },
-                    { id: "fixed", label: "Fixed & Housing", percentage: 25, color: "#A5B4FC", amount: "$12,062" },
-                    { id: "recurring", label: "Subscriptions", percentage: 15, color: "#FDE047", amount: "$7,238" },
-                    { id: "expenses", label: "Discretionary & Food", percentage: 22, color: "#FB7185", amount: "$10,615" }
+                    { id: "savings", label: "Investments & Liquid", percentage: 38, color: "#A3E635", amount: "₹18,335" },
+                    { id: "fixed", label: "Fixed & Housing", percentage: 25, color: "#A5B4FC", amount: "₹12,062" },
+                    { id: "recurring", label: "Subscriptions", percentage: 15, color: "#FDE047", amount: "₹7,238" },
+                    { id: "expenses", label: "Discretionary & Food", percentage: 22, color: "#FB7185", amount: "₹10,615" }
                   ] : currentPeriod.categories.slice(0, 4).map((cat, idx) => ({
                     id: cat.id,
                     label: cat.name,
@@ -568,7 +568,7 @@ export function SpendingScreen({ onOpenDrilldown }: SpendingScreenProps) {
                     amount: cat.amount
                   }))
                 }
-                theme="dark"
+                theme="light"
                 onSegmentClick={() => onOpenDrilldown()}
               />
             </div>
