@@ -104,16 +104,16 @@ function RibbedAudioWaveOrb({ isListening = true, size = 155 }: { isListening?: 
         }}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.94 }}
-        className="relative w-full h-full rounded-full overflow-hidden shadow-[0_20px_50px_rgba(0,85,255,0.42),0_10px_25px_rgba(124,58,237,0.3),inset_0_2px_8px_rgba(255,255,255,0.45)] border-[1.5px] border-white/40 bg-gradient-to-b from-[#1D4ED8] to-[#0B1E5B]"
+        className="relative w-full h-full flex items-center justify-center select-none"
       >
         <img 
-          src="/images/blue-ribbed-orb.jpg" 
+          src="/images/blue-ribbed-orb.png" 
           alt="Juspay Ribbed Royal Blue Audio Wave Orb"
-          className="w-full h-full object-cover select-none pointer-events-none transform scale-105"
+          className="w-full h-full object-contain select-none pointer-events-none filter drop-shadow-[0_22px_36px_rgba(0,85,255,0.45)] drop-shadow-[0_10px_20px_rgba(124,58,237,0.3)]"
         />
 
         {/* Soft specular sheen overlay for dynamic 3D depth */}
-        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/10 to-white/25 pointer-events-none mix-blend-overlay" />
+        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/10 to-white/20 pointer-events-none mix-blend-overlay" />
       </motion.div>
     </div>
   )
