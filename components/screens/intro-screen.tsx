@@ -2,7 +2,7 @@
 
 import React, { useState } from "react"
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
-import { Apple, ArrowRight } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface IntroScreenProps {
@@ -171,16 +171,15 @@ export function IntroScreen({ onContinue }: IntroScreenProps) {
           </h1>
         </div>
 
-        {/* Action Button: Apple Pill Button */}
+        {/* Action Button: Pill Button */}
         <div className="space-y-2.5 max-w-[320px] mx-auto">
           <motion.button 
             whileHover={{ scale: 1.02, y: -1 }}
             whileTap={{ scale: 0.98 }}
             onClick={onContinue}
-            className="w-full py-4 px-6 rounded-full bg-neutral-950 hover:bg-neutral-900 text-white flex items-center justify-center gap-2.5 text-sm font-semibold shadow-[0_8px_25px_rgba(0,0,0,0.25)] transition-all cursor-pointer"
+            className="w-full py-4 px-6 rounded-full bg-neutral-950 hover:bg-neutral-900 text-white flex items-center justify-center gap-2 text-sm font-semibold shadow-[0_8px_25px_rgba(0,0,0,0.25)] transition-all cursor-pointer"
           >
-            <Apple className="w-4.5 h-4.5 fill-current" />
-            <span>Continue with Apple</span>
+            <span>Get Started</span>
           </motion.button>
 
           <button 
