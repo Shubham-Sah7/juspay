@@ -55,9 +55,12 @@
     background-color: #F3F4F6;
     color: #0A0E17;
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", var(--font-sans), system-ui, sans-serif;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
-    -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  button:focus,
+  button:focus-visible {
+    outline: none;
   }
 }
 

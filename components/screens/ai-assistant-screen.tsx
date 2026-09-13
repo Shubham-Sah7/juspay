@@ -297,31 +297,52 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack, initialMode = "chat
           </button>
         </div>
 
-        {/* Minimal Chat / Voice Toggle */}
-        <div className="grid grid-cols-2 gap-1 p-0.5 rounded-xl bg-neutral-200/70 text-xs font-semibold max-w-[190px] mx-auto">
+        {/* Premium Animated Chat / Voice Capsule Toggle */}
+        <div className="relative flex items-center p-1 rounded-full bg-neutral-200/80 border border-neutral-300/60 max-w-[200px] mx-auto select-none shadow-[inset_0_1px_2px_rgba(0,0,0,0.06)]">
+          {/* Animated Sliding White Capsule Indicator */}
+          {mode === "chat" && (
+            <motion.div
+              layoutId="activeModeSlider"
+              className="absolute inset-y-1 left-1 w-[calc(50%-4px)] rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04)] border border-black/5"
+              transition={{ type: "spring", stiffness: 450, damping: 32 }}
+            />
+          )}
+          {mode === "voice" && (
+            <motion.div
+              layoutId="activeModeSlider"
+              className="absolute inset-y-1 right-1 w-[calc(50%-4px)] rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04)] border border-black/5"
+              transition={{ type: "spring", stiffness: 450, damping: 32 }}
+            />
+          )}
+
           <button
+            type="button"
             onClick={() => setMode("chat")}
             className={cn(
-              "py-1 rounded-lg transition text-center flex items-center justify-center gap-1.5 cursor-pointer text-xs",
+              "relative z-10 flex-1 py-1.5 px-3 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors duration-200 cursor-pointer outline-none focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0 select-none",
               mode === "chat" 
-                ? "bg-white text-neutral-950 font-bold shadow-xs" 
-                : "text-neutral-500 hover:text-neutral-900"
+                ? "text-neutral-950 font-bold" 
+                : "text-neutral-500 hover:text-neutral-800"
             )}
           >
-            <MessageSquare className="w-3.5 h-3.5 stroke-[2]" />
+            <MessageSquare className={cn("w-3.5 h-3.5 transition-colors stroke-[2.2]", mode === "chat" ? "text-[#0055FF]" : "text-neutral-400")} />
             <span>Chat</span>
           </button>
           <button
+            type="button"
             onClick={() => setMode("voice")}
             className={cn(
-              "py-1 rounded-lg transition text-center flex items-center justify-center gap-1.5 cursor-pointer text-xs",
+              "relative z-10 flex-1 py-1.5 px-3 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors duration-200 cursor-pointer outline-none focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0 select-none",
               mode === "voice" 
-                ? "bg-white text-neutral-950 font-bold shadow-xs" 
-                : "text-neutral-500 hover:text-neutral-900"
+                ? "text-neutral-950 font-bold" 
+                : "text-neutral-500 hover:text-neutral-800"
             )}
           >
-            <Mic className="w-3.5 h-3.5 stroke-[2]" />
+            <Mic className={cn("w-3.5 h-3.5 transition-colors stroke-[2.2]", mode === "voice" ? "text-[#0055FF]" : "text-neutral-400")} />
             <span>Voice</span>
+            {mode === "voice" && (
+              <span className="w-1.5 h-1.5 rounded-full bg-[#0055FF] animate-pulse" />
+            )}
           </button>
         </div>
       </div>
