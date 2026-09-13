@@ -199,21 +199,12 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
   const [isListening, setIsListening] = useState(true)
   const [isTyping, setIsTyping] = useState(false)
   const [hasSavedPlan, setHasSavedPlan] = useState(false)
-  const [voiceSeconds, setVoiceSeconds] = useState(4)
   const [spokenResponse, setSpokenResponse] = useState<string>(
     "“Food delivery was up 24% in August. Cutting 2 orders weekly could save ₹2,400/month.”"
   )
   const [extraTurns, setExtraTurns] = useState<ExtraTurn[]>([])
 
   const chatBottomRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!isListening) return
-    const timer = setInterval(() => {
-      setVoiceSeconds(prev => prev + 1)
-    }, 1000)
-    return () => clearInterval(timer)
-  }, [isListening])
 
   const scrollToBottom = () => {
     chatBottomRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -280,9 +271,6 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
   const handleToggleListening = (forcedState?: boolean) => {
     const nextState = forcedState !== undefined ? forcedState : !isListening
     setIsListening(nextState)
-    if (!nextState) {
-      setVoiceSeconds(0)
-    }
   }
 
   return (
@@ -781,71 +769,8 @@ export function AIAssistantScreen({ onOpenDrilldown, onBack }: AIAssistantScreen
             </div>
           </div>
 
-          {/* Waveform & Voice Control Bar */}
-          <div className="space-y-2 flex flex-col items-center relative z-10 pb-1 w-full">
-            {isListening && (
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="flex items-center justify-between gap-2.5 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-xl border border-neutral-200/80 shadow-2xs max-w-[280px] w-full"
-              >
-                <div className="flex items-center gap-1.5 shrink-0 pl-0.5">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0055FF] opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#0055FF]" />
-                  </span>
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-600">
-                    LIVE
-                  </span>
-                </div>
-
-                <div className="w-[1px] h-3 bg-neutral-200 shrink-0" />
-
-                <div className="flex items-center justify-center gap-[2.5px] h-5 flex-1 px-1 overflow-hidden">
-                  {[
-                    { min: 3, max: 12, delay: 0.04 },
-                    { min: 5, max: 16, delay: 0.12 },
-                    { min: 3, max: 13, delay: 0.22 },
-                    { min: 6, max: 20, delay: 0.08 },
-                    { min: 8, max: 22, delay: 0.18 },
-                    { min: 5, max: 17, delay: 0.28 },
-                    { min: 9, max: 22, delay: 0.05 },
-                    { min: 11, max: 24, delay: 0.15 },
-                    { min: 9, max: 20, delay: 0.25 },
-                    { min: 11, max: 24, delay: 0.09 },
-                    { min: 8, max: 22, delay: 0.19 },
-                    { min: 9, max: 20, delay: 0.29 },
-                    { min: 6, max: 18, delay: 0.07 },
-                    { min: 8, max: 17, delay: 0.17 },
-                    { min: 5, max: 14, delay: 0.27 },
-                    { min: 3, max: 11, delay: 0.13 },
-                  ].map((bar, i) => (
-                    <motion.div
-                      key={i}
-                      animate={{ 
-                        height: [bar.min, bar.max, bar.min * 1.4, bar.max * 0.8, bar.min] 
-                      }}
-                      transition={{ 
-                        duration: 0.85, 
-                        repeat: Infinity, 
-                        delay: bar.delay, 
-                        ease: "easeInOut" 
-                      }}
-                      className="w-[2.5px] rounded-full bg-gradient-to-t from-[#0055FF] to-[#38BDF8]"
-                    />
-                  ))}
-                </div>
-
-                <div className="w-[1px] h-3 bg-neutral-200 shrink-0" />
-
-                <div className="shrink-0 pr-0.5">
-                  <span className="text-[11px] font-mono font-bold text-neutral-700">
-                    {Math.floor(voiceSeconds / 60).toString().padStart(2, "0")}:{(voiceSeconds % 60).toString().padStart(2, "0")}
-                  </span>
-                </div>
-              </motion.div>
-            )}
-
+          {/* Voice Control Bar */}
+          <div className="flex flex-col items-center relative z-10 pb-1 w-full">
             <motion.button 
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
