@@ -10,14 +10,15 @@ import {
   Scan, 
   Plus, 
   TrendingUp, 
-  ChevronRight,
   ShieldCheck,
   Zap,
   Lock,
   Eye,
   EyeOff,
   X,
-  CheckCircle2
+  CheckCircle2,
+  ArrowRight,
+  Sparkles
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { JuspayLogoMark } from "@/components/ui/juspay-logo"
@@ -374,49 +375,172 @@ export function ProfileScreen({ onOpenDrilldown }: ProfileScreenProps) {
         </div>
       </motion.div>
 
-      {/* Card Settings & Security with Interactive Freeze Toggle */}
-      <motion.div variants={itemVariants} className="space-y-2.5">
-        <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400">
-          Card Settings & Security
-        </h3>
+      {/* Card Settings & Security: Signature Gen-Z Overlapping Card Stack */}
+      <motion.div variants={itemVariants} className="space-y-2.5 pt-1">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400">
+              Card Settings & Security
+            </h3>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-[#0055FF] border border-blue-200">
+              {isCardFrozen ? "1 Alert" : "2 Active"}
+            </span>
+          </div>
+          <span className="text-[11px] font-medium text-neutral-400 font-mono">
+            Visa •• 9934
+          </span>
+        </div>
 
-        <div className="space-y-2">
-          {/* Card Freeze Toggle */}
-          <div 
+        {/* Stacked Vertical Gen-Z Cards with Folder Tabs & Pill Tags */}
+        <div className="relative pt-1 space-y-[-14px]">
+          {/* Card 1: Card Freeze & Security Controls */}
+          <motion.div 
+            whileHover={{ y: -6, zIndex: 35 }}
+            whileTap={{ scale: 0.99 }}
             onClick={() => setIsCardFrozen(!isCardFrozen)}
-            className="p-3.5 rounded-2xl bg-white/80 backdrop-blur-xl border border-white/80 shadow-[0_4px_16px_rgba(0,0,0,0.03)] flex items-center justify-between cursor-pointer hover:bg-white transition select-none"
+            className={cn(
+              "relative z-10 p-5 rounded-[24px] cursor-pointer transition-all duration-200 border select-none",
+              isCardFrozen 
+                ? "bg-[#F95738] text-white shadow-[0_10px_28px_rgba(249,87,56,0.38)] border-white/25"
+                : "bg-[#111622] text-white shadow-[0_10px_28px_rgba(17,22,34,0.4)] border-white/[0.12]"
+            )}
           >
-            <div className="flex items-center gap-3">
-              <div className={cn("w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border transition shadow-2xs", isCardFrozen ? "bg-rose-100 text-rose-700 border-rose-200" : "bg-blue-50 text-[#0055FF] border-blue-100")}>
-                {isCardFrozen ? <Lock className="w-4.5 h-4.5 stroke-[2.2]" /> : <ShieldCheck className="w-4.5 h-4.5 stroke-[2.2]" />}
-              </div>
+            <div className="flex items-start justify-between">
               <div>
-                <span className="text-xs font-bold text-neutral-900 block leading-tight">
+                <div className="flex items-center gap-2">
+                  <span className={cn(
+                    "w-2 h-2 rounded-full",
+                    isCardFrozen ? "bg-white animate-ping" : "bg-emerald-400"
+                  )} />
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-white/70">
+                    {isCardFrozen ? "Security Alert" : "Live Protection"}
+                  </span>
+                </div>
+                <h4 className="text-xl font-bold tracking-tight mt-1">
                   {isCardFrozen ? "Card Frozen" : "Card Freeze & Limits"}
-                </span>
-                <span className="text-[10px] font-medium text-neutral-400 block mt-0.5">
-                  {isCardFrozen ? "Payments locked securely" : "Daily limit: ₹1,00,000"}
-                </span>
+                </h4>
+                <p className="text-xs text-white/75 mt-0.5 font-medium">
+                  {isCardFrozen ? "Payments locked • Tap to unfreeze" : "Daily spending limit: ₹1,00,000"}
+                </p>
+
+                <div className="flex items-center gap-2 mt-3 flex-wrap">
+                  <span className="text-xs font-medium bg-white/15 backdrop-blur-xs px-3 py-1 rounded-full border border-white/25">
+                    {isCardFrozen ? "🔒 Locked" : "✓ Active Protection"}
+                  </span>
+                  <span className="text-xs font-medium bg-white/15 backdrop-blur-xs px-3 py-1 rounded-full border border-white/25">
+                    POS & Online ON
+                  </span>
+                  <span className="text-xs font-medium bg-white/15 backdrop-blur-xs px-3 py-1 rounded-full border border-white/25">
+                    ATM Limit ₹25K
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex flex-col items-end gap-2.5">
+                <div 
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setIsCardFrozen(!isCardFrozen)
+                  }}
+                  className={cn(
+                    "w-12 h-7 rounded-full p-1 transition-colors flex items-center cursor-pointer shadow-inner",
+                    isCardFrozen ? "bg-white text-rose-600 justify-end" : "bg-white/20 justify-start"
+                  )}
+                >
+                  <motion.div 
+                    layout 
+                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    className={cn(
+                      "w-5 h-5 rounded-full shadow-md flex items-center justify-center",
+                      isCardFrozen ? "bg-rose-600 text-white" : "bg-white text-neutral-900"
+                    )}
+                  >
+                    {isCardFrozen ? <Lock className="w-3 h-3 stroke-[2.5]" /> : <ShieldCheck className="w-3 h-3 stroke-[2.5]" />}
+                  </motion.div>
+                </div>
               </div>
             </div>
+          </motion.div>
 
-            <div className={cn("w-11 h-6.5 rounded-full p-1 transition-colors flex items-center cursor-pointer", isCardFrozen ? "bg-rose-500 justify-end" : "bg-neutral-300 justify-start")}>
-              <motion.div layout className="w-4.5 h-4.5 rounded-full bg-white shadow-md" />
-            </div>
-          </div>
-
-          <div className="p-3.5 rounded-2xl bg-white/80 backdrop-blur-xl border border-white/80 shadow-[0_4px_16px_rgba(0,0,0,0.03)] flex items-center justify-between cursor-pointer hover:bg-white transition">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-100 text-amber-600 flex items-center justify-center shrink-0 shadow-2xs">
-                <Zap className="w-4.5 h-4.5 stroke-[2.2]" />
-              </div>
+          {/* Card 2: Instant Cashbacks (Vibrant Lime from Homepage) */}
+          <motion.div 
+            whileHover={{ y: -6, zIndex: 35 }}
+            whileTap={{ scale: 0.99 }}
+            onClick={onOpenDrilldown}
+            className="relative z-20 p-5 rounded-[24px] bg-[#D4F65B] text-neutral-950 shadow-[0_10px_28px_rgba(212,246,91,0.35)] border border-white/40 cursor-pointer transition-all duration-200 select-none group"
+          >
+            <div className="flex items-start justify-between">
               <div>
-                <span className="text-xs font-bold text-neutral-900 block leading-tight">Instant Cashbacks</span>
-                <span className="text-[10px] font-medium text-neutral-400 block mt-0.5">₹1,240 earned this month</span>
+                <div className="flex items-center gap-1.5">
+                  <Zap className="w-3.5 h-3.5 fill-neutral-950 stroke-neutral-950" />
+                  <span className="text-[10px] font-black uppercase tracking-wider text-neutral-950/70">
+                    Instant Rewards
+                  </span>
+                </div>
+                <h4 className="text-xl font-bold tracking-tight mt-1">Instant Cashbacks</h4>
+                
+                <div className="flex items-center gap-2 mt-3 flex-wrap">
+                  <span className="text-xs font-semibold bg-neutral-950 text-white px-3 py-1 rounded-full shadow-2xs">
+                    ⚡ 3% on dining
+                  </span>
+                  <span className="text-xs font-medium bg-neutral-950/5 px-3 py-1 rounded-full border border-neutral-950/20">
+                    1% on UPI
+                  </span>
+                  <span className="text-xs font-medium bg-neutral-950/5 px-3 py-1 rounded-full border border-neutral-950/20">
+                    Auto-credited
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex flex-col items-end gap-2.5">
+                <span className="text-xs font-bold text-neutral-700">Aug Reward</span>
+                <span className="text-xl font-black tracking-tight font-sans text-neutral-950">₹1,240</span>
+                <div className="w-8.5 h-8.5 rounded-full bg-neutral-950 text-white flex items-center justify-center shadow-xs group-hover:scale-105 group-hover:translate-x-0.5 transition-all">
+                  <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+                </div>
               </div>
             </div>
-            <ChevronRight className="w-4 h-4 text-neutral-400" />
-          </div>
+          </motion.div>
+
+          {/* Card 3: Spare Change Roundups & Wealth (Sky Blue from Homepage) */}
+          <motion.div 
+            whileHover={{ y: -6, zIndex: 35 }}
+            whileTap={{ scale: 0.99 }}
+            onClick={onOpenDrilldown}
+            className="relative z-30 p-5 rounded-[24px] bg-[#38BDF8] text-neutral-950 shadow-[0_12px_32px_rgba(56,189,248,0.38)] border border-white/35 cursor-pointer transition-all duration-200 space-y-3 select-none group"
+          >
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 fill-neutral-950 stroke-neutral-950" />
+                  <span className="text-[10px] font-black uppercase tracking-wider text-neutral-950/70">
+                    Micro-Savings
+                  </span>
+                </div>
+                <h4 className="text-xl font-bold tracking-tight mt-1">Spare Change Roundups</h4>
+                <p className="text-xs text-neutral-900/80 mt-0.5 font-medium">
+                  ₹520 auto-saved this week • Rounding to nearest ₹10
+                </p>
+
+                <div className="flex items-center gap-2 mt-3 flex-wrap">
+                  <span className="text-xs font-medium bg-neutral-950/10 px-3 py-1 rounded-full border border-neutral-950/20 font-semibold">
+                    Gold Vault +4.2%
+                  </span>
+                  <span className="text-xs font-medium bg-neutral-950/10 px-3 py-1 rounded-full border border-neutral-950/20">
+                    Auto-deposit Sat
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex flex-col items-end gap-2.5">
+                <span className="text-xs font-bold text-neutral-800">Total Saved</span>
+                <span className="text-xl font-black tracking-tight font-sans text-neutral-950">₹4,860</span>
+                <div className="w-8.5 h-8.5 rounded-full bg-neutral-950 text-white flex items-center justify-center shadow-xs group-hover:scale-105 group-hover:translate-x-0.5 transition-all">
+                  <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </motion.div>
 
