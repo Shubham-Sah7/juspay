@@ -51,7 +51,7 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
       : target === "emergency" 
       ? "Rainy Day Piggy" 
       : "Tokyo Trip Piggy"
-    setToastMessage(`🪙 Clink! +₹500 dropped into ${label}! 🐖✨`)
+    setToastMessage(`🪙 Clink! +₹500 dropped into ${label}! ✨`)
     setTimeout(() => {
       setToastMessage(null)
     }, 2200)
@@ -818,7 +818,7 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
             <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400">
               Piggy Vault & Goals
             </h3>
-            <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-pink-100 text-pink-700 border border-pink-200">
+            <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-white text-pink-700 border border-pink-200 shadow-2xs whitespace-nowrap">
               2 Jars Active
             </span>
           </div>
@@ -942,8 +942,8 @@ export function HomeScreen({ onNavigateToInsights, onOpenDrilldown }: HomeScreen
                     <span className="text-xs font-medium px-3 py-1 rounded-full border border-white/20 bg-white/10 text-white">
                       ₹{tokyoLeft.toLocaleString("en-IN")} left
                     </span>
-                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-white/20 bg-white/10 text-white">
-                      🐖 Piggy Target
+                    <span className="text-xs font-medium px-3 py-1 rounded-full border border-white/20 bg-white/15 text-white">
+                      Piggy Target
                     </span>
                   </div>
 
