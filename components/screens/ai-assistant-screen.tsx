@@ -248,7 +248,7 @@ export function AIAssistantScreen({ onOpenDrilldown }: AIAssistantScreenProps) {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="p-5 space-y-4 flex flex-col justify-between min-h-full select-none bg-[#F8F9FA] relative"
+      className="p-4 flex flex-col justify-between h-full select-none bg-[#F8F9FA] relative overflow-hidden"
     >
       {/* 1. Header with Segmented Control */}
       <motion.div variants={itemVariants} className="space-y-3 pb-2 border-b border-neutral-200/60">
@@ -452,141 +452,148 @@ export function AIAssistantScreen({ onOpenDrilldown }: AIAssistantScreenProps) {
         <motion.div 
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex-1 flex flex-col items-center justify-between py-4 px-4 text-center select-none relative"
+          className="flex-1 flex flex-col items-center justify-between py-2 px-1 text-center select-none relative"
         >
           {/* Ambient aurora glow background */}
-          <div className="absolute inset-x-0 bottom-12 h-64 bg-gradient-to-t from-[#0055FF]/15 via-[#0099FF]/5 to-transparent pointer-events-none rounded-3xl blur-2xl" />
+          <div className="absolute inset-x-0 bottom-8 h-60 bg-gradient-to-t from-[#0055FF]/12 via-[#0099FF]/4 to-transparent pointer-events-none rounded-3xl blur-2xl" />
 
-          {/* Header Status */}
-          <div className="space-y-1.5 pt-1 relative z-10">
-            <span className="text-xs font-mono uppercase tracking-wider text-neutral-400 font-medium">Juspay Voice AI</span>
-            <h2 className="text-xl font-bold text-neutral-900 tracking-tight">
-              {isListening ? "Listening…" : "Tap orb to speak"}
-            </h2>
-          </div>
-
-          {/* Central Ribbed Royal Blue Sound Orb */}
-          <div 
-            className="my-auto flex flex-col items-center space-y-5 relative z-10 cursor-pointer" 
-            onClick={() => handleToggleListening()}
-          >
-            <RibbedAudioWaveOrb isListening={isListening} size={155} />
-
-            <div className="max-w-[280px] space-y-2">
-              <p className="text-sm font-semibold text-neutral-800 leading-snug">
-                {spokenResponse}
-              </p>
-              <span className="text-xs text-neutral-400 font-normal block">
-                {isListening ? "Listening to your voice..." : "Tap orb or a prompt below to listen"}
+          {/* 1. Header Status Pill */}
+          <div className="pt-0.5 relative z-10">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50/90 border border-blue-200/60 shadow-2xs">
+              <span className="relative flex h-1.5 w-1.5">
+                {isListening && (
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0055FF] opacity-75" />
+                )}
+                <span className={cn(
+                  "relative inline-flex rounded-full h-1.5 w-1.5 transition-colors",
+                  isListening ? "bg-[#0055FF]" : "bg-neutral-400"
+                )} />
+              </span>
+              <span className="text-[11px] font-semibold tracking-wide text-neutral-700">
+                {isListening ? "Listening to your voice..." : "Voice paused"}
               </span>
             </div>
           </div>
 
-          {/* Interactive Voice Suggestion Pills */}
-          <div className="flex items-center flex-wrap justify-center gap-2 relative z-10 max-w-[320px] pb-2">
-            {[
-              { q: "Why did food jump?", a: "Food delivery is up 24% this month, mostly due to 18 delivery orders." },
-              { q: "Tokyo Trip progress?", a: "You have saved ₹68,000 of ₹1,00,000, which is 68% of your goal." },
-              { q: "Can I save ₹3,000?", a: "Yes, reducing dining out by two orders per week will save ₹2,400 monthly." }
-            ].map((item) => (
-              <button
-                key={item.q}
-                onClick={() => handleVoiceQuery(item.q, item.a)}
-                className="px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-neutral-200 text-[11px] font-medium text-neutral-700 shadow-none hover:border-[#0055FF] hover:text-[#0055FF] transition cursor-pointer"
-              >
-                {item.q}
-              </button>
-            ))}
+          {/* 2. Central Ribbed Royal Blue Sound Orb */}
+          <div 
+            className="my-auto flex flex-col items-center relative z-10 cursor-pointer py-1" 
+            onClick={() => handleToggleListening()}
+          >
+            <RibbedAudioWaveOrb isListening={isListening} size={135} />
           </div>
 
-          {/* Waveform & Voice Control Bar */}
-          <div className="space-y-3 flex flex-col items-center relative z-10 pb-1 w-full">
+          {/* 3. Spoken Insight Card */}
+          <motion.div 
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="relative z-10 w-full max-w-[310px] mx-auto px-4 py-2.5 rounded-2xl bg-white/80 backdrop-blur-md border border-neutral-200/70 shadow-xs mb-2 space-y-1"
+          >
+            <p className="text-xs font-semibold text-neutral-800 leading-relaxed">
+              {spokenResponse}
+            </p>
+            <span className="text-[10px] text-neutral-400 font-medium block">
+              {isListening ? "Ask follow-ups or tap a suggestion" : "Tap orb or start voice to speak"}
+            </span>
+          </motion.div>
+
+          {/* 4. Interactive Voice Suggestion Pills - Perfectly Centered Single Line */}
+          <div className="w-full relative z-10 mb-3 px-2">
+            <div className="flex items-center justify-center gap-1.5 max-w-full">
+              {[
+                { q: "Why food jumped?", a: "Food delivery is up 24% this month, mostly due to 18 delivery orders." },
+                { q: "Tokyo Trip progress", a: "You have saved ₹68,000 of ₹1,00,000, which is 68% of your goal." },
+                { q: "Save ₹3,000?", a: "Yes, reducing dining out by two orders per week will save ₹2,400 monthly." }
+              ].map((item) => (
+                <button
+                  key={item.q}
+                  onClick={() => handleVoiceQuery(item.q, item.a)}
+                  className="shrink-0 px-2.5 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-neutral-200/90 text-[10.5px] font-medium text-neutral-700 shadow-2xs hover:border-[#0055FF] hover:text-[#0055FF] transition cursor-pointer"
+                >
+                  {item.q}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 5. Waveform & Voice Control Bar */}
+          <div className="space-y-2 flex flex-col items-center relative z-10 pb-1 w-full">
             {/* Premium Apple / Voice AI Waveform Capsule Track */}
-            <motion.div 
-              initial={{ opacity: 0, y: 4 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex items-center justify-between gap-2.5 px-3.5 py-2 rounded-full bg-white/95 backdrop-blur-xl border border-neutral-200/80 shadow-2xs max-w-[290px] w-full"
-            >
-              {/* Status Indicator */}
-              <div className="flex items-center gap-1.5 shrink-0 pl-0.5">
-                <span className="relative flex h-2 w-2">
-                  {isListening && (
+            {isListening && (
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex items-center justify-between gap-2.5 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-xl border border-neutral-200/80 shadow-2xs max-w-[280px] w-full"
+              >
+                {/* Status Indicator */}
+                <div className="flex items-center gap-1.5 shrink-0 pl-0.5">
+                  <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0055FF] opacity-75" />
-                  )}
-                  <span className={cn(
-                    "relative inline-flex rounded-full h-2 w-2 transition-colors",
-                    isListening ? "bg-[#0055FF]" : "bg-neutral-400"
-                  )} />
-                </span>
-                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-600">
-                  {isListening ? "LIVE" : "PAUSED"}
-                </span>
-              </div>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#0055FF]" />
+                  </span>
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-600">
+                    LIVE
+                  </span>
+                </div>
 
-              <div className="w-[1px] h-3.5 bg-neutral-200 shrink-0" />
+                <div className="w-[1px] h-3 bg-neutral-200 shrink-0" />
 
-              {/* Multi-Frequency Audio Waveform Equalizer */}
-              <div className="flex items-center justify-center gap-[2.5px] h-6 flex-1 px-1 overflow-hidden">
-                {[
-                  { min: 4, max: 14, delay: 0.04 },
-                  { min: 6, max: 20, delay: 0.12 },
-                  { min: 4, max: 16, delay: 0.22 },
-                  { min: 8, max: 26, delay: 0.08 },
-                  { min: 10, max: 28, delay: 0.18 },
-                  { min: 6, max: 22, delay: 0.28 },
-                  { min: 12, max: 28, delay: 0.05 },
-                  { min: 14, max: 30, delay: 0.15 },
-                  { min: 12, max: 26, delay: 0.25 },
-                  { min: 14, max: 30, delay: 0.09 },
-                  { min: 10, max: 28, delay: 0.19 },
-                  { min: 12, max: 26, delay: 0.29 },
-                  { min: 8, max: 24, delay: 0.07 },
-                  { min: 10, max: 22, delay: 0.17 },
-                  { min: 6, max: 18, delay: 0.27 },
-                  { min: 4, max: 14, delay: 0.13 },
-                ].map((bar, i) => (
-                  <motion.div
-                    key={i}
-                    animate={isListening ? { 
-                      height: [bar.min, bar.max, bar.min * 1.5, bar.max * 0.8, bar.min] 
-                    } : { 
-                      height: 4 
-                    }}
-                    transition={isListening ? { 
-                      duration: 0.85, 
-                      repeat: Infinity, 
-                      delay: bar.delay, 
-                      ease: "easeInOut" 
-                    } : { duration: 0.2 }}
-                    className={cn(
-                      "w-[2.5px] rounded-full transition-colors",
-                      isListening 
-                        ? "bg-gradient-to-t from-[#0055FF] to-[#38BDF8]" 
-                        : "bg-neutral-300"
-                    )}
-                  />
-                ))}
-              </div>
+                {/* Multi-Frequency Audio Waveform Equalizer */}
+                <div className="flex items-center justify-center gap-[2.5px] h-5 flex-1 px-1 overflow-hidden">
+                  {[
+                    { min: 3, max: 12, delay: 0.04 },
+                    { min: 5, max: 16, delay: 0.12 },
+                    { min: 3, max: 13, delay: 0.22 },
+                    { min: 6, max: 20, delay: 0.08 },
+                    { min: 8, max: 22, delay: 0.18 },
+                    { min: 5, max: 17, delay: 0.28 },
+                    { min: 9, max: 22, delay: 0.05 },
+                    { min: 11, max: 24, delay: 0.15 },
+                    { min: 9, max: 20, delay: 0.25 },
+                    { min: 11, max: 24, delay: 0.09 },
+                    { min: 8, max: 22, delay: 0.19 },
+                    { min: 9, max: 20, delay: 0.29 },
+                    { min: 6, max: 18, delay: 0.07 },
+                    { min: 8, max: 17, delay: 0.17 },
+                    { min: 5, max: 14, delay: 0.27 },
+                    { min: 3, max: 11, delay: 0.13 },
+                  ].map((bar, i) => (
+                    <motion.div
+                      key={i}
+                      animate={{ 
+                        height: [bar.min, bar.max, bar.min * 1.4, bar.max * 0.8, bar.min] 
+                      }}
+                      transition={{ 
+                        duration: 0.85, 
+                        repeat: Infinity, 
+                        delay: bar.delay, 
+                        ease: "easeInOut" 
+                      }}
+                      className="w-[2.5px] rounded-full bg-gradient-to-t from-[#0055FF] to-[#38BDF8]"
+                    />
+                  ))}
+                </div>
 
-              <div className="w-[1px] h-3.5 bg-neutral-200 shrink-0" />
+                <div className="w-[1px] h-3 bg-neutral-200 shrink-0" />
 
-              {/* Live Audio Elapsed Duration */}
-              <div className="shrink-0 pr-0.5">
-                <span className="text-[11px] font-mono font-bold text-neutral-700">
-                  00:{voiceSeconds.toString().padStart(2, "0")}
-                </span>
-              </div>
-            </motion.div>
+                {/* Live Audio Elapsed Duration */}
+                <div className="shrink-0 pr-0.5">
+                  <span className="text-[11px] font-mono font-bold text-neutral-700">
+                    {Math.floor(voiceSeconds / 60).toString().padStart(2, "0")}:{(voiceSeconds % 60).toString().padStart(2, "0")}
+                  </span>
+                </div>
+              </motion.div>
+            )}
 
             <motion.button 
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => handleToggleListening()}
               className={cn(
-                "w-full max-w-[260px] py-3 px-6 rounded-full flex items-center justify-center gap-2.5 transition-all cursor-pointer text-sm font-semibold tracking-wide shadow-md",
+                "w-full max-w-[250px] py-2.5 px-6 rounded-full flex items-center justify-center gap-2 transition-all cursor-pointer text-sm font-semibold tracking-wide shadow-md",
                 isListening 
-                  ? "bg-[#0055FF] hover:bg-[#0048E6] text-white shadow-[0_8px_25px_rgba(0,85,255,0.35)] active:bg-[#003ECC]" 
-                  : "bg-neutral-900 hover:bg-neutral-800 text-white shadow-[0_6px_20px_rgba(0,0,0,0.2)] active:bg-black"
+                  ? "bg-[#0055FF] hover:bg-[#0048E6] text-white shadow-[0_6px_20px_rgba(0,85,255,0.3)] active:bg-[#003ECC]" 
+                  : "bg-neutral-900 hover:bg-neutral-800 text-white shadow-[0_4px_16px_rgba(0,0,0,0.18)] active:bg-black"
               )}
             >
               {isListening ? (
