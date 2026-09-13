@@ -869,7 +869,7 @@ export function SpendingScreen({ onOpenDrilldown }: SpendingScreenProps) {
                 whileHover={{ y: -2, scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
                 onClick={onOpenDrilldown}
-                className="p-4 rounded-3xl bg-white/90 backdrop-blur-xl border border-white shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-neutral-300/80 transition-all duration-200 cursor-pointer space-y-3 group"
+                className="p-3.5 rounded-2xl bg-white/90 backdrop-blur-xl border border-white shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-neutral-300/80 transition-all duration-200 cursor-pointer group"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -903,32 +903,6 @@ export function SpendingScreen({ onOpenDrilldown }: SpendingScreenProps) {
                       <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
                     </div>
                   </div>
-                </div>
-
-                {/* Pill Chips row matching Homepage */}
-                <div className="flex items-center flex-wrap gap-2 pt-2 border-t border-neutral-100/90">
-                  {tx.tags.map((tag, idx) => {
-                    const TagIcon = tag.icon
-                    return (
-                      <span 
-                        key={idx} 
-                        className="text-[11px] font-medium px-2.5 py-0.5 rounded-full border border-neutral-900/10 bg-neutral-900/5 text-neutral-700 flex items-center gap-1.5 shadow-2xs"
-                      >
-                        {TagIcon && <TagIcon className={cn("w-3 h-3 stroke-[2.2]", tag.color)} />}
-                        <span>{tag.label}</span>
-                      </span>
-                    )
-                  })}
-                  <span className={cn(
-                    "text-[11px] font-semibold px-2.5 py-0.5 rounded-full ml-auto shadow-2xs",
-                    tx.categoryKey === "dining" ? "bg-rose-50 text-rose-600 border border-rose-200/70" :
-                    tx.categoryKey === "entertainment" ? "bg-purple-50 text-purple-700 border border-purple-200/70" :
-                    tx.categoryKey === "cafe" ? "bg-pink-50 text-pink-700 border border-pink-200/70" :
-                    tx.categoryKey === "groceries" ? "bg-emerald-50 text-emerald-700 border border-emerald-200/70" :
-                    "bg-blue-50 text-[#0055FF] border border-blue-200/70"
-                  )}>
-                    {tx.category}
-                  </span>
                 </div>
               </motion.div>
             )
