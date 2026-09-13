@@ -1,8 +1,16 @@
 "use client"
 
 import React, { useState } from "react"
-import { motion } from "framer-motion"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  Calendar, 
+  BarChart3, 
+  Zap, 
+  Target
+} from "lucide-react"
+import { cn } from "@/lib/utils"
 
 interface DailyPoint {
   day: string
@@ -10,6 +18,8 @@ interface DailyPoint {
   amount: number
   x: number // percentage 0-100
   y: number // svg coordinate
+  category?: string
+  isPeak?: boolean
 }
 
 const periodChartData: Record<"day" | "week" | "month" | "year", {
@@ -19,88 +29,121 @@ const periodChartData: Record<"day" | "week" | "month" | "year", {
   startLabel: string
   midLabel: string
   endLabel: string
+  avgAmount: string
+  peakDay: string
   points: DailyPoint[]
   defaultIndex: number
 }> = {
   day: {
-    header: "September 14, 2025",
+    header: "September 14, 2026",
     stat: "₹650",
     sublabel: "Peak at 1 PM",
     startLabel: "9 AM",
     midLabel: "1 PM",
     endLabel: "9 PM",
+    avgAmount: "₹410",
+    peakDay: "1 PM",
     defaultIndex: 2,
     points: [
-      { day: "9 AM", dateLabel: "Sep 14, 9:00 AM", amount: 180, x: 5, y: 65 },
-      { day: "11 AM", dateLabel: "Sep 14, 11:30 AM", amount: 420, x: 25, y: 45 },
-      { day: "1 PM", dateLabel: "Sep 14, 1:15 PM", amount: 650, x: 50, y: 18 },
-      { day: "4 PM", dateLabel: "Sep 14, 4:00 PM", amount: 240, x: 68, y: 60 },
-      { day: "7 PM", dateLabel: "Sep 14, 7:30 PM", amount: 560, x: 82, y: 35 },
-      { day: "9 PM", dateLabel: "Sep 14, 9:00 PM", amount: 400, x: 95, y: 48 },
+      { day: "9 AM", dateLabel: "Sep 14, 9:00 AM", amount: 180, x: 5, y: 65, category: "Morning Coffee" },
+      { day: "11 AM", dateLabel: "Sep 14, 11:30 AM", amount: 420, x: 25, y: 45, category: "Quick Transit" },
+      { day: "1 PM", dateLabel: "Sep 14, 1:15 PM", amount: 650, x: 50, y: 18, category: "Team Lunch", isPeak: true },
+      { day: "4 PM", dateLabel: "Sep 14, 4:00 PM", amount: 240, x: 68, y: 60, category: "Snacks" },
+      { day: "7 PM", dateLabel: "Sep 14, 7:30 PM", amount: 560, x: 82, y: 35, category: "Dinner Pickup" },
+      { day: "9 PM", dateLabel: "Sep 14, 9:00 PM", amount: 400, x: 95, y: 48, category: "Late Groceries" },
     ]
   },
   week: {
-    header: "Sep 8 – 14, 2025",
+    header: "Sep 8 – 14, 2026",
     stat: "₹3,400",
     sublabel: "Peak on Friday",
     startLabel: "Mon",
     midLabel: "Thu",
     endLabel: "Sun",
+    avgAmount: "₹1,835",
+    peakDay: "Fri",
     defaultIndex: 4,
     points: [
-      { day: "Mon", dateLabel: "Sep 8, 2025", amount: 1200, x: 5, y: 55 },
-      { day: "Tue", dateLabel: "Sep 9, 2025", amount: 850, x: 20, y: 65 },
-      { day: "Wed", dateLabel: "Sep 10, 2025", amount: 2100, x: 35, y: 38 },
-      { day: "Thu", dateLabel: "Sep 11, 2025", amount: 1450, x: 50, y: 50 },
-      { day: "Fri", dateLabel: "Sep 12, 2025", amount: 3400, x: 65, y: 15 },
-      { day: "Sat", dateLabel: "Sep 13, 2025", amount: 2650, x: 80, y: 28 },
-      { day: "Sun", dateLabel: "Sep 14, 2025", amount: 1200, x: 95, y: 55 },
+      { day: "Mon", dateLabel: "Sep 8, 2026", amount: 1200, x: 5, y: 55, category: "Work Commute" },
+      { day: "Tue", dateLabel: "Sep 9, 2026", amount: 850, x: 20, y: 65, category: "Lunch Out" },
+      { day: "Wed", dateLabel: "Sep 10, 2026", amount: 2100, x: 35, y: 38, category: "Supermarket" },
+      { day: "Thu", dateLabel: "Sep 11, 2026", amount: 1450, x: 50, y: 50, category: "Books & Station" },
+      { day: "Fri", dateLabel: "Sep 12, 2026", amount: 3400, x: 65, y: 15, category: "Dinner & Movie", isPeak: true },
+      { day: "Sat", dateLabel: "Sep 13, 2026", amount: 2650, x: 80, y: 28, category: "Weekend Shopping" },
+      { day: "Sun", dateLabel: "Sep 14, 2026", amount: 1200, x: 95, y: 55, category: "Cafe & Leisure" },
     ]
   },
   month: {
-    header: "September, 2025",
+    header: "SEPTEMBER, 2026",
     stat: "₹6,850",
-    sublabel: "Spent on Sep 7",
+    sublabel: "on Sep 7",
     startLabel: "Sep 1",
     midLabel: "Sep 7",
     endLabel: "Sep 15",
+    avgAmount: "₹2,240",
+    peakDay: "Sep 7",
     defaultIndex: 6,
     points: [
-      { day: "Sep 1", dateLabel: "Sep 1, 2025", amount: 1250, x: 2, y: 45 },
-      { day: "Sep 2", dateLabel: "Sep 2, 2025", amount: 480, x: 10, y: 70 },
-      { day: "Sep 3", dateLabel: "Sep 3, 2025", amount: 3200, x: 18, y: 25 },
-      { day: "Sep 4", dateLabel: "Sep 4, 2025", amount: 1100, x: 25, y: 60 },
-      { day: "Sep 5", dateLabel: "Sep 5, 2025", amount: 2100, x: 33, y: 40 },
-      { day: "Sep 6", dateLabel: "Sep 6, 2025", amount: 890, x: 42, y: 65 },
-      { day: "Sep 7", dateLabel: "Sep 7, 2025", amount: 6850, x: 50, y: 15 },
-      { day: "Sep 8", dateLabel: "Sep 8, 2025", amount: 1420, x: 58, y: 55 },
-      { day: "Sep 9", dateLabel: "Sep 9, 2025", amount: 3900, x: 66, y: 30 },
-      { day: "Sep 10", dateLabel: "Sep 10, 2025", amount: 650, x: 74, y: 72 },
-      { day: "Sep 11", dateLabel: "Sep 11, 2025", amount: 4800, x: 82, y: 20 },
-      { day: "Sep 12", dateLabel: "Sep 12, 2025", amount: 950, x: 90, y: 68 },
-      { day: "Sep 15", dateLabel: "Sep 15, 2025", amount: 2400, x: 98, y: 35 },
+      { day: "Sep 1", dateLabel: "Sep 1, 2026", amount: 1250, x: 3, y: 52, category: "Coffee & Pantry" },
+      { day: "Sep 2", dateLabel: "Sep 2, 2026", amount: 680, x: 11, y: 68, category: "Metro Pass" },
+      { day: "Sep 3", dateLabel: "Sep 3, 2026", amount: 3200, x: 19, y: 34, category: "Dining Out" },
+      { day: "Sep 4", dateLabel: "Sep 4, 2026", amount: 1400, x: 27, y: 58, category: "Quick Delivery" },
+      { day: "Sep 5", dateLabel: "Sep 5, 2026", amount: 2600, x: 35, y: 44, category: "Clothing Item" },
+      { day: "Sep 6", dateLabel: "Sep 6, 2026", amount: 1100, x: 42, y: 64, category: "Bakery & Treats" },
+      { day: "Sep 7", dateLabel: "Sep 7, 2026", amount: 6850, x: 50, y: 16, category: "Weekend Dining & Tech", isPeak: true },
+      { day: "Sep 8", dateLabel: "Sep 8, 2026", amount: 1850, x: 58, y: 54, category: "Subscriptions" },
+      { day: "Sep 9", dateLabel: "Sep 9, 2026", amount: 3900, x: 66, y: 30, category: "Weekly Groceries" },
+      { day: "Sep 10", dateLabel: "Sep 10, 2026", amount: 850, x: 74, y: 66, category: "Pharmacy & Care" },
+      { day: "Sep 11", dateLabel: "Sep 11, 2026", amount: 4800, x: 82, y: 22, category: "Electronics Accessory" },
+      { day: "Sep 12", dateLabel: "Sep 12, 2026", amount: 1200, x: 90, y: 62, category: "Food Delivery" },
+      { day: "Sep 15", dateLabel: "Sep 15, 2026", amount: 2400, x: 97, y: 46, category: "Fuel & Travel" },
     ]
   },
   year: {
-    header: "Year 2025",
+    header: "Year 2026",
     stat: "₹62,000",
     sublabel: "Peak in July",
     startLabel: "Jan",
     midLabel: "May",
     endLabel: "Sep",
+    avgAmount: "₹51,400",
+    peakDay: "Jul",
     defaultIndex: 6,
     points: [
-      { day: "Jan", dateLabel: "January 2025", amount: 48000, x: 5, y: 42 },
-      { day: "Feb", dateLabel: "February 2025", amount: 42000, x: 17, y: 55 },
-      { day: "Mar", dateLabel: "March 2025", amount: 55000, x: 29, y: 30 },
-      { day: "Apr", dateLabel: "April 2025", amount: 46000, x: 40, y: 48 },
-      { day: "May", dateLabel: "May 2025", amount: 58000, x: 52, y: 25 },
-      { day: "Jun", dateLabel: "June 2025", amount: 51000, x: 63, y: 38 },
-      { day: "Jul", dateLabel: "July 2025", amount: 62000, x: 75, y: 15 },
-      { day: "Aug", dateLabel: "August 2025", amount: 52400, x: 86, y: 35 },
-      { day: "Sep", dateLabel: "September 2025", amount: 49000, x: 96, y: 40 },
+      { day: "Jan", dateLabel: "January 2026", amount: 48000, x: 5, y: 42, category: "New Year Trip" },
+      { day: "Feb", dateLabel: "February 2026", amount: 42000, x: 17, y: 55, category: "Routine Spends" },
+      { day: "Mar", dateLabel: "March 2026", amount: 55000, x: 29, y: 30, category: "Tax & Insurance" },
+      { day: "Apr", dateLabel: "April 2026", amount: 46000, x: 40, y: 48, category: "Spring Setup" },
+      { day: "May", dateLabel: "May 2026", amount: 58000, x: 52, y: 25, category: "Gadgets Upgrade" },
+      { day: "Jun", dateLabel: "June 2026", amount: 51000, x: 63, y: 38, category: "Summer Outings" },
+      { day: "Jul", dateLabel: "July 2026", amount: 62000, x: 75, y: 15, category: "Annual Vacation", isPeak: true },
+      { day: "Aug", dateLabel: "August 2026", amount: 52400, x: 86, y: 35, category: "Festive Prep" },
+      { day: "Sep", dateLabel: "September 2026", amount: 49000, x: 96, y: 40, category: "Mid-Year Savings" },
     ]
   }
+}
+
+// Catmull-Rom cubic Bézier curve helper for smooth fintech line chart
+function getSmoothSplinePath(pts: { x: number; y: number }[], scaleX = 3.4): string {
+  if (!pts || pts.length === 0) return ""
+  const scaledPts = pts.map(p => ({ x: p.x * scaleX, y: p.y }))
+  if (scaledPts.length === 1) return `M ${scaledPts[0].x} ${scaledPts[0].y}`
+  
+  let d = `M ${scaledPts[0].x.toFixed(1)} ${scaledPts[0].y.toFixed(1)}`
+  for (let i = 0; i < scaledPts.length - 1; i++) {
+    const p0 = i > 0 ? scaledPts[i - 1] : scaledPts[i]
+    const p1 = scaledPts[i]
+    const p2 = scaledPts[i + 1]
+    const p3 = i < scaledPts.length - 2 ? scaledPts[i + 2] : p2
+
+    const cp1x = p1.x + (p2.x - p0.x) / 6
+    const cp1y = p1.y + (p2.y - p0.y) / 6
+    const cp2x = p2.x - (p3.x - p1.x) / 6
+    const cp2y = p2.y - (p3.y - p1.y) / 6
+
+    d += ` C ${cp1x.toFixed(1)} ${cp1y.toFixed(1)}, ${cp2x.toFixed(1)} ${cp2y.toFixed(1)}, ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`
+  }
+  return d
 }
 
 interface DailySpendingChartProps {
@@ -112,137 +155,221 @@ export function DailySpendingChart({ period = "month" }: DailySpendingChartProps
   const points = current.points
 
   const [activeIndex, setActiveIndex] = useState<number>(current.defaultIndex)
+  const [showAvgLine, setShowAvgLine] = useState<boolean>(false)
+
   const safeIndex = Math.min(activeIndex, points.length - 1)
   const activePoint = points[safeIndex] || points[0]
 
-  // Generate SVG path string
-  const svgPath = points.reduce((acc, pt, i) => {
-    return `${acc} ${i === 0 ? "M" : "L"} ${pt.x * 3.4} ${pt.y}`
-  }, "")
+  // Generate smooth cubic Bézier vector curve
+  const splinePath = getSmoothSplinePath(points, 3.4)
+  const firstX = (points[0]?.x ?? 2) * 3.4
+  const lastX = (points[points.length - 1]?.x ?? 98) * 3.4
+  const bottomY = 88
+  const svgAreaPath = `${splinePath} L ${lastX.toFixed(1)} ${bottomY} L ${firstX.toFixed(1)} ${bottomY} Z`
 
-  const firstX = points[0]?.x ?? 2
-  const lastX = points[points.length - 1]?.x ?? 98
-  const svgAreaPath = `${svgPath} L ${lastX * 3.4} 80 L ${firstX * 3.4} 80 Z`
+  // Average reference position
+  const avgY = 48
 
   return (
-    <div className="p-5 rounded-3xl bg-white/85 backdrop-blur-xl border border-white shadow-[0_10px_35px_rgba(0,0,0,0.04)] space-y-3.5 relative overflow-hidden">
-      {/* Subtle background glow */}
+    <div className="p-5 rounded-3xl bg-white/90 backdrop-blur-xl border border-white shadow-[0_12px_36px_rgba(0,0,0,0.04)] space-y-4 relative overflow-hidden">
+      {/* Subtle top-right ambient glow */}
       <div className="absolute -right-8 -top-8 w-36 h-36 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />
 
-      {/* Date Header & Selector */}
+      {/* Date Header & Navigation Controls */}
       <div className="flex items-center justify-between relative z-10">
         <div>
-          <div className="flex items-center gap-1.5 mb-1">
-            <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-700 border border-blue-500/20">
-              📅 {current.header}
+          {/* Refined Calendar Icon Pill Badge */}
+          <div className="flex items-center gap-1.5 mb-1.5">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-500/10 text-[#2563EB] border border-blue-500/20 text-[10px] font-bold tracking-wider uppercase">
+              <Calendar className="w-3.5 h-3.5 text-[#2563EB] stroke-[2.2]" />
+              <span>{current.header}</span>
             </span>
           </div>
+
+          {/* Amount & Active Label */}
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-black tracking-tight text-neutral-950 font-sans">
-              ₹{activePoint.amount.toLocaleString()}
-            </span>
+            <motion.span 
+              key={activePoint.amount}
+              initial={{ opacity: 0.8, y: -2 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-3xl font-black tracking-tight text-neutral-950 font-sans"
+            >
+              ₹{activePoint.amount.toLocaleString("en-IN")}
+            </motion.span>
             <span className="text-xs font-semibold text-neutral-500">
               {activePoint.day ? `on ${activePoint.day}` : current.sublabel}
             </span>
           </div>
         </div>
 
+        {/* Refined Tactile Chevron Buttons */}
         <div className="flex items-center gap-1.5">
-          <button 
+          <motion.button 
+            whileHover={{ scale: 1.06 }}
+            whileTap={{ scale: 0.92 }}
             onClick={() => setActiveIndex((prev) => Math.max(0, prev - 1))}
-            className="w-8.5 h-8.5 rounded-full bg-neutral-900 text-white flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-xs cursor-pointer"
-            title="Previous point"
+            disabled={activeIndex === 0}
+            className={cn(
+              "w-8.5 h-8.5 rounded-full flex items-center justify-center transition-all shadow-xs",
+              activeIndex === 0 
+                ? "bg-neutral-100 text-neutral-400 cursor-not-allowed border border-neutral-200" 
+                : "bg-[#111827] text-white hover:bg-black border border-white/10 cursor-pointer shadow-sm"
+            )}
+            title="Previous data point"
           >
             <ChevronLeft className="w-4 h-4 stroke-[2.5]" />
-          </button>
-          <button 
+          </motion.button>
+          
+          <motion.button 
+            whileHover={{ scale: 1.06 }}
+            whileTap={{ scale: 0.92 }}
             onClick={() => setActiveIndex((prev) => Math.min(points.length - 1, prev + 1))}
-            className="w-8.5 h-8.5 rounded-full bg-neutral-900 text-white flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-xs cursor-pointer"
-            title="Next point"
+            disabled={activeIndex === points.length - 1}
+            className={cn(
+              "w-8.5 h-8.5 rounded-full flex items-center justify-center transition-all shadow-xs",
+              activeIndex === points.length - 1 
+                ? "bg-neutral-100 text-neutral-400 cursor-not-allowed border border-neutral-200" 
+                : "bg-[#111827] text-white hover:bg-black border border-white/10 cursor-pointer shadow-sm"
+            )}
+            title="Next data point"
           >
             <ChevronRight className="w-4 h-4 stroke-[2.5]" />
-          </button>
+          </motion.button>
         </div>
       </div>
 
-      {/* SVG Daily Spending Line Chart matching Reference Image */}
-      <div className="relative pt-6 pb-2 h-44 w-full select-none">
-        {/* Active Vertical Column Highlight */}
+      {/* Smooth Vector Spending Line Chart */}
+      <div className="relative pt-8 pb-2 h-44 w-full select-none">
+        {/* Luminous Active Column Highlight */}
         <div 
-          className="absolute top-0 bottom-6 w-8 bg-blue-500/10 rounded-xl pointer-events-none transition-all duration-200 -translate-x-1/2"
+          className="absolute top-0 bottom-6 w-9 bg-gradient-to-b from-blue-500/15 via-blue-500/5 to-transparent rounded-2xl pointer-events-none transition-all duration-200 -translate-x-1/2"
           style={{ left: `${activePoint.x}%` }}
         />
 
-        {/* Floating Dark Tooltip matching Homepage styling */}
+        {/* Floating Dark Tooltip Card with Downward Pointer */}
         <motion.div 
           layout
-          transition={{ type: "spring", stiffness: 400, damping: 28 }}
-          className="absolute z-30 bg-neutral-950 text-white px-3 py-1.5 rounded-xl shadow-xl border border-white/20 flex flex-col pointer-events-none -translate-x-1/2 whitespace-nowrap"
+          transition={{ type: "spring", stiffness: 450, damping: 30 }}
+          className="absolute z-30 bg-[#0F172A] text-white px-3 py-1.5 rounded-xl shadow-xl border border-white/15 flex flex-col pointer-events-none -translate-x-1/2 whitespace-nowrap"
           style={{ 
             left: `${activePoint.x}%`, 
-            top: `${Math.max(activePoint.y - 45, 0)}px` 
+            top: `${Math.max(activePoint.y - 48, -4)}px` 
           }}
         >
-          <span className="text-xs font-bold text-white">₹{activePoint.amount.toLocaleString()}</span>
-          <span className="text-[10px] font-medium text-neutral-400">{activePoint.dateLabel}</span>
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs font-black font-sans text-white">
+              ₹{activePoint.amount.toLocaleString("en-IN")}
+            </span>
+            {activePoint.isPeak && (
+              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-md bg-amber-400/20 text-amber-300 border border-amber-400/30">
+                PEAK
+              </span>
+            )}
+          </div>
+          <span className="text-[10px] font-medium text-neutral-300">
+            {activePoint.dateLabel}
+          </span>
+          {/* Tooltip Downward Pointer Arrow */}
+          <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-[#0F172A] rotate-45 border-r border-b border-white/15" />
         </motion.div>
 
-        {/* SVG Line Chart */}
-        <svg className="w-full h-28 overflow-visible" viewBox="0 0 340 80">
+        {/* SVG Spline Canvas */}
+        <svg className="w-full h-28 overflow-visible" viewBox="0 0 340 88">
           <defs>
             <linearGradient id="chart-blue-gradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#2563EB" stopOpacity="0.22" />
-              <stop offset="80%" stopColor="#2563EB" stopOpacity="0.03" />
+              <stop offset="0%" stopColor="#2563EB" stopOpacity="0.30" />
+              <stop offset="60%" stopColor="#2563EB" stopOpacity="0.08" />
               <stop offset="100%" stopColor="#2563EB" stopOpacity="0.0" />
             </linearGradient>
+            <filter id="chart-line-glow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#2563EB" floodOpacity="0.35" />
+            </filter>
           </defs>
 
-          {/* Gradient Area Fill */}
+          {/* Smooth Gradient Area Fill */}
           <path d={svgAreaPath} fill="url(#chart-blue-gradient)" />
 
-          {/* Solid Vector Line Path */}
+          {/* Optional Average Guideline */}
+          {showAvgLine && (
+            <g>
+              <line 
+                x1={firstX} 
+                y1={avgY} 
+                x2={lastX} 
+                y2={avgY} 
+                stroke="#94A3B8" 
+                strokeWidth="1.2" 
+                strokeDasharray="4 4" 
+                opacity="0.8"
+              />
+              <text 
+                x={lastX - 44} 
+                y={avgY - 4} 
+                fill="#64748B" 
+                fontSize="8.5" 
+                fontWeight="700"
+              >
+                Avg {current.avgAmount}
+              </text>
+            </g>
+          )}
+
+          {/* Smooth Vector Spline Line */}
           <motion.path 
             key={`${period}-${points.length}`}
             initial={{ pathLength: 0 }}
             animate={{ pathLength: 1 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
-            d={svgPath} 
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
+            d={splinePath} 
             fill="none" 
             stroke="#2563EB" 
-            strokeWidth="3" 
+            strokeWidth="3.2" 
             strokeLinecap="round" 
             strokeLinejoin="round" 
+            filter="url(#chart-line-glow)"
           />
 
           {/* Vertical Dashed Guide Line passing through active node */}
           <line 
             x1={activePoint.x * 3.4} 
-            y1={0} 
+            y1={activePoint.y} 
             x2={activePoint.x * 3.4} 
-            y2={80} 
+            y2={85} 
             stroke="#2563EB" 
             strokeWidth="1.5" 
             strokeDasharray="3 3" 
+            opacity="0.8"
           />
 
-          {/* Active Dot Cursor with halo */}
+          {/* Pulsing Radar Halo on Active Point */}
+          <motion.circle 
+            cx={activePoint.x * 3.4} 
+            cy={activePoint.y} 
+            r="10" 
+            fill="#2563EB" 
+            initial={{ opacity: 0.3, scale: 0.8 }}
+            animate={{ opacity: [0.35, 0.05, 0.35], scale: [1, 1.4, 1] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          />
+
+          {/* Active Dot Cursor with Crisp White Halo */}
           <circle 
             cx={activePoint.x * 3.4} 
             cy={activePoint.y} 
-            r="6" 
+            r="5.5" 
             fill="#2563EB" 
             stroke="#FFFFFF" 
             strokeWidth="2.5" 
             className="filter drop-shadow-md"
           />
 
-          {/* Clickable Overlay Hit Areas for all points */}
+          {/* Interactive Hit Areas */}
           {points.map((pt, index) => (
             <circle
               key={`${pt.day}-${index}`}
               cx={pt.x * 3.4}
               cy={pt.y}
-              r="14"
+              r="16"
               fill="transparent"
               className="cursor-pointer"
               onClick={() => setActiveIndex(index)}
@@ -251,25 +378,69 @@ export function DailySpendingChart({ period = "month" }: DailySpendingChartProps
           ))}
         </svg>
 
-        {/* X-Axis Date Labels */}
+        {/* X-Axis Date Labels with Active Highlight Pill */}
         <div className="flex items-center justify-between text-[11px] font-semibold text-neutral-400 pt-2 px-1">
-          <span className={activeIndex === 0 ? "text-[#2563EB] font-bold" : ""}>{current.startLabel}</span>
-          <span className={activeIndex === Math.floor(points.length / 2) ? "px-2 py-0.5 rounded-full bg-blue-50 text-[#2563EB] font-bold border border-blue-100" : ""}>{current.midLabel}</span>
-          <span className={activeIndex === points.length - 1 ? "text-[#2563EB] font-bold" : ""}>{current.endLabel}</span>
+          <span className={activePoint.day === current.startLabel ? "text-[#2563EB] font-bold" : ""}>
+            {current.startLabel}
+          </span>
+          <span className={cn(
+            "text-[11px] font-semibold transition-all px-2.5 py-0.5 rounded-full",
+            activePoint.day === current.midLabel 
+              ? "bg-blue-100/80 text-[#2563EB] font-bold border border-blue-200/90 shadow-2xs" 
+              : "text-neutral-400"
+          )}>
+            {current.midLabel}
+          </span>
+          <span className={activePoint.day === current.endLabel ? "text-[#2563EB] font-bold" : ""}>
+            {current.endLabel}
+          </span>
         </div>
       </div>
 
-      {/* Bottom Outlined Insight Chips matching Homepage */}
-      <div className="flex items-center flex-wrap gap-2 pt-1 border-t border-neutral-100 relative z-10">
-        <span className="text-[11px] font-medium px-3 py-1 rounded-full border border-neutral-900/15 bg-neutral-900/5 text-neutral-800">
-          📊 Avg ₹2,240/day
-        </span>
-        <span className="text-[11px] font-medium px-3 py-1 rounded-full border border-neutral-900/15 bg-neutral-900/5 text-neutral-800">
-          ⚡️ Sep 7 Peak (₹6,850)
-        </span>
-        <span className="text-[11px] font-medium px-3 py-1 rounded-full border border-neutral-900/15 bg-neutral-900/5 text-neutral-800">
-          🎯 On Budget
-        </span>
+      {/* Bottom Outlined Insight Chips with Vector Lucide Icons */}
+      <div className="flex items-center flex-wrap gap-2 pt-2 border-t border-neutral-100 relative z-10">
+        {/* 1. Average Chip */}
+        <motion.button 
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.97 }}
+          onClick={() => setShowAvgLine(!showAvgLine)}
+          className={cn(
+            "text-[11px] font-semibold px-3 py-1 rounded-full border transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs",
+            showAvgLine 
+              ? "border-blue-300 bg-blue-50 text-blue-800 ring-2 ring-blue-400/20" 
+              : "border-neutral-900/15 bg-neutral-900/5 hover:bg-neutral-900/10 text-neutral-800"
+          )}
+          title="Toggle average reference line"
+        >
+          <BarChart3 className="w-3.5 h-3.5 text-[#2563EB] stroke-[2.2]" />
+          <span>Avg {current.avgAmount}/day</span>
+        </motion.button>
+
+        {/* 2. Peak Chip (Click to jump to peak) */}
+        <motion.button 
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.97 }}
+          onClick={() => {
+            const peakIdx = points.findIndex(p => p.isPeak)
+            if (peakIdx !== -1) setActiveIndex(peakIdx)
+          }}
+          className={cn(
+            "text-[11px] font-semibold px-3 py-1 rounded-full border transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs",
+            activePoint.isPeak 
+              ? "border-amber-300 bg-amber-50 text-amber-800 ring-2 ring-amber-400/20" 
+              : "border-neutral-900/15 bg-neutral-900/5 hover:bg-amber-50 hover:border-amber-200 text-neutral-800"
+          )}
+          title="Jump to peak spend"
+        >
+          <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-400/30 stroke-[2.2]" />
+          <span>{current.peakDay} Peak ({current.stat})</span>
+        </motion.button>
+
+        {/* 3. On Budget Chip */}
+        <div className="text-[11px] font-semibold px-3 py-1 rounded-full border border-neutral-900/15 bg-neutral-900/5 text-neutral-800 flex items-center gap-1.5 shadow-2xs">
+          <Target className="w-3.5 h-3.5 text-emerald-600 stroke-[2.2]" />
+          <span>On Budget</span>
+        </div>
       </div>
     </div>
   )
